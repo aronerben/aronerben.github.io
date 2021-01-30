@@ -4,7 +4,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>aronwith1a</title>
+    <title>$title$</title>
     <link rel="stylesheet" type="text/css" href="/css/reset.css" />
     <link rel="stylesheet" type="text/css" href="/css/default.css" />
     <link rel="icon" href="favicon.ico?v=3" type="image/x-icon" />
@@ -20,25 +20,26 @@
         <navbar>
           <div class="home">
             <a class="nav-item logo-container" href="/">
-              <img class="logo" src="/images/logo.png" alt="Faded logo" />
+              <img
+                class="logo"
+                src="/images/logo.png"
+                alt="My unbelievably sick logo that took forever to make"
+              />
             </a>
           </div>
           <ul>
             <li>
-              <a class="nav-item" href="/archive.html">blog</a>
+              <a class="nav-item $blogClass$" href="/blog.html">blog</a>
             </li>
             <li>
-              <a class="nav-item" href="/about.html">about</a>
-            </li>
-            <li>
-              <a class="nav-item" href="/contact.html">contact</a>
+              <a class="nav-item $aboutClass$" href="/about.html">about</a>
             </li>
           </ul>
         </navbar>
       </div>
     </header>
     <main class="content">
-      <h1>$title$</h1>
+      <h1 class="greeting"></h1>
       $body$
     </main>
     <footer>
@@ -49,5 +50,14 @@
         </div>
       </div>
     </footer>
+    <script>
+      const greeting = ["Hi", "Welcome", "Hello", "Sup", "Ello"];
+      const amicability = ["friend", "buddy", "pal", "bud"];
+
+      const fst = greeting[Math.floor(Math.random() * greeting.length)];
+      const snd = amicability[Math.floor(Math.random() * amicability.length)];
+      document.getElementsByClassName("greeting")[0].innerText =
+        fst + " " + snd;
+    </script>
   </body>
 </html>

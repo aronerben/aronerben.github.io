@@ -4,7 +4,6 @@ html,
 body {
   margin: 0;
   padding: 0;
-  min-height: 100%;
   height: 100%;
 }
 
@@ -15,6 +14,8 @@ body {
   -webkit-font-smoothing: antialiased;
   font-family: "Roboto Mono", sans-serif;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 *,
@@ -39,15 +40,22 @@ ul {
 
 header {
   background-color: #282828;
-  height: 120px;
   display: flex;
   justify-content: center;
   flex-direction: column;
+  flex: 1 0 auto;
+  height: 120px;
+  min-height: 120px;
+  max-height: 120px;
 }
 
 navbar {
   display: flex;
   justify-content: space-between;
+}
+
+.home {
+  margin-left: -15px;
 }
 
 navbar > ul {
@@ -71,17 +79,27 @@ navbar > ul li:last-child {
   color: white;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
 .logo-container {
   display: block;
 }
 
 .logo {
-  height: 100px;
-  width: 100px;
+  height: 75px;
+  width: 75px;
 }
 
 main {
-  height: calc(100% - 120px);
+  padding-top: 30px;
+  padding-bottom: 30px;
+  flex: 1 0 auto;
+}
+
+.text {
+  width: 768px;
 }
 
 footer {
@@ -93,7 +111,9 @@ footer {
   clear: both;
   position: relative;
   height: 100px;
-  margin-top: -100px;
+  min-height: 100px;
+  max-height: 100px;
+  flex-shrink: 0;
 }
 
 .footer-link {
@@ -109,13 +129,40 @@ footer {
   margin: 0 auto;
 }
 
-@media only screen and (max-width: 768px) {
+h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
 }
 
-@media only screen and (max-width: 1300px) {
+h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+p {
+  font-size: 1em;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+@media only screen and (max-width: 768px) {
+  .text {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: calc(1200px + 2 * 30px)) {
   .content {
     width: 100%;
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 30px;
+    padding-right: 30px;
   }
 }
