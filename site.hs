@@ -4,11 +4,12 @@
 import Data.Monoid (mappend)
 import Hakyll
 
+
 --------------------------------------------------------------------------------
 main :: IO ()
 main =
   hakyllWith config $ do
-    match ("images/*" .||. "favicon.ico") $ do
+    match ("images/*" .||. "favicon.ico" .||. "CNAME") $ do
       route idRoute
       compile copyFileCompiler
     match "css/*" $ do
