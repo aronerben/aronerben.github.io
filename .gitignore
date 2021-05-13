@@ -19,5 +19,6 @@ cabal.sandbox.config
 .stack-work/
 _cache/
 _site/
+_agda/
 stack.yaml.lock
 dist-newstyle/
