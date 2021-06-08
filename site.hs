@@ -21,12 +21,6 @@ main = do
   E.setLocaleEncoding E.utf8
   hakyllMain
 
-data Point = Point
-  { pointX, pointY :: Double
-  , pointName :: String
-  }
-  deriving (Show)
-
 hakyllMain :: IO ()
 hakyllMain = hakyllWith config $ do
   match ("images/*" .||. "favicon.ico" .||. "CNAME") $ do
@@ -41,7 +35,6 @@ hakyllMain = hakyllWith config $ do
       pandocCompiler
         >>= loadAndApplyTemplate "templates/post.html" postCtx
         >>= loadAndApplyTemplate "templates/base.html" postCtx
-        >>= loadAndApplyTemplate "templates/base.html" postCtx
         >>= relativizeUrls
   match (fromString $ agdaOutputDir </> "*.md") $ do
     route $
@@ -49,7 +42,7 @@ hakyllMain = hakyllWith config $ do
         `composeRoutes` gsubRoute
           (agdaOutputDir </> "")
           (const "posts")
-    compile $
+    compile $ do
       pandocCompiler
         >>= loadAndApplyTemplate "templates/post.html" postCtx
         >>= loadAndApplyTemplate "templates/base.html" postCtx
