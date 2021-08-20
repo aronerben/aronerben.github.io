@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>how to set up agda</title>
+    <link rel="stylesheet" type="text/css" href="../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../css/default.css" />
+    <link rel="stylesheet" type="text/css" href="../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../css/agda.css" />
+    <link rel="icon" href="favicon.ico?v=3" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+  </head>
+  <body>
+    <header>
+      <div class="content">
+        <navbar>
+          <div class="home">
+            <a class="nav-item logo-container" href="../">
+              <img class="logo" src="../images/logo.png" alt="My unbelievably sick logo that took forever to make" />
+            </a>
+          </div>
+          <ul>
+            <li>
+              <a class="nav-item underline" href="../blog.html">blog</a>
+            </li>
+            <li>
+              <a class="nav-item " href="../about.html">about</a>
+            </li>
+          </ul>
+        </navbar>
+      </div>
+    </header>
+    <main class="content">
+      <h1 class="greeting">Welcome bud!</h1>
+      <div class="info">
+    Posted on February 15, 2021
+    
+</div>
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">config ::</span> <span class="dt">Configuration</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>config <span class="ot">=</span> defaultConfiguration {deployCommand <span class="ot">=</span> <span class="st">&quot;./deploy.sh&quot;</span>}</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ot">postCtx ::</span> <span class="dt">Context</span> <span class="dt">String</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>postCtx <span class="ot">=</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  dateField <span class="st">&quot;date&quot;</span> <span class="st">&quot;%B %e, %Y&quot;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="ot">`mappend`</span> constField <span class="st">&quot;blogClass&quot;</span> <span class="st">&quot;underline&quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="ot">`mappend`</span> constField <span class="st">&quot;aboutClass&quot;</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="ot">`mappend`</span> defaultContext</span></code></pre></div>
+<pre class="Agda"><a id="354" class="Keyword">open</a> <a id="359" class="Keyword">import</a> <a id="366" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
+<a id="383" class="Keyword">open</a> <a id="388" class="Keyword">import</a> <a id="395" href="Agda.Builtin.Equality.html" class="Module">Agda.Builtin.Equality</a>
+
+<a id="plus1"></a><a id="418" href="2021-02-15-lol.html#418" class="Function">plus1</a> <a id="424" class="Symbol">:</a> <a id="426" class="Symbol">(</a><a id="427" href="2021-02-15-lol.html#427" class="Bound">x</a> <a id="429" class="Symbol">:</a> <a id="431" href="Agda.Builtin.Nat.html#192" class="Datatype">Nat</a><a id="434" class="Symbol">)</a> <a id="436" class="Symbol">→</a> <a id="438" href="2021-02-15-lol.html#427" class="Bound">x</a> <a id="440" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="442" class="Number">1</a> <a id="444" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="446" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="450" href="2021-02-15-lol.html#427" class="Bound">x</a>
+<a id="452" href="2021-02-15-lol.html#418" class="Function">plus1</a> <a id="458" href="Agda.Builtin.Nat.html#210" class="InductiveConstructor">zero</a>                    <a id="482" class="Symbol">=</a> <a id="484" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+<a id="489" href="2021-02-15-lol.html#418" class="Function">plus1</a> <a id="495" class="Symbol">(</a><a id="496" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="500" href="2021-02-15-lol.html#500" class="Bound">x</a><a id="501" class="Symbol">)</a> <a id="503" class="Keyword">rewrite</a> <a id="511" href="2021-02-15-lol.html#418" class="Function">plus1</a> <a id="517" href="2021-02-15-lol.html#500" class="Bound">x</a> <a id="519" class="Symbol">=</a> <a id="521" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+</pre>
+
+    </main>
+    <footer>
+      <div class="content">
+        <div class="generator">
+          Site proudly generated by
+          <a class="footer-link" href="http://jaspervdj.be/hakyll">Hakyll</a> :)
+        </div>
+      </div>
+    </footer>
+    <script>
+      const greeting = ["Hi", "Welcome", "Hello", "Sup", "Ello"];
+      const amicability = ["friend", "buddy", "pal", "bud"];
+
+      const fst = greeting[Math.floor(Math.random() * greeting.length)];
+      const snd = amicability[Math.floor(Math.random() * amicability.length)];
+      document.getElementsByClassName("greeting")[0].innerText =
+        fst + " " + snd + "!";
+    </script>
+  </body>
+</html>
