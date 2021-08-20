@@ -24,3 +24,4 @@ executable aronwith1a
                      , filepath >= 1.4
                      , directory >= 1.3
                      , process >= 1.4.3
+                     , filepattern >= 0.1.2

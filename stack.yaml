@@ -40,7 +40,8 @@ extra-deps:
   - commonmark-extensions-0.2.0.4
   - commonmark-pandoc-0.2.0.1
   - pandoc-2.11.4
-  - ../libs/hakyll
+  # TODO Once newest hakyll is released, replace
+  - ../hakyll
 # - acme-missiles-0.3
 # - git: https://github.com/commercialhaskell/stack.git
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a

@@ -22,3 +22,7 @@ _site/
 _agda/
 stack.yaml.lock
 dist-newstyle/
+
+### Agda ###
+*.agdai
+MAlonzo/**

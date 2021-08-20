@@ -15,6 +15,8 @@ import System.Directory
 import System.Exit
 import System.FilePath
 import System.Process
+import System.FilePattern ((?==))
+import Data.Functor (($>))
 
 main :: IO ()
 main = do
@@ -95,10 +97,13 @@ hakyllMain = hakyllWith config $ do
         >>= loadAndApplyTemplate "templates/base.html" layoutCtx
         >>= relativizeUrls
   match "templates/*" $ compile templateCompiler
-  preprocess processAgdaPosts
+  match "agda-posts/*.lagda.md" $ compile $ do
+    unsafeCompiler processAgdaPosts
+    makeItem ("" :: String)
+
 
 config :: Configuration
-config = defaultConfiguration {deployCommand = "./deploy.sh"}
+config = defaultConfiguration {deployCommand = "./deploy.sh", watchIgnore = ("_agda/**" ?==)}
 
 postCtx :: Context String
 postCtx =
