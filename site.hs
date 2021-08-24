@@ -2,21 +2,23 @@
 {-# OPTIONS_GHC -Wno-deferred-type-errors #-}
 
 import Control.Monad
+import Data.Functor (($>))
 import Data.List (
   isInfixOf,
   isSuffixOf,
  )
+import Data.Maybe (fromMaybe)
 import Data.Monoid (mappend)
 import Data.String
+import Data.Typeable (Typeable)
 import Debug.Trace
 import qualified GHC.IO.Encoding as E
 import Hakyll
 import System.Directory
 import System.Exit
 import System.FilePath
-import System.Process
 import System.FilePattern ((?==))
-import Data.Functor (($>))
+import System.Process
 
 main :: IO ()
 main = do
@@ -25,92 +27,92 @@ main = do
 
 hakyllMain :: IO ()
 hakyllMain = hakyllWith config $ do
-  match ("images/*" .||. "favicon.ico" .||. "CNAME") $ do
-    route idRoute
-    compile copyFileCompiler
-  match "css/*" $ do
-    route idRoute
-    compile compressCssCompiler
-  match "posts/*" $ do
-    route $ setExtension "html"
-    compile $
-      pandocCompiler
-        >>= loadAndApplyTemplate "templates/post.html" postCtx
-        >>= loadAndApplyTemplate "templates/base.html" postCtx
-        >>= relativizeUrls
-  match (fromString $ agdaOutputDir </> "*.md") $ do
-    route $
-      setExtension "html"
-        `composeRoutes` gsubRoute
-          (agdaOutputDir </> "")
-          (const "posts")
-    compile $ do
-      pandocCompiler
-        >>= loadAndApplyTemplate "templates/post.html" postCtx
-        >>= loadAndApplyTemplate "templates/base.html" postCtx
-        >>= relativizeUrls
-  match (fromString $ agdaOutputDir </> "*.css") $ do
-    route $ gsubRoute (agdaOutputDir </> "") (const "posts")
-    compile compressCssCompiler
-  match (fromString $ agdaOutputDir </> "*.html") $ do
-    route $ gsubRoute (agdaOutputDir </> "") (const "posts")
-    compile copyFileCompiler
-  match "index.html" $ do
-    route idRoute
-    compile $ do
-      let layoutCtx =
-            constField "title" "aronwith1a"
-              `mappend` constField "blogClass" ""
-              `mappend` constField "aboutClass" ""
-              `mappend` defaultContext
-      getResourceBody
-        >>= applyAsTemplate defaultContext
-        >>= loadAndApplyTemplate "templates/base.html" layoutCtx
-        >>= relativizeUrls
-  match "blog.html" $ do
-    route idRoute
-    compile $ do
-      let layoutCtx =
-            constField "title" "blog"
-              `mappend` constField "blogClass" "underline"
-              `mappend` constField "aboutClass" ""
-              `mappend` defaultContext
-      plainPosts <- loadAll "posts/*"
-      agdaPosts <- loadAll $ fromString (agdaOutputDir </> "*.md")
-      posts <- recentFirst $ plainPosts ++ agdaPosts
-      let blogCtx =
-            listField "posts" postCtx (return posts)
-              `mappend` defaultContext
-      getResourceBody
-        >>= applyAsTemplate blogCtx
-        >>= loadAndApplyTemplate "templates/base.html" layoutCtx
-        >>= relativizeUrls
-  match "about.html" $ do
-    route idRoute
-    compile $ do
-      let layoutCtx =
-            constField "title" "about"
-              `mappend` constField "blogClass" ""
-              `mappend` constField "aboutClass" "underline"
-              `mappend` defaultContext
-      getResourceBody
-        >>= loadAndApplyTemplate "templates/base.html" layoutCtx
-        >>= relativizeUrls
+  files ("images/*" .||. "favicon.ico" .||. "CNAME") idRoute copyFileCompiler
+  files "css/*" idRoute compressCssCompiler
+  files (agdaPattern "*.css") agdaRoute compressCssCompiler
+  files (agdaPattern "*.html") agdaRoute copyFileCompiler
+  posts "posts/*" $ setExtension "html"
+  posts (agdaPattern "*.md") $ setExtension "html" `composeRoutes` agdaRoute
+  overview "index.html" (return defaultContext) Index
+  overview
+    "blog.html"
+    ( do
+        plainPosts <- loadAll "posts/*"
+        agdaPosts <- loadAll $ fromString (agdaOutputDir </> "*.md")
+        posts <- recentFirst $ plainPosts ++ agdaPosts
+        return $
+          listField "posts" postCtx (return posts)
+            `mappend` defaultContext
+    )
+    Blog
+  overview "about.html" (return defaultContext) About
   match "templates/*" $ compile templateCompiler
-  match "agda-posts/*.lagda.md" $ compile $ do
-    unsafeCompiler processAgdaPosts
-    makeItem ("" :: String)
-
+  match "agda-posts/*.lagda.md" $
+    compile $ do
+      unsafeCompiler processAgdaPosts
+      makeItem ("" :: String)
 
 config :: Configuration
-config = defaultConfiguration {deployCommand = "./deploy.sh", watchIgnore = ("_agda/**" ?==)}
+config =
+  defaultConfiguration
+    { deployCommand = "./deploy.sh"
+    , watchIgnore = ("_agda/**" ?==)
+    }
 
+-- Rules
+files pattern routing compiler =
+  match pattern $
+    do
+      route routing
+      compile compiler
+
+posts :: Pattern -> Routes -> Rules ()
+posts pattern routing =
+  -- TODO DO METAFIELDS
+  -- let descriptionCtx =
+  --       field
+  --         "description"
+  --         ( \item ->
+  --             fromMaybe ""
+  --               <$> getMetadataField (itemIdentifier item) "description"
+  --         )
+  -- >>= applyAsTemplate descriptionCtx
+
+  files pattern routing $
+    pandocCompiler
+      >>= loadAndApplyTemplate "templates/post.html" postCtx
+      >>= loadAndApplyTemplate "templates/base.html" (baseCtx Blog)
+      >>= relativizeUrls
+
+overview :: Pattern -> Compiler (Context String) -> OverviewPage -> Rules ()
+overview pattern ctx page =
+  files pattern idRoute $ do
+    join (applyAsTemplate <$> ctx <*> getResourceBody)
+      >>= loadAndApplyTemplate "templates/base.html" (baseCtx page)
+      >>= relativizeUrls
+
+-- Contexts
 postCtx :: Context String
 postCtx =
   dateField "date" "%B %e, %Y"
-    `mappend` constField "blogClass" "underline"
-    `mappend` constField "aboutClass" ""
-    `mappend` defaultContext
+    <> defaultContext
+
+baseCtx :: OverviewPage -> Context String
+baseCtx page =
+  constField "title" title
+    <> constField (title <> "Class") "underline"
+    <> defaultContext
+  where
+    title = stringifyPage page
+
+data OverviewPage = Index | Blog | About
+
+stringifyPage :: OverviewPage -> String
+stringifyPage page =
+  case page of
+    Index -> "aronwith1a"
+    Blog -> "blog"
+    About -> "about"
 
 -- Agda stuff from https://jesper.sikanda.be/posts/literate-agda.html
 agdaCommand :: String
@@ -149,5 +151,11 @@ processAgdaPost agdaFile = do
     (ExitFailure _, err, _) -> do
       putStrLn $ "Failed to process " ++ agdaFile
       putStrLn err
-    (ExitSuccess, out, _) -> do
+    (ExitSuccess, out, _) ->
       putStrLn out
+
+agdaPattern :: IsString a => FilePath -> a
+agdaPattern ending = fromString $ agdaOutputDir </> ending
+
+agdaRoute :: Routes
+agdaRoute = gsubRoute (agdaOutputDir </> "") (const "posts")

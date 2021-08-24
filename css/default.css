@@ -188,7 +188,7 @@ p {
 
 .media {
   text-decoration: none;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .media:last-child {
@@ -210,7 +210,6 @@ p {
 }
 
 .post {
-    height: 100px;
     width: 50%;
     padding: 20px;
     margin-bottom: 20px;
