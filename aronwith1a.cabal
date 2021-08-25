@@ -19,6 +19,7 @@ executable aronwith1a
   ghc-options:         -threaded
                        -fwrite-ide-info
                        -hiedir=.hie
+                       -Wall
   build-depends:       base >= 4.7 && < 5
                      , hakyll
                      , filepath >= 1.4

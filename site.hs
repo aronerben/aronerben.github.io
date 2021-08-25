@@ -2,16 +2,11 @@
 {-# OPTIONS_GHC -Wno-deferred-type-errors #-}
 
 import Control.Monad
-import Data.Functor (($>))
 import Data.List (
-  isInfixOf,
   isSuffixOf,
  )
 import Data.Maybe (fromMaybe)
-import Data.Monoid (mappend)
 import Data.String
-import Data.Typeable (Typeable)
-import Debug.Trace
 import qualified GHC.IO.Encoding as E
 import Hakyll
 import System.Directory
@@ -39,10 +34,18 @@ hakyllMain = hakyllWith config $ do
     ( do
         plainPosts <- loadAll "posts/*"
         agdaPosts <- loadAll $ fromString (agdaOutputDir </> "*.md")
-        posts <- recentFirst $ plainPosts ++ agdaPosts
+        allPosts <- recentFirst $ plainPosts ++ agdaPosts
+        let descriptionCtx =
+              field
+                "description"
+                ( \item ->
+                    fromMaybe ""
+                      <$> getMetadataField (itemIdentifier item) "description"
+                )
         return $
-          listField "posts" postCtx (return posts)
-            `mappend` defaultContext
+          listField "posts" postCtx (return allPosts)
+            <> defaultContext
+            <> descriptionCtx
     )
     Blog
   overview "about.html" (return defaultContext) About
@@ -68,16 +71,6 @@ files pattern routing compiler =
 
 posts :: Pattern -> Routes -> Rules ()
 posts pattern routing =
-  -- TODO DO METAFIELDS
-  -- let descriptionCtx =
-  --       field
-  --         "description"
-  --         ( \item ->
-  --             fromMaybe ""
-  --               <$> getMetadataField (itemIdentifier item) "description"
-  --         )
-  -- >>= applyAsTemplate descriptionCtx
-
   files pattern routing $
     pandocCompiler
       >>= loadAndApplyTemplate "templates/post.html" postCtx
@@ -136,8 +129,8 @@ agdaOptions fileName =
 -- Process a .lagda.md file into markdown by calling Agda
 processAgdaPosts :: IO ()
 processAgdaPosts = do
-  files <- listDirectory agdaInputDir
-  let agdaFiles = filter (".lagda.md" `isSuffixOf`) files
+  filez <- listDirectory agdaInputDir
+  let agdaFiles = filter (".lagda.md" `isSuffixOf`) filez
   forM_ agdaFiles processAgdaPost
 
 processAgdaPost :: FilePath -> IO ()
