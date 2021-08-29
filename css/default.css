@@ -130,7 +130,7 @@ footer {
 }
 
 h1 {
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 700;
   margin-top: 50px;
   margin-bottom: 30px;
@@ -141,7 +141,7 @@ h1:first-child {
 }
 
 h2 {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   margin-top: 40px;
   margin-bottom: 20px;
@@ -152,7 +152,7 @@ h2:first-child {
 }
 
 h3 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   margin-top: 30px;
   margin-bottom: 5px;
@@ -160,6 +160,16 @@ h3 {
 
 h3:first-child {
   margin-top: 0;
+}
+
+.anchor {
+  margin-left: 10px;
+  color: lightgray;
+  text-decoration: none;
+}
+
+.anchor:hover {
+  color: gray;
 }
 
 p {
@@ -195,9 +205,22 @@ p {
   margin-right: 0;
 }
 
+.post {
+  margin-bottom: 40px;
+  width: 50%;
+}
+
 @media only screen and (max-width: 768px) {
   .text {
     width: 100%;
+  }
+
+  .post {
+    width: 100%;
+  }
+
+  .greeting {
+    font-size: 30px;
   }
 }
 
@@ -209,31 +232,23 @@ p {
   }
 }
 
-.post {
-    width: 50%;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px 0px;
-    transition: box-shadow 0.3s;
-}
-
-.post:hover {
-    box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px 7px;
-}
-
-.card-link {
-    text-decoration: none;
-    color: black;
-}
-
 .post-title {
-    font-size: 22px;
-    margin-bottom: 0;
-    font-weight: 700;
+  font-size: 22px;
+  font-weight: 700;
+  text-decoration: none;
 }
 
 .post-date {
-    margin-bottom: 5px;
-    color: gray;
-    font-size: 13px;
+  margin-bottom: 10px;
+  color: #555555;
+  font-size: 13px;
+}
+
+.post-description {
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+
+.post-detail-title {
+  margin-top: 15px;
 }

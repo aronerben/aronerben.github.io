@@ -26,3 +26,6 @@ executable aronwith1a
                      , directory >= 1.3
                      , process >= 1.4.3
                      , filepattern >= 0.1.2
+                     , pandoc-types >= 1.22
+                     , time-locale-compat >= 0.1.1.5
+                     , time >= 1.9.3

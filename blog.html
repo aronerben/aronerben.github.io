@@ -1,11 +1,10 @@
 <ul>
     $for(posts)$
-      <a class="card-link" href="$url$">
         <li class="post">
-          <p class="post-date">$date$</p>
-          <p class="post-title">$title$</p>
+          <span class="post-separator"></span>
+          <p class="post-date">$published$</p>
+          <a class="post-title" href="$url$">$title$</a>
           <p class="post-description">$description$</p>
         </li>
-      </a>
     $endfor$
 </ul>

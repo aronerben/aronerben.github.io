@@ -1,5 +1,5 @@
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# OPTIONS_GHC -Wno-deferred-type-errors #-}
 
 import Control.Monad
 import Data.List (
@@ -7,6 +7,8 @@ import Data.List (
  )
 import Data.Maybe (fromMaybe)
 import Data.String
+import Data.Time.Format (formatTime)
+import Data.Time.Locale.Compat (defaultTimeLocale)
 import qualified GHC.IO.Encoding as E
 import Hakyll
 import System.Directory
@@ -14,6 +16,8 @@ import System.Exit
 import System.FilePath
 import System.FilePattern ((?==))
 import System.Process
+import Text.Pandoc.Builder
+import Text.Pandoc.Walk
 
 main :: IO ()
 main = do
@@ -21,39 +25,43 @@ main = do
   hakyllMain
 
 hakyllMain :: IO ()
-hakyllMain = hakyllWith config $ do
-  files ("images/*" .||. "favicon.ico" .||. "CNAME") idRoute copyFileCompiler
-  files "css/*" idRoute compressCssCompiler
-  files (agdaPattern "*.css") agdaRoute compressCssCompiler
-  files (agdaPattern "*.html") agdaRoute copyFileCompiler
-  posts "posts/*" $ setExtension "html"
-  posts (agdaPattern "*.md") $ setExtension "html" `composeRoutes` agdaRoute
-  overview "index.html" (return defaultContext) Index
-  overview
-    "blog.html"
-    ( do
-        plainPosts <- loadAll "posts/*"
-        agdaPosts <- loadAll $ fromString (agdaOutputDir </> "*.md")
-        allPosts <- recentFirst $ plainPosts ++ agdaPosts
-        let descriptionCtx =
-              field
-                "description"
-                ( \item ->
-                    fromMaybe ""
-                      <$> getMetadataField (itemIdentifier item) "description"
-                )
-        return $
-          listField "posts" postCtx (return allPosts)
-            <> defaultContext
-            <> descriptionCtx
-    )
-    Blog
-  overview "about.html" (return defaultContext) About
-  match "templates/*" $ compile templateCompiler
-  match "agda-posts/*.lagda.md" $
-    compile $ do
-      unsafeCompiler processAgdaPosts
-      makeItem ("" :: String)
+hakyllMain =
+  hakyllWith config $ do
+    files ("images/*" .||. "favicon.ico" .||. "CNAME") idRoute copyFileCompiler
+    files "css/*" idRoute compressCssCompiler
+    files (agdaPattern "*.css") agdaRoute compressCssCompiler
+    files (agdaPattern "*.html") agdaRoute copyFileCompiler
+    posts "posts/*" $ setExtension "html"
+    posts (agdaPattern "*.md") $ setExtension "html" `composeRoutes` agdaRoute
+    overview "index.html" (return defaultContext) Index
+    overview
+      "blog.html"
+      ( do
+          plainPosts <- loadAll "posts/*"
+          agdaPosts <- loadAll $ fromString (agdaOutputDir </> "*.md")
+          allPosts <- recentFirst $ plainPosts ++ agdaPosts
+          let descriptionCtx =
+                field
+                  "description"
+                  ( \item ->
+                      fromMaybe ""
+                        <$> getMetadataField (itemIdentifier item) "description"
+                  )
+          return $
+            listField "posts" postCtx (return allPosts)
+              <> defaultContext
+              <> descriptionCtx
+      )
+      Blog
+    overview "about.html" (return defaultContext) About
+    match "templates/*" $ compile templateCompiler
+    match "agda-posts/*.lagda.md" $
+      compile $ do
+        unsafeCompiler processAgdaPosts
+        makeItem ("" :: String)
+
+-- TODO remove dates from post names, add "updated at" field
+-- TODO write blog post about anchor
 
 config :: Configuration
 config =
@@ -61,6 +69,26 @@ config =
     { deployCommand = "./deploy.sh"
     , watchIgnore = ("_agda/**" ?==)
     }
+
+customPandocCompiler :: Compiler (Item String)
+customPandocCompiler =
+  pandocCompilerWithTransform defaultHakyllReaderOptions defaultHakyllWriterOptions $ walk appendAnchor
+  where
+    appendAnchor :: Block -> Block
+    appendAnchor (Header lvl attr@(id', _, _) txts) =
+      Header
+        lvl
+        attr
+        ( txts
+            ++ toList
+              ( linkWith
+                  ("", ["anchor fas fa-xs fa-link"], [])
+                  ("#" <> id')
+                  ""
+                  ""
+              )
+        )
+    appendAnchor x = x
 
 -- Rules
 files pattern routing compiler =
@@ -71,11 +99,12 @@ files pattern routing compiler =
 
 posts :: Pattern -> Routes -> Rules ()
 posts pattern routing =
-  files pattern routing $
-    pandocCompiler
-      >>= loadAndApplyTemplate "templates/post.html" postCtx
-      >>= loadAndApplyTemplate "templates/base.html" (baseCtx Blog)
-      >>= relativizeUrls
+  let newBaseCtx = baseCtx Blog <> boolField "noGreeting" (const True)
+   in files pattern routing $
+        customPandocCompiler
+          >>= loadAndApplyTemplate "templates/post.html" postCtx
+          >>= loadAndApplyTemplate "templates/base.html" newBaseCtx
+          >>= relativizeUrls
 
 overview :: Pattern -> Compiler (Context String) -> OverviewPage -> Rules ()
 overview pattern ctx page =
@@ -85,15 +114,22 @@ overview pattern ctx page =
       >>= relativizeUrls
 
 -- Contexts
+
 postCtx :: Context String
 postCtx =
-  dateField "date" "%B %e, %Y"
+  updatedTimeField "updated" "%B %e, %Y"
+    <> dateField "published" "%B %e, %Y"
     <> defaultContext
+  where
+    updatedTimeField key format = field key $ \i -> do
+      -- TODO CONTINUE HERE, MODIFY/REIMPLEMENT getItemUTC
+      time <- getItemUTC defaultTimeLocale $ itemIdentifier i
+      return $ formatTime defaultTimeLocale format time
 
 baseCtx :: OverviewPage -> Context String
 baseCtx page =
   constField "title" title
-    <> constField (title <> "Class") "underline"
+    <> boolField (title <> "Class") (const True)
     <> defaultContext
   where
     title = stringifyPage page
@@ -101,11 +137,10 @@ baseCtx page =
 data OverviewPage = Index | Blog | About
 
 stringifyPage :: OverviewPage -> String
-stringifyPage page =
-  case page of
-    Index -> "aronwith1a"
-    Blog -> "blog"
-    About -> "about"
+stringifyPage = \case
+  Index -> "aronwith1a"
+  Blog -> "blog"
+  About -> "about"
 
 -- Agda stuff from https://jesper.sikanda.be/posts/literate-agda.html
 agdaCommand :: String
@@ -126,7 +161,6 @@ agdaOptions fileName =
   , agdaInputDir </> fileName
   ]
 
--- Process a .lagda.md file into markdown by calling Agda
 processAgdaPosts :: IO ()
 processAgdaPosts = do
   filez <- listDirectory agdaInputDir

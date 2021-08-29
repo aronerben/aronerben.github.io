@@ -1,5 +1,7 @@
 <div class="info">
-    Posted on $date$
+  <span>$published$</span>
+  <span>$if(updated)$$updated$$endif$</span>
+  <h1 class="post-detail-title">$title$</h1>
     $if(author)$
         by $author$
     $endif$

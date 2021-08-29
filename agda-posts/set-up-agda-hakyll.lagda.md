@@ -1,7 +1,11 @@
 ---
-title: how to set up agda
-description: blubber
+title: Literate Agda with Hakyll
+description: Literate Agda has its own HTML transformer. In this blog post I show how to hook it up with Hakyll, including a working watch mode!
+published: 2021-02-15
+updated: 2021-02-20
 ---
+## Gauss
+### Gauss
 
 ```haskell
 config :: Configuration
@@ -15,11 +19,12 @@ postCtx =
     `mappend` defaultContext
 ```
 
+And boooom, here is the result:
 ```agda
 open import Agda.Builtin.Nat
 open import Agda.Builtin.Equality
 
 plus1 : (x : Nat) → x + 1 ≡ suc x
-plus1 zero                    = refl
+plus1 zero = refl
 plus1 (suc x) rewrite plus1 x = refl
 ```
