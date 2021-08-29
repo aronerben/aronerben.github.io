@@ -117,14 +117,15 @@ overview pattern ctx page =
 
 postCtx :: Context String
 postCtx =
-  updatedTimeField "updated" "%B %e, %Y"
+  modificationTimeField "updated" "%B %e, %Y"
     <> dateField "published" "%B %e, %Y"
     <> defaultContext
-  where
-    updatedTimeField key format = field key $ \i -> do
-      -- TODO CONTINUE HERE, MODIFY/REIMPLEMENT getItemUTC
-      time <- getItemUTC defaultTimeLocale $ itemIdentifier i
-      return $ formatTime defaultTimeLocale format time
+
+-- where
+--   updatedTimeField key format = field key $ \i -> do
+--     -- TODO CONTINUE HERE, MODIFY/REIMPLEMENT getItemUTC
+--     time <- getItemUTC defaultTimeLocale $ itemIdentifier i
+--     return $ formatTime defaultTimeLocale format time
 
 baseCtx :: OverviewPage -> Context String
 baseCtx page =
