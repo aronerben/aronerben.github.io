@@ -4,7 +4,8 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>how to set up agda</title>
+    <meta name="description" content="aronwith1a's blog">
+    <title>blog</title>
     <link rel="stylesheet" type="text/css" href="../css/reset.css" />
     <link rel="stylesheet" type="text/css" href="../css/default.css" />
     <link rel="stylesheet" type="text/css" href="../css/syntax.css" />
@@ -25,7 +26,7 @@
           </div>
           <ul>
             <li>
-              <a class="nav-item underline" href="../blog.html">blog</a>
+              <a class="nav-item  underline " href="../blog.html">blog</a>
             </li>
             <li>
               <a class="nav-item " href="../about.html">about</a>
@@ -35,12 +36,16 @@
       </div>
     </header>
     <main class="content">
-      <h1 class="greeting">Welcome bud!</h1>
+      
       <div class="info">
-    Posted on February 15, 2021
+  <span>February 15, 2021</span>
+  <span>August 29, 2021</span>
+  <h1 class="post-detail-title">Literate Agda with Hakyll</h1>
     
 </div>
 
+<h2 id="gauss">Gauss<a href="#gauss" class="anchor fas fa-xs fa-link"></a></h2>
+<h3 id="gauss-1">Gauss<a href="#gauss-1" class="anchor fas fa-xs fa-link"></a></h3>
 <div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">config ::</span> <span class="dt">Configuration</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>config <span class="ot">=</span> defaultConfiguration {deployCommand <span class="ot">=</span> <span class="st">&quot;./deploy.sh&quot;</span>}</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -50,12 +55,13 @@
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="ot">`mappend`</span> constField <span class="st">&quot;blogClass&quot;</span> <span class="st">&quot;underline&quot;</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="ot">`mappend`</span> constField <span class="st">&quot;aboutClass&quot;</span> <span class="st">&quot;&quot;</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="ot">`mappend`</span> defaultContext</span></code></pre></div>
-<pre class="Agda"><a id="354" class="Keyword">open</a> <a id="359" class="Keyword">import</a> <a id="366" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
-<a id="383" class="Keyword">open</a> <a id="388" class="Keyword">import</a> <a id="395" href="Agda.Builtin.Equality.html" class="Module">Agda.Builtin.Equality</a>
+And boooom, here is the result:
+<pre class="Agda"><a id="578" class="Keyword">open</a> <a id="583" class="Keyword">import</a> <a id="590" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
+<a id="607" class="Keyword">open</a> <a id="612" class="Keyword">import</a> <a id="619" href="Agda.Builtin.Equality.html" class="Module">Agda.Builtin.Equality</a>
 
-<a id="plus1"></a><a id="418" href="2021-02-15-lol.html#418" class="Function">plus1</a> <a id="424" class="Symbol">:</a> <a id="426" class="Symbol">(</a><a id="427" href="2021-02-15-lol.html#427" class="Bound">x</a> <a id="429" class="Symbol">:</a> <a id="431" href="Agda.Builtin.Nat.html#192" class="Datatype">Nat</a><a id="434" class="Symbol">)</a> <a id="436" class="Symbol">→</a> <a id="438" href="2021-02-15-lol.html#427" class="Bound">x</a> <a id="440" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="442" class="Number">1</a> <a id="444" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="446" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="450" href="2021-02-15-lol.html#427" class="Bound">x</a>
-<a id="452" href="2021-02-15-lol.html#418" class="Function">plus1</a> <a id="458" href="Agda.Builtin.Nat.html#210" class="InductiveConstructor">zero</a>                    <a id="482" class="Symbol">=</a> <a id="484" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
-<a id="489" href="2021-02-15-lol.html#418" class="Function">plus1</a> <a id="495" class="Symbol">(</a><a id="496" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="500" href="2021-02-15-lol.html#500" class="Bound">x</a><a id="501" class="Symbol">)</a> <a id="503" class="Keyword">rewrite</a> <a id="511" href="2021-02-15-lol.html#418" class="Function">plus1</a> <a id="517" href="2021-02-15-lol.html#500" class="Bound">x</a> <a id="519" class="Symbol">=</a> <a id="521" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+<a id="plus1"></a><a id="642" href="set-up-agda-hakyll.html#642" class="Function">plus1</a> <a id="648" class="Symbol">:</a> <a id="650" class="Symbol">(</a><a id="651" href="set-up-agda-hakyll.html#651" class="Bound">x</a> <a id="653" class="Symbol">:</a> <a id="655" href="Agda.Builtin.Nat.html#192" class="Datatype">Nat</a><a id="658" class="Symbol">)</a> <a id="660" class="Symbol">→</a> <a id="662" href="set-up-agda-hakyll.html#651" class="Bound">x</a> <a id="664" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="666" class="Number">1</a> <a id="668" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="670" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="674" href="set-up-agda-hakyll.html#651" class="Bound">x</a>
+<a id="676" href="set-up-agda-hakyll.html#642" class="Function">plus1</a> <a id="682" href="Agda.Builtin.Nat.html#210" class="InductiveConstructor">zero</a> <a id="687" class="Symbol">=</a> <a id="689" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+<a id="694" href="set-up-agda-hakyll.html#642" class="Function">plus1</a> <a id="700" class="Symbol">(</a><a id="701" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="705" href="set-up-agda-hakyll.html#705" class="Bound">x</a><a id="706" class="Symbol">)</a> <a id="708" class="Keyword">rewrite</a> <a id="716" href="set-up-agda-hakyll.html#642" class="Function">plus1</a> <a id="722" href="set-up-agda-hakyll.html#705" class="Bound">x</a> <a id="724" class="Symbol">=</a> <a id="726" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
 </pre>
 
     </main>
@@ -67,14 +73,7 @@
         </div>
       </div>
     </footer>
-    <script>
-      const greeting = ["Hi", "Welcome", "Hello", "Sup", "Ello"];
-      const amicability = ["friend", "buddy", "pal", "bud"];
 
-      const fst = greeting[Math.floor(Math.random() * greeting.length)];
-      const snd = amicability[Math.floor(Math.random() * amicability.length)];
-      document.getElementsByClassName("greeting")[0].innerText =
-        fst + " " + snd + "!";
-    </script>
+    
   </body>
 </html>

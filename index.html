@@ -4,6 +4,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="aronwith1a's blog">
     <title>aronwith1a</title>
     <link rel="stylesheet" type="text/css" href="./css/reset.css" />
     <link rel="stylesheet" type="text/css" href="./css/default.css" />
@@ -49,14 +50,18 @@
         </div>
       </div>
     </footer>
-    <script>
-      const greeting = ["Hi", "Welcome", "Hello", "Sup", "Ello"];
-      const amicability = ["friend", "buddy", "pal", "bud"];
 
-      const fst = greeting[Math.floor(Math.random() * greeting.length)];
-      const snd = amicability[Math.floor(Math.random() * amicability.length)];
-      document.getElementsByClassName("greeting")[0].innerText =
-        fst + " " + snd + "!";
-    </script>
+    
+      <script>
+       const greeting = ["Hi", "Welcome", "Hello", "Sup", "Ello"];
+       const amicability = ["friend", "buddy", "pal", "bud"];
+       const emoji = ["🧃", "🥝", "🍪", "🫖", "🍊"];
+
+       const [fst, snd, thd] = [greeting, amicability, emoji]
+         .map(l => l[Math.floor(Math.random() * l.length)]);
+       document.getElementsByClassName("greeting")[0].innerText =
+             fst + " " + snd + "! " + thd;
+        </script>
+    
   </body>
 </html>
