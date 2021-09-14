@@ -1,10 +1,12 @@
-<div class="info">
-  <span>$published$</span>
-  <span>$if(updated)$$updated$$endif$</span>
-  <h1 class="post-detail-title">$title$</h1>
-    $if(author)$
-        by $author$
+<div>
+  <div class="post-detail-dates">
+    <span>Published: $published$</span>
+    $if(updated)$
+      <span class="post-detail-dates-separator">|</span>
+      <span>Updated: $updated$</span>
     $endif$
+  </div>
+  <h1 class="post-detail-title">$title$</h1>
 </div>
 
 $body$

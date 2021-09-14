@@ -1,7 +1,7 @@
 ---
 title: took a while
 description: idk why
-published: 2021-01-30
+published: 2021-02-28
 ---
 
 only took me like 10 months to set this blog up properly lol\

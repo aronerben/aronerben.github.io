@@ -5,10 +5,8 @@ import Control.Monad
 import Data.List (
   isSuffixOf,
  )
-import Data.Maybe (fromMaybe)
 import Data.String
-import Data.Time.Format (formatTime)
-import Data.Time.Locale.Compat (defaultTimeLocale)
+import Data.Time (Day, defaultTimeLocale, formatTime, parseTimeOrError)
 import qualified GHC.IO.Encoding as E
 import Hakyll
 import System.Directory
@@ -25,7 +23,10 @@ main = do
   hakyllMain
 
 hakyllMain :: IO ()
-hakyllMain =
+hakyllMain = do
+  -- Initial Agda processing
+  -- TODO runs twice when starting
+  processAgdaPosts
   hakyllWith config $ do
     files ("images/*" .||. "favicon.ico" .||. "CNAME") idRoute copyFileCompiler
     files "css/*" idRoute compressCssCompiler
@@ -40,17 +41,10 @@ hakyllMain =
           plainPosts <- loadAll "posts/*"
           agdaPosts <- loadAll $ fromString (agdaOutputDir </> "*.md")
           allPosts <- recentFirst $ plainPosts ++ agdaPosts
-          let descriptionCtx =
-                field
-                  "description"
-                  ( \item ->
-                      fromMaybe ""
-                        <$> getMetadataField (itemIdentifier item) "description"
-                  )
           return $
             listField "posts" postCtx (return allPosts)
               <> defaultContext
-              <> descriptionCtx
+              <> generalEmptyField "description" return
       )
       Blog
     overview "about.html" (return defaultContext) About
@@ -58,10 +52,7 @@ hakyllMain =
     match "agda-posts/*.lagda.md" $
       compile $ do
         unsafeCompiler processAgdaPosts
-        makeItem ("" :: String)
-
--- TODO remove dates from post names, add "updated at" field
--- TODO write blog post about anchor
+        makeItem (mempty :: String)
 
 config :: Configuration
 config =
@@ -70,6 +61,7 @@ config =
     , watchIgnore = ("_agda/**" ?==)
     }
 
+-- TODO write blog post about anchor
 customPandocCompiler :: Compiler (Item String)
 customPandocCompiler =
   pandocCompilerWithTransform defaultHakyllReaderOptions defaultHakyllWriterOptions $ walk appendAnchor
@@ -80,7 +72,7 @@ customPandocCompiler =
         lvl
         attr
         ( txts
-            ++ toList
+            <> toList
               ( linkWith
                   ("", ["anchor fas fa-xs fa-link"], [])
                   ("#" <> id')
@@ -114,18 +106,35 @@ overview pattern ctx page =
       >>= relativizeUrls
 
 -- Contexts
+generalEmptyField :: String -> (Maybe String -> Compiler (Maybe String)) -> Context String
+generalEmptyField name process =
+  field
+    name
+    ( \item ->
+        getMetadataField (itemIdentifier item) name
+          >>= process
+          >>= maybe (noResult "") return
+    )
+
+-- Using custom date context for more control
+dateCtx :: String -> Context String
+dateCtx name =
+  generalEmptyField
+    name
+    ( return
+        . fmap
+          ( formatTime defaultTimeLocale "%B %e, %Y"
+              . ( parseTimeOrError True defaultTimeLocale "%Y-%-m-%-d" ::
+                    String -> Day
+                )
+          )
+    )
 
 postCtx :: Context String
 postCtx =
-  modificationTimeField "updated" "%B %e, %Y"
-    <> dateField "published" "%B %e, %Y"
+  dateCtx "updated"
+    <> dateCtx "published"
     <> defaultContext
-
--- where
---   updatedTimeField key format = field key $ \i -> do
---     -- TODO CONTINUE HERE, MODIFY/REIMPLEMENT getItemUTC
---     time <- getItemUTC defaultTimeLocale $ itemIdentifier i
---     return $ formatTime defaultTimeLocale format time
 
 baseCtx :: OverviewPage -> Context String
 baseCtx page =

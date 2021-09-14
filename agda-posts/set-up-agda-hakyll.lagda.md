@@ -1,7 +1,7 @@
 ---
 title: Literate Agda with Hakyll
 description: Literate Agda has its own HTML transformer. In this blog post I show how to hook it up with Hakyll, including a working watch mode!
-published: 2021-02-15
+published: 2021-05-28
 updated: 2021-02-20
 ---
 ## Gauss
