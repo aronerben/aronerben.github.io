@@ -117,18 +117,17 @@ generalEmptyField name process =
     )
 
 -- Using custom date context for more control
+-- Parse for validation
 dateCtx :: String -> Context String
 dateCtx name =
   generalEmptyField
     name
-    ( return
-        . fmap
-          ( formatTime defaultTimeLocale "%B %e, %Y"
-              . ( parseTimeOrError True defaultTimeLocale "%Y-%-m-%-d" ::
-                    String -> Day
-                )
-          )
+    ( return . fmap (format . parse)
     )
+  where
+    parse :: String -> Day
+    parse = parseTimeOrError True defaultTimeLocale "%Y-%-m-%-d"
+    format = formatTime defaultTimeLocale "%B %e, %Y"
 
 postCtx :: Context String
 postCtx =
