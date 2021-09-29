@@ -36,6 +36,56 @@ ul {
   margin: 0;
 }
 
+h1 {
+  font-size: 34px;
+  font-weight: 700;
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+h1:first-child {
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+h2:first-child {
+  margin-top: 0;
+}
+
+h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+h3:first-child {
+  margin-top: 0;
+}
+
+h1, h2, h3 {
+  line-height: 1.2;
+  position: relative;
+}
+
+p {
+  font-size: 1em;
+  margin-bottom: 15px;
+  line-height: 1.5;
+}
+
+a {
+  text-decoration: none;
+  color: #3273dc;
+  font-weight: bold;
+}
+
 /* Specifics */
 
 header {
@@ -74,7 +124,7 @@ navbar > ul li:last-child {
   margin-right: 0;
 }
 
-.nav-item {
+.nav-item, .nav-item:visited {
   text-decoration: none;
   color: white;
 }
@@ -125,57 +175,22 @@ footer {
 }
 
 .content {
-  width: 1200px;
+  width: 800px;
   margin: 0 auto;
 }
 
-h1 {
-  font-size: 34px;
-  font-weight: 700;
-  margin-top: 50px;
-  margin-bottom: 30px;
-}
-
-h1:first-child {
-  margin-top: 0;
-}
-
-h2 {
-  font-size: 28px;
-  font-weight: 700;
-  margin-top: 40px;
-  margin-bottom: 20px;
-}
-
-h2:first-child {
-  margin-top: 0;
-}
-
-h3 {
-  font-size: 22px;
-  font-weight: 700;
-  margin-top: 30px;
-  margin-bottom: 5px;
-}
-
-h3:first-child {
-  margin-top: 0;
-}
-
-.anchor {
+.anchor, .anchor:visited {
   margin-left: 10px;
   color: lightgray;
   text-decoration: none;
+  transition: color 0.2s;
+  position: absolute;
+  left: -50px;
+  top: 6px;
 }
 
 .anchor:hover {
   color: gray;
-}
-
-p {
-  font-size: 1em;
-  margin-bottom: 15px;
-  line-height: 1.4;
 }
 
 .icon {
@@ -207,13 +222,17 @@ p {
 
 .post {
   margin-bottom: 40px;
-  width: 50%;
+  width: 75%;
 }
 
 .post-title {
   font-size: 22px;
   font-weight: 700;
   text-decoration: none;
+}
+
+.post-title:visited {
+  color: purple;
 }
 
 .post-date {
@@ -233,8 +252,8 @@ p {
 
 .post-detail-dates {
   color: #666666;
+  font-size: 14px;
 }
-
 
 @media only screen and (max-width: 768px) {
   .text {
@@ -260,12 +279,37 @@ p {
   .post-detail-dates > span:first-child {
     margin-bottom: 5px;
   }
+
+  h1 {
+    font-size: 30px;
+    font-weight: 700;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-size: 26px;
+    font-weight: 700;
+    margin-top: 25px;
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
 }
 
-@media only screen and (max-width: calc(1200px + 2 * 30px)) {
+@media only screen and (max-width: calc(800px + 2 * 30px)) {
   .content {
     width: 100%;
     padding-left: 30px;
     padding-right: 30px;
+  }
+
+  .anchor.fas {
+    display: none;
   }
 }

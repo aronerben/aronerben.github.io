@@ -51,7 +51,8 @@ hakyllMain = do
     match "templates/*" $ compile templateCompiler
     match "agda-posts/*.lagda.md" $
       compile $ do
-        unsafeCompiler processAgdaPosts
+        ident <- getUnderlying
+        unsafeCompiler $ processAgdaPost $ takeFileName $ toFilePath ident
         makeItem (mempty :: String)
 
 config :: Configuration
@@ -71,14 +72,14 @@ customPandocCompiler =
       Header
         lvl
         attr
-        ( txts
-            <> toList
-              ( linkWith
-                  ("", ["anchor fas fa-xs fa-link"], [])
-                  ("#" <> id')
-                  ""
-                  ""
-              )
+        ( toList
+            ( linkWith
+                ("", ["anchor fas fa-xs fa-link"], [])
+                ("#" <> id')
+                ""
+                ""
+            )
+            <> txts
         )
     appendAnchor x = x
 
