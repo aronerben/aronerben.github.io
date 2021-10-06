@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="aronwith1a's blog">
+    <meta name="description" content="aronwith1a's blog" />
     <title>blog</title>
     <link rel="stylesheet" type="text/css" href="../css/reset.css" />
     <link rel="stylesheet" type="text/css" href="../css/default.css" />
     <link rel="stylesheet" type="text/css" href="../css/syntax.css" />
     <link rel="stylesheet" type="text/css" href="../css/agda.css" />
-    <link rel="icon" href="favicon.ico?v=3" type="image/x-icon" />
+    <link rel="icon" href="../favicon.ico?v=3" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
@@ -26,10 +26,14 @@
           </div>
           <ul>
             <li>
-              <a class="nav-item  underline " href="../blog.html">blog</a>
+              <a class="nav-item  underline " href="../blog.html">
+                blog
+              </a>
             </li>
             <li>
-              <a class="nav-item " href="../about.html">about</a>
+              <a class="nav-item " href="../about.html">
+                about
+              </a>
             </li>
           </ul>
         </navbar>
@@ -37,32 +41,69 @@
     </header>
     <main class="content">
       
-      <div class="info">
-  <span>February 15, 2021</span>
-  <span>August 29, 2021</span>
-  <h1 class="post-detail-title">Literate Agda with Hakyll</h1>
+      <div>
+  <div class="post-detail-dates">
+    <span>Published: October  6, 2021</span>
     
+  </div>
+  <h1 class="post-detail-title">Literate Agda with Hakyll</h1>
 </div>
 
-<h2 id="gauss">Gauss<a href="#gauss" class="anchor fas fa-xs fa-link"></a></h2>
-<h3 id="gauss-1">Gauss<a href="#gauss-1" class="anchor fas fa-xs fa-link"></a></h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">config ::</span> <span class="dt">Configuration</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>config <span class="ot">=</span> defaultConfiguration {deployCommand <span class="ot">=</span> <span class="st">&quot;./deploy.sh&quot;</span>}</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ot">postCtx ::</span> <span class="dt">Context</span> <span class="dt">String</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>postCtx <span class="ot">=</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  dateField <span class="st">&quot;date&quot;</span> <span class="st">&quot;%B %e, %Y&quot;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="ot">`mappend`</span> constField <span class="st">&quot;blogClass&quot;</span> <span class="st">&quot;underline&quot;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="ot">`mappend`</span> constField <span class="st">&quot;aboutClass&quot;</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="ot">`mappend`</span> defaultContext</span></code></pre></div>
-And boooom, here is the result:
-<pre class="Agda"><a id="578" class="Keyword">open</a> <a id="583" class="Keyword">import</a> <a id="590" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
-<a id="607" class="Keyword">open</a> <a id="612" class="Keyword">import</a> <a id="619" href="Agda.Builtin.Equality.html" class="Module">Agda.Builtin.Equality</a>
+<p>If you only care about how I did it, you can <a href="#chosen-approach">click here to skip</a> all the rambling!</p>
+<h2 id="introduction"><a href="#introduction" class="anchor fas fa-xs fa-link"></a>Introduction</h2>
+<p>I’ve been playing around with <a href="https://agda.readthedocs.io/en/v2.6.2/getting-started/what-is-agda.html">Agda</a> recently to get into dependent types and theorem proving. After making some progress, I wanted to capture my advances and document some concepts. I figured the best way to do this is by making some blog posts! A neat way of documenting code with prose is <a href="https://en.wikipedia.org/wiki/Literate_programming">literate programming</a>. Agda supports various forms of literate programming. I picked Markdown due to familiarity with the syntax.</p>
+<p>This blog is statically generated with <a href="https://jaspervdj.be/hakyll/">Hakyll</a>. Under the hood, <a href="https://hackage.haskell.org/package/pandoc">Pandoc</a> is used to transform the Markdown files into HTML. Markdown Literate Agda (<code>.lagda.md</code> files) mixes Agda code with Markdown and Pandoc is not able to convert the mix to HTML out of the box. So, I looked for a library that does the conversion and the integration into Hakyll.</p>
+<h2 id="existing-work"><a href="#existing-work" class="anchor fas fa-xs fa-link"></a>Existing work</h2>
+<p>I’m obviously not the first person to try this, as both, Hakyll and Agda, are fairly old technologies.</p>
+<h3 id="library-hakyll-agda"><a href="#library-hakyll-agda" class="anchor fas fa-xs fa-link"></a>Library <code>hakyll-agda</code></h3>
+<p><a href="https://hackage.haskell.org/package/hakyll-agda"><code>hakyll-agda</code></a> looked promising. It is actively maintained and seemed to provide what I was looking for. However, the lack of documentation made it hard to explore and play around with. The reason I did not opt for this solution is because external Agda libaries, like the standard library, are not explorable in the generated code sections by clicking on them. Maybe I’ve made a mistake in my directory structure that causes this.</p>
+<h3 id="library-agda-snippets-hakyll"><a href="#library-agda-snippets-hakyll" class="anchor fas fa-xs fa-link"></a>Library <code>agda-snippets-hakyll</code></h3>
+<p><a href="https://hackage.haskell.org/package/agda-snippets-hakyll"><code>agda-snippets-hakyll</code></a> seemed to have the full functionality that I needed and also had a minimal example on how to use it. However, this library is deprecated in favor of the next approach listed. It also has the upper bound <code>hakyll (&lt;4.10)</code>, which won’t work with the latest Hakyll version.</p>
+<h3 id="agda-programmatically"><a href="#agda-programmatically" class="anchor fas fa-xs fa-link"></a>Agda programmatically</h3>
+<p><a href="https://hackage.haskell.org/package/Agda">Agda is implemented in Haskell</a> and thus provides an interface to programmatically run actions. There is an API to generate HTML for a given Literate Agda file. Both of the aforementioned libraries use this API internally. <a href="https://plfa.github.io/">PLFA</a>, which has been ported to Hakyll, also seems to go this path. This seems to be the cleanest way to do it, but I was not ready to commit too much time to figure and iron out all the intricacies involved. That would mean less time to learn Agda! So, I also did not choose this approach, though, at some point, something <a href="https://github.com/plfa/plfa.github.io/blob/a9f85c9ab16c3a1dfe25c69e5d2cc883791c4bc9/hs/Hakyll/Web/Agda.hs#L59">like this</a> is the end goal. In hindsight, the Agda Haskell API seems accessible enough to not have to spend too much time getting it to work.</p>
+<h2 id="chosen-approach"><a href="#chosen-approach" class="anchor fas fa-xs fa-link"></a>Chosen approach</h2>
+<p>Continuing my search for a good enough, satisfactory solution, I stumbled upon <a href="https://jesper.sikanda.be/posts/literate-agda.html">this blog post</a> by Jesper Cockx. In the last section of the post, he outlines his method to achieving what I set out to do. He also mentions a problem causing Hakyll’s watch-mode to not work with his approach. The source code is included, which I liberally copy-pasted into my codebase.</p>
+<p>To understand his approach and the rest of this blog post, I recommend reading his code. It pretty much calls the <code>agda</code> executable in Haskell as a process to transform <code>.lagda.md</code> directly into <code>.html</code> without calling Pandoc at all. Now there was only the problem of getting the watch-mode to work.</p>
+<p>To fix it, I added this route match:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>match <span class="st">&quot;agda-posts/*.lagda.md&quot;</span> <span class="op">$</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  compile <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    ident <span class="ot">&lt;-</span> getUnderlying</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    unsafeCompiler <span class="op">$</span> processAgdaPost <span class="op">$</span> takeFileName <span class="op">$</span> toFilePath ident</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    makeItem (<span class="fu">mempty</span><span class="ot"> ::</span> <span class="dt">String</span>)</span></code></pre></div>
+<p>This creates a <code>Compiler a</code> in an “unsafe” way, meaning it performs an <code>IO</code> action circumventing the paradigm of mapping one input file to one output file, as described by Jesper Cockx in his blog post.</p>
+<p>Upon editing a file matching the pattern, the underlying filename is passed to the <code>processAgdaPost</code> function, which comes from the aforementioned blog post. This action is executed immediately and an empty <code>Item</code> is returned. The purpose of this <code>Item</code> is usually to contruct the one to one correspondence between input and output file. In this case, it is simply a dummy <code>Item</code> and does nothing. This can be regarded as a bit of a hack, so I’m not fully happy with this solution.</p>
+Assembling all pieces gives this result, editable in watch-mode:
+<pre class="Agda"><a id="4947" class="Keyword">open</a> <a id="4952" class="Keyword">import</a> <a id="4959" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
+<a id="4976" class="Keyword">open</a> <a id="4981" class="Keyword">import</a> <a id="4988" href="Agda.Builtin.Equality.html" class="Module">Agda.Builtin.Equality</a>
 
-<a id="plus1"></a><a id="642" href="set-up-agda-hakyll.html#642" class="Function">plus1</a> <a id="648" class="Symbol">:</a> <a id="650" class="Symbol">(</a><a id="651" href="set-up-agda-hakyll.html#651" class="Bound">x</a> <a id="653" class="Symbol">:</a> <a id="655" href="Agda.Builtin.Nat.html#192" class="Datatype">Nat</a><a id="658" class="Symbol">)</a> <a id="660" class="Symbol">→</a> <a id="662" href="set-up-agda-hakyll.html#651" class="Bound">x</a> <a id="664" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="666" class="Number">1</a> <a id="668" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="670" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="674" href="set-up-agda-hakyll.html#651" class="Bound">x</a>
-<a id="676" href="set-up-agda-hakyll.html#642" class="Function">plus1</a> <a id="682" href="Agda.Builtin.Nat.html#210" class="InductiveConstructor">zero</a> <a id="687" class="Symbol">=</a> <a id="689" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
-<a id="694" href="set-up-agda-hakyll.html#642" class="Function">plus1</a> <a id="700" class="Symbol">(</a><a id="701" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="705" href="set-up-agda-hakyll.html#705" class="Bound">x</a><a id="706" class="Symbol">)</a> <a id="708" class="Keyword">rewrite</a> <a id="716" href="set-up-agda-hakyll.html#642" class="Function">plus1</a> <a id="722" href="set-up-agda-hakyll.html#705" class="Bound">x</a> <a id="724" class="Symbol">=</a> <a id="726" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+<a id="plus1"></a><a id="5011" href="set-up-agda-hakyll.html#5011" class="Function">plus1</a> <a id="5017" class="Symbol">:</a> <a id="5019" class="Symbol">(</a><a id="5020" href="set-up-agda-hakyll.html#5020" class="Bound">x</a> <a id="5022" class="Symbol">:</a> <a id="5024" href="Agda.Builtin.Nat.html#192" class="Datatype">Nat</a><a id="5027" class="Symbol">)</a> <a id="5029" class="Symbol">→</a> <a id="5031" href="set-up-agda-hakyll.html#5020" class="Bound">x</a> <a id="5033" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="5035" class="Number">1</a> <a id="5037" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="5039" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="5043" href="set-up-agda-hakyll.html#5020" class="Bound">x</a>
+<a id="5045" href="set-up-agda-hakyll.html#5011" class="Function">plus1</a> <a id="5051" href="Agda.Builtin.Nat.html#210" class="InductiveConstructor">zero</a> <a id="5056" class="Symbol">=</a> <a id="5058" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+<a id="5063" href="set-up-agda-hakyll.html#5011" class="Function">plus1</a> <a id="5069" class="Symbol">(</a><a id="5070" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="5074" href="set-up-agda-hakyll.html#5074" class="Bound">x</a><a id="5075" class="Symbol">)</a> <a id="5077" class="Keyword">rewrite</a> <a id="5085" href="set-up-agda-hakyll.html#5011" class="Function">plus1</a> <a id="5091" href="set-up-agda-hakyll.html#5074" class="Bound">x</a> <a id="5093" class="Symbol">=</a> <a id="5095" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
 </pre>
+<p>You can click on pretty much any non-keyword symbol and you will be taken to the definition. Try clicking on <code>Nat</code>!</p>
+<h3 id="caveat-in-the-chosen-approach"><a href="#caveat-in-the-chosen-approach" class="anchor fas fa-xs fa-link"></a>Caveat in the chosen approach</h3>
+<p>If you only add the code snippet above, there is still a problem with synchronization of your <code>agdaInputDir</code> and the actual site content. Let’s say you remove files from <code>agdaOutputDir</code> manually and start Hakyll in watch-mode. Hakyll might first run the <code>copyFileCompiler</code> to copy your <code>.html</code> from <code>agdaOutputDir</code> to the site content before it runs <code>processAgdaPost</code> on all <code>.lagda.md</code> in <code>agdaInputDir</code>. In other words, it updates the site content with outdated stuff from <code>agdaOutputDir</code> and only afterwards is <code>agdaOutputDir</code> being synced up with <code>agdaInputDir</code>.</p>
+<p>To fix this, I kept the initial <code>processAgdaPosts</code> call when Hakyll is started. This ensures that the site content is always up to date with <code>agdaInputDir</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ot">hakyllMain ::</span> <span class="dt">IO</span> ()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>hakyllMain <span class="ot">=</span> <span class="kw">do</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Initial Agda processing</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  processAgdaPosts</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  hakyllWith config <span class="op">$</span> <span class="kw">do</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="op">...</span></span></code></pre></div>
+<p>The catch here is that, in some cases, the HTML generator is run twice in a row. This is very ugly and I plan on fixing it soon by switching to <a href="#agda-programmatically">this approach</a>.</p>
+<h2 id="digging-myself-a-hole"><a href="#digging-myself-a-hole" class="anchor fas fa-xs fa-link"></a>Digging myself a hole</h2>
+<p>This section is not relevant to the solution, but I wanted to waffle a bit more about what I did. While the solution above is simple, I struggled quite a bit to find it and, instead, initially went down another path.</p>
+<p>At first, I played around with <code>unsafeCompiler</code>. However, I could not get around the problem, that an <code>Item</code> had to be returned (the one to one mapping business). I just wanted to run an <code>IO</code> action.</p>
+<p>After digging through the documentation, I found <a href="https://hackage.haskell.org/package/hakyll-4.15.0.1/docs/Hakyll-Core-Rules.html#v:preprocess"><code>preprocess</code></a>. With this function, I could run the HTML generator as a preprocessing step. The problem was that, in watch-mode, this function would run if ANY file was edited. So, editing a file causes the <code>preprocess</code> step to run, which generates files in <code>agdaOutputDir</code>. Creating files, just like editing files, causes a rebuild in watch-mode. You might be able to guess what happens now: <code>preprocess</code> is being run AGAIN, causing an infinite loop. I was not able to avoid this infinite loop with the API that Hakyll provided at the time. So, I changed Hakyll’s API.</p>
+<p>I opened an <a href="https://github.com/jaspervdj/hakyll/issues/845">issue</a> to allow certain directories to be ignored in watch-mode. This would allow me to ignore changes in <code>agdaOutputDir</code>, so <code>preprocess</code> could generate HTML freely into that directory without triggering a rebuild. After some back and forth, Minoru (a Hakyll maintainer, big thanks to them!) and I agreed on an API. I added a new field to the <code>Configuration</code> record taking a predicate. This predicate is called if a file is edited/created with the file path (relative to where Hakyll is being run). Something like this:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ot">config ::</span> <span class="dt">Configuration</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>config <span class="ot">=</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  defaultConfiguration</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    { watchIgnore <span class="ot">=</span> (<span class="st">&quot;_agda/**&quot;</span> <span class="op">?==</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    }</span></code></pre></div>
+<p>If a file is now generated/edited in the <code>_agda</code> directory, this predicate will return <code>True</code>, making the watch-mode ignore it and not trigger a rebuild. <code>?==</code> comes from <a href="https://hackage.haskell.org/package/filepattern-0.1.2/docs/System-FilePattern.html#v:-63--61--61-"><code>filepattern</code></a>.</p>
+<p>This fixes the problem with <code>preprocess</code>, but it was a lot of effort for a solution I was not content with. Every file change still triggered the <code>agda</code> process, causing unnecessary rebuilds.</p>
+<p>Then it dawned on me that I could make the <code>unsafeCompiler</code> version work by just returning an empty item. I did exactly that, was surprised it was so easy and realized my API change was not necessary to solve my problem. This open-source contribution to Hakyll was a nice little side effect of me digging a hole when I should’ve just taken a few steps back and re-evaluated my options. Oh well 🤷‍♂️.</p>
 
     </main>
     <footer>

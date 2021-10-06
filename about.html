@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="aronwith1a's blog">
+    <meta name="description" content="aronwith1a's blog" />
     <title>about</title>
     <link rel="stylesheet" type="text/css" href="./css/reset.css" />
     <link rel="stylesheet" type="text/css" href="./css/default.css" />
     <link rel="stylesheet" type="text/css" href="./css/syntax.css" />
     <link rel="stylesheet" type="text/css" href="./css/agda.css" />
-    <link rel="icon" href="favicon.ico?v=3" type="image/x-icon" />
+    <link rel="icon" href="./favicon.ico?v=3" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
@@ -26,33 +26,41 @@
           </div>
           <ul>
             <li>
-              <a class="nav-item " href="./blog.html">blog</a>
+              <a class="nav-item " href="./blog.html">
+                blog
+              </a>
             </li>
             <li>
-              <a class="nav-item  underline " href="./about.html">about</a>
+              <a class="nav-item  underline " href="./about.html">
+                about
+              </a>
             </li>
           </ul>
         </navbar>
       </div>
     </header>
     <main class="content">
-      <h1 class="greeting">Welcome bud!</h1>
+      
+        <h1 class="greeting">Welcome bud!</h1>
+      
       <div class="text">
   <p>
-    i'm aron with 1 a, i enjoy functional programming, math and riddles. i reside in zurich, switzerland. 🧃
+    I'm Aron with 1 A, I enjoy functional programming, math and riddles. I reside in Zürich, Switzerland. 🧃
   </p>
   <p>
-    find the source code for this page <a href="https://github.com/aronerben/aronerben.github.io/tree/develop">here</a>.
+    Find the source code for this page <a href="https://github.com/aronerben/aronerben.github.io/tree/develop" target="_blank">here</a>.
   </p>
   <ul class="soc-media">
     <li class="media">
-      <a href="mailto:aron.erben@gmail.com"><i class="icon fas fa-2x fa-envelope"></i></a>
+      <a href="mailto:aron.erben@gmail.com" target="_blank">
+        <i class="icon fas fa-2x fa-envelope"></i></a>
     </li>
     <li class="media">
-      <a href="https://github.com/aronerben"><i class="icon fab fa-2x fa-github-square"></i></a>
+      <a href="https://github.com/aronerben" target="_blank">
+        <i class="icon fab fa-2x fa-github-square"></i></a>
     </li>
     <li class="media">
-      <a href="https://discord.com/users/233710755789144064">
+      <a href="https://discord.com/users/233710755789144064" target="_blank">
         <i class="icon discord fab fa-2x fa-discord"></i>
       </a>
     </li>
@@ -70,16 +78,21 @@
     </footer>
 
     
-      <script>
-       const greeting = ["Hi", "Welcome", "Hello", "Sup", "Ello"];
-       const amicability = ["friend", "buddy", "pal", "bud"];
-       const emoji = ["🧃", "🥝", "🍪", "🫖", "🍊"];
-
-       const [fst, snd, thd] = [greeting, amicability, emoji]
-         .map(l => l[Math.floor(Math.random() * l.length)]);
-       document.getElementsByClassName("greeting")[0].innerText =
-             fst + " " + snd + "! " + thd;
-        </script>
+    <script>
+      const greeting = ['Hi', 'Welcome', 'Hello', 'Sup', 'Ello']
+      const amicability = ['friend', 'buddy', 'pal', 'bud']
+      const month = new Date().getMonth() + 1
+      const isWinter = month > 10 && month < 3
+      // Seasonal emoji
+      const emoji = ['🧃', '🥝', '🍪', '🫖', '🍊', isWinter ? '⛄' : '☀️']
+      const [greet, amic, emoR] = [greeting, amicability, emoji].map(
+        l => l[Math.floor(Math.random() * l.length)]
+      )
+      // Super rare chickie
+      const emo = Math.random() < 0.01 ? '🐣' : emoR
+      document.getElementsByClassName('greeting')[0].innerText =
+        greet + ' ' + amic + '! ' + emo
+    </script>
     
   </body>
 </html>
