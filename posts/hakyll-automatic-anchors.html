@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="aronwith1a's blog" />
+    <title>blog</title>
+    <link rel="stylesheet" type="text/css" href="../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../css/default.css" />
+    <link rel="stylesheet" type="text/css" href="../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../css/agda.css" />
+    <link rel="icon" href="../favicon.ico?v=3" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+  </head>
+  <body>
+    <header>
+      <div class="content">
+        <navbar>
+          <div class="home">
+            <a class="nav-item logo-container" href="../">
+              <img class="logo" src="../images/logo.png" alt="My unbelievably sick logo that took forever to make" />
+            </a>
+          </div>
+          <ul>
+            <li>
+              <a class="nav-item  underline " href="../blog.html">
+                blog
+              </a>
+            </li>
+            <li>
+              <a class="nav-item " href="../about.html">
+                about
+              </a>
+            </li>
+          </ul>
+        </navbar>
+      </div>
+    </header>
+    <main class="content">
+      
+      <div>
+  <div class="post-detail-dates">
+    <span>Published: October 12, 2021</span>
+    
+  </div>
+  <h1 class="post-detail-title">Automatic Heading Anchors in Hakyll</h1>
+</div>
+
+<p>If you only care about how I did it, you can <a href="#solution">click here to skip</a> all the rambling!</p>
+<h1 id="introduction"><a href="#introduction" class="anchor fas fa-xs fa-link"></a>Introduction</h1>
+<p>I like being able to deep link pages directly with their headings. Wikipedia, for example, provides this functionality by giving their headings the <code>id</code> attribute. This allows constructing links with a <code>#</code> like <code>en.wikipedia.org/wiki/Third_place#Types</code>, which takes you directly to the corresponding heading.</p>
+<p>My gripe with Wikipedia’s current solution is that they don’t provide a button near a heading to automatically fill in the URL bar with the deep link to that heading. You have to type the heading text (replacing spaces with underscores) by hand into the URL, which is super tedious if the heading is long. I want a clickable element per heading.</p>
+<p>So, let’s do better than Wikipedia!</p>
+<p>Of course, as the title suggests, my solution is intended to work for Hakyll (or anything that can be represented as a <a href="https://hackage.haskell.org/package/pandoc-types">Pandoc AST</a> for that matter!).</p>
+<h1 id="existing-work"><a href="#existing-work" class="anchor fas fa-xs fa-link"></a>Existing work</h1>
+<p>Cursory Google search did not lead me to an acceptable solution. I saw a solution where the anchor tags are inserted with JavaScript upon page load. I already have JS randomizing the greeting on the overview page of my blog, I don’t want any more JS. Besides, this is a Hakyll blog, so statically generated. Anchor tags are not dynamic elements, they are very much static, so this is a job for Hakyll, not for JS.</p>
+<h1 id="solution"><a href="#solution" class="anchor fas fa-xs fa-link"></a>Solution</h1>
+<p>Hakyll provides an API for an integrated Pandoc Compiler. With <a href="https://hackage.haskell.org/package/hakyll-4.15.0.1/docs/Hakyll-Web-Pandoc.html#v:pandocCompilerWithTransform"><code>pandocCompilerWithTransform</code></a> you can use this Pandoc Compiler with a custom transformation step <code>(Pandoc -&gt; Pandoc)</code>. I use <a href="https://hackage.haskell.org/package/pandoc-types-1.22/docs/Text-Pandoc-Walk.html#v:walk"><code>walk</code></a> to traverse the <code>Pandoc</code> AST and prepend my anchor element to each heading.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ot">customPandocCompiler ::</span> <span class="dt">Compiler</span> (<span class="dt">Item</span> <span class="dt">String</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>customPandocCompiler <span class="ot">=</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  pandocCompilerWithTransform</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    defaultHakyllReaderOptions</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    defaultHakyllWriterOptions</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">$</span> walk prependAnchor</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">where</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ot">    prependAnchor ::</span> <span class="dt">Block</span> <span class="ot">-&gt;</span> <span class="dt">Block</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    prependAnchor (<span class="dt">Header</span> lvl attr<span class="op">@</span>(id', _, _) txts) <span class="ot">=</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">Header</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        lvl</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        attr</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        ( toList</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>            ( linkWith</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>                (<span class="fu">mempty</span>, [<span class="st">&quot;anchor fas fa-xs fa-link&quot;</span>], <span class="fu">mempty</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>                (<span class="st">&quot;#&quot;</span> <span class="op">&lt;&gt;</span> id')</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>                <span class="fu">mempty</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                <span class="fu">mempty</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>            <span class="op">&lt;&gt;</span> txts</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    prependAnchor x <span class="ot">=</span> x</span></code></pre></div>
+<p><code>walk</code> has type <code>(Block -&gt; Block) -&gt; Pandoc -&gt; Pandoc</code> here, as <code>Walkable Block Pandoc</code> is an instance of <code>Walkable</code>.</p>
+<p><code>prependAnchor</code> matches on a <code>Header</code>, takes the <code>id</code> that is generated for that heading by Pandoc and prepends <code>&lt;a href="#id" ... /&gt;</code> to the heading. <code>["anchor fas fa-xs fa-link"]</code> is simply a list of CSS classes so I can use FontAwesome for a nice anchor icon. Of course you can use anything as an anchor. Hint: use the pseudo-element <code>::before</code> in combination with the CSS rule <code>content</code> to add anything without having to change the HTML structure.</p>
+<p>If you want your anchor to be <em>appended</em> to the heading text, swap the arguments of the outer <code>&lt;&gt;</code>.</p>
+<p>The other arguments can be empty lists and empty strings, as they represent additional data like link text, link attributes, labels and so on. Just <code>mempty</code> them all.</p>
+<p>You can then use this custom Pandoc Compiler as you would for any Pandoc supported file type.</p>
+<h2 id="look-at-that-frog-anchor"><a href="#look-at-that-frog-anchor" class="anchor fas fa-xs fa-link"></a>&lt;=== Look at that frog anchor</h2>
+<p>Cool, it works! If I ever change the position of the frog and forget to adjust this heading, I will look like an idiot.</p>
+
+    </main>
+    <footer>
+      <div class="content">
+        <div class="generator">
+          Site proudly generated by
+          <a class="footer-link" href="http://jaspervdj.be/hakyll">Hakyll</a> :)
+        </div>
+      </div>
+    </footer>
+
+    
+  </body>
+</html>
