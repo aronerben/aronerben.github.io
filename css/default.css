@@ -39,8 +39,8 @@ ul {
 h1 {
   font-size: 34px;
   font-weight: 700;
-  margin-top: 40px;
-  margin-bottom: 30px;
+  margin-top: 25px;
+  margin-bottom: 10px;
 }
 
 h1:first-child {
@@ -50,8 +50,8 @@ h1:first-child {
 h2 {
   font-size: 24px;
   font-weight: 700;
-  margin-top: 30px;
-  margin-bottom: 20px;
+  margin-top: 25px;
+  margin-bottom: 10px;
 }
 
 h2:first-child {
@@ -252,6 +252,7 @@ footer {
 
 .post-detail-title {
   margin-top: 15px;
+  margin-bottom: 30px;
 }
 
 .post-detail-dates {
@@ -286,23 +287,14 @@ footer {
 
   h1 {
     font-size: 30px;
-    font-weight: 700;
-    margin-top: 30px;
-    margin-bottom: 20px;
   }
 
   h2 {
     font-size: 22px;
-    font-weight: 700;
-    margin-top: 25px;
-    margin-bottom: 20px;
   }
 
   h3 {
     font-size: 18px;
-    font-weight: 700;
-    margin-top: 20px;
-    margin-bottom: 10px;
   }
 }
 
