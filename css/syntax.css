@@ -3,6 +3,7 @@ code {
   padding: 0 5px;
   padding-bottom: 3px;
   border-radius: 6px;
+  white-space: nowrap;
 }
 pre > code {
   background-color: inherit;
@@ -15,7 +16,7 @@ pre > code.sourceCode > span:empty { height: 1.2em; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode, pre.Agda {overflow: auto; margin: 1em 0; }
 pre.Agda a { font-weight: inherit; }
-pre.sourceCode { margin: 0; line-height: 20px; padding: 20px;}
+pre.sourceCode { margin: 0; line-height: 20px; padding: 20px; display: inline-block;}
 @media screen {
 }
 @media print {

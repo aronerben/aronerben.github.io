@@ -86,6 +86,10 @@ a {
   font-weight: bold;
 }
 
+em {
+  font-style: italic;
+}
+
 /* Specifics */
 
 header {
@@ -186,7 +190,7 @@ footer {
   transition: color 0.2s;
   position: absolute;
   left: -50px;
-  top: 6px;
+  top: 8px;
 }
 
 .anchor:hover {
@@ -312,4 +316,9 @@ footer {
   .anchor.fas {
     display: none;
   }
+}
+
+/* Single instances */
+#look-at-that-frog-anchor > .anchor::before {
+  content: "🐸"
 }

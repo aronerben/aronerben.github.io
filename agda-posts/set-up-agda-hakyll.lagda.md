@@ -2,6 +2,7 @@
 title: Literate Agda with Hakyll
 description: Literate Agda has its own HTML generator. In this blog post I show how to hook it up with Hakyll, including a working watch mode!
 published: 2021-10-06
+updated: 2021-10-12
 ---
 
 If you only care about how I did it, you can [click here to skip](#chosen-approach) all the rambling!
@@ -34,7 +35,10 @@ To fix it, I added this route match:
 match "agda-posts/*.lagda.md" $
   compile $ do
     ident <- getUnderlying
-    unsafeCompiler $ processAgdaPost $ takeFileName $ toFilePath ident
+    unsafeCompiler $
+      processAgdaPost $
+        takeFileName $
+          toFilePath ident
     makeItem (mempty :: String)
 ```
 This creates a `Compiler a` in an "unsafe" way, meaning it performs an `IO` action circumventing the paradigm of mapping one input file to one output file, as described by Jesper Cockx in his blog post.
@@ -66,6 +70,8 @@ hakyllMain = do
 ```
 The catch here is that, in some cases, the HTML generator is run twice in a row. This is very ugly and I plan on fixing it soon by switching to [this approach](#agda-programmatically).
 
+There might be another solution, like making the route where the generated HTML is copied to the site content depend on the HTML generation step. This concept [seems to be a thing](https://hackage.haskell.org/package/hakyll-4.15.0.1/docs/Hakyll-Core-Dependencies.html) in Hakyll already, but I was not able to get it to work.
+
 ## Digging myself a hole
 This section is not relevant to the solution, but I wanted to waffle a bit more about what I did. While the solution above is simple, I struggled quite a bit to find it and, instead, initially went down another path.
 
@@ -86,3 +92,6 @@ If a file is now generated/edited in the `_agda` directory, this predicate will 
 This fixes the problem with `preprocess`, but it was a lot of effort for a solution I was not content with. Every file change still triggered the `agda` process, causing unnecessary rebuilds.
 
 Then it dawned on me that I could make the `unsafeCompiler` version work by just returning an empty item. I did exactly that, was surprised it was so easy and realized my API change was not necessary to solve my problem. This open-source contribution to Hakyll was a nice little side effect of me digging a hole when I should've just taken a few steps back and re-evaluated my options. Oh well 🤷‍♂️.
+
+### Update 12.10.2021
+Fixed some typos, improved explanations.

@@ -52,7 +52,10 @@ hakyllMain = do
     match "agda-posts/*.lagda.md" $
       compile $ do
         ident <- getUnderlying
-        unsafeCompiler $ processAgdaPost $ takeFileName $ toFilePath ident
+        unsafeCompiler $
+          processAgdaPost $
+            takeFileName $
+              toFilePath ident
         makeItem (mempty :: String)
 
 config :: Configuration
@@ -62,26 +65,28 @@ config =
     , watchIgnore = ("_agda/**" ?==)
     }
 
--- TODO write blog post about anchor
 customPandocCompiler :: Compiler (Item String)
 customPandocCompiler =
-  pandocCompilerWithTransform defaultHakyllReaderOptions defaultHakyllWriterOptions $ walk appendAnchor
+  pandocCompilerWithTransform
+    defaultHakyllReaderOptions
+    defaultHakyllWriterOptions
+    $ walk prependAnchor
   where
-    appendAnchor :: Block -> Block
-    appendAnchor (Header lvl attr@(id', _, _) txts) =
+    prependAnchor :: Block -> Block
+    prependAnchor (Header lvl attr@(id', _, _) txts) =
       Header
         lvl
         attr
         ( toList
             ( linkWith
-                ("", ["anchor fas fa-xs fa-link"], [])
+                (mempty, ["anchor fas fa-xs fa-link"], mempty)
                 ("#" <> id')
-                ""
-                ""
+                mempty
+                mempty
             )
             <> txts
         )
-    appendAnchor x = x
+    prependAnchor x = x
 
 -- Rules
 files pattern routing compiler =
