@@ -184,13 +184,13 @@ footer {
 }
 
 .anchor, .anchor:visited {
-  margin-left: 10px;
+  margin-right: 20px;
   color: lightgray;
   text-decoration: none;
   transition: color 0.2s;
   position: absolute;
-  left: -50px;
-  top: 8px;
+  right: 100%;
+  top: 20%;
 }
 
 .anchor:hover {
@@ -312,7 +312,9 @@ footer {
     padding-left: 30px;
     padding-right: 30px;
   }
+}
 
+@media only screen and (max-width: calc(800px + 2 * 50px)) {
   .anchor.fas {
     display: none;
   }
