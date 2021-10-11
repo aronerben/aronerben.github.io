@@ -7,25 +7,25 @@ updated: 2021-10-12
 
 If you only care about how I did it, you can [click here to skip](#chosen-approach) all the rambling!
 
-## Introduction
+# Introduction
 I've been playing around with [Agda](https://agda.readthedocs.io/en/v2.6.2/getting-started/what-is-agda.html) recently to get into dependent types and theorem proving. After making some progress, I wanted to capture my advances and document some concepts. I figured the best way to do this is by making some blog posts! A neat way of documenting code with prose is [literate programming](https://en.wikipedia.org/wiki/Literate_programming). Agda supports various forms of literate programming. I picked Markdown due to familiarity with the syntax.
 
 This blog is statically generated with [Hakyll](https://jaspervdj.be/hakyll/). Under the hood, [Pandoc](https://hackage.haskell.org/package/pandoc) is used to transform the Markdown files into HTML. Markdown Literate Agda (`.lagda.md` files) mixes Agda code with Markdown and Pandoc is not able to convert the mix to HTML out of the box. So, I looked for a library that does the conversion and the integration into Hakyll.
 
-## Existing work
+# Existing work
 
 I'm obviously not the first person to try this, as both, Hakyll and Agda, are fairly old technologies.
 
-### Library `hakyll-agda`
+## Library `hakyll-agda`
 [`hakyll-agda`](https://hackage.haskell.org/package/hakyll-agda) looked promising. It is actively maintained and seemed to provide what I was looking for. However, the lack of documentation made it hard to explore and play around with. The reason I did not opt for this solution is because external Agda libaries, like the standard library, are not explorable in the generated code sections by clicking on them. Maybe I've made a mistake in my directory structure that causes this.
 
-### Library `agda-snippets-hakyll`
+## Library `agda-snippets-hakyll`
 [`agda-snippets-hakyll`](https://hackage.haskell.org/package/agda-snippets-hakyll) seemed to have the full functionality that I needed and also had a minimal example on how to use it. However, this library is deprecated in favor of the next approach listed. It also has the upper bound `hakyll (<4.10)`, which won't work with the latest Hakyll version.
 
-### Agda programmatically
+## Agda programmatically
 [Agda is implemented in Haskell](https://hackage.haskell.org/package/Agda) and thus provides an interface to programmatically run actions. There is an API to generate HTML for a given Literate Agda file. Both of the aforementioned libraries use this API internally. [PLFA](https://plfa.github.io/), which has been ported to Hakyll, also seems to go this path. This seems to be the cleanest way to do it, but I was not ready to commit too much time to figure and iron out all the intricacies involved. That would mean less time to learn Agda! So, I also did not choose this approach, though, at some point, something [like this](https://github.com/plfa/plfa.github.io/blob/a9f85c9ab16c3a1dfe25c69e5d2cc883791c4bc9/hs/Hakyll/Web/Agda.hs#L59) is the end goal. In hindsight, the Agda Haskell API seems accessible enough to not have to spend too much time getting it to work.
 
-## Chosen approach
+# Chosen approach
 Continuing my search for a good enough, satisfactory solution, I stumbled upon [this blog post](https://jesper.sikanda.be/posts/literate-agda.html) by Jesper Cockx. In the last section of the post, he outlines his method to achieving what I set out to do. He also mentions a problem causing Hakyll's watch-mode to not work with his approach. The source code is included, which I liberally copy-pasted into my codebase.
 
 To understand his approach and the rest of this blog post, I recommend reading his code. It pretty much calls the `agda` executable in Haskell as a process to transform `.lagda.md` directly into `.html` without calling Pandoc at all. Now there was only the problem of getting the watch-mode to work.
@@ -56,7 +56,7 @@ plus1 (suc x) rewrite plus1 x = refl
 ```
 You can click on pretty much any non-keyword symbol and you will be taken to the definition. Try clicking on `Nat`!
 
-### Caveat in the chosen approach
+## Caveat in the chosen approach
 If you only add the code snippet above, there is still a problem with synchronization of your `agdaInputDir` and the actual site content. Let's say you remove files from `agdaOutputDir` manually and start Hakyll in watch-mode. Hakyll might first run the `copyFileCompiler` to copy your `.html` from `agdaOutputDir` to the site content before it runs `processAgdaPost` on all `.lagda.md` in `agdaInputDir`. In other words, it updates the site content with outdated stuff from `agdaOutputDir` and only afterwards is `agdaOutputDir` being synced up  with `agdaInputDir`.
 
 To fix this, I kept the initial `processAgdaPosts` call when Hakyll is started. This ensures that the site content is always up to date with `agdaInputDir`.
@@ -72,7 +72,7 @@ The catch here is that, in some cases, the HTML generator is run twice in a row.
 
 There might be another solution, like making the route where the generated HTML is copied to the site content depend on the HTML generation step. This concept [seems to be a thing](https://hackage.haskell.org/package/hakyll-4.15.0.1/docs/Hakyll-Core-Dependencies.html) in Hakyll already, but I was not able to get it to work.
 
-## Digging myself a hole
+# Digging myself a hole
 This section is not relevant to the solution, but I wanted to waffle a bit more about what I did. While the solution above is simple, I struggled quite a bit to find it and, instead, initially went down another path.
 
 At first, I played around with `unsafeCompiler`. However, I could not get around the problem, that an `Item` had to be returned (the one to one mapping business). I just wanted to run an `IO` action.
