@@ -15,6 +15,7 @@ import System.FilePath
 import System.FilePattern ((?==))
 import System.Process
 import Text.Pandoc.Builder
+import Text.Pandoc.Options
 import Text.Pandoc.Walk
 
 main :: IO ()
@@ -67,10 +68,24 @@ config =
 
 customPandocCompiler :: Compiler (Item String)
 customPandocCompiler =
-  pandocCompilerWithTransform
-    defaultHakyllReaderOptions
-    defaultHakyllWriterOptions
-    $ walk prependAnchor
+  let mathExtensions =
+        extensionsFromList
+          [ Ext_tex_math_dollars
+          , Ext_tex_math_double_backslash
+          , Ext_latex_macros
+          ]
+      writerOptions =
+        defaultHakyllWriterOptions
+          { writerExtensions =
+              writerExtensions
+                defaultHakyllWriterOptions
+                <> mathExtensions
+          , writerHTMLMathMethod = MathJax ""
+          }
+   in pandocCompilerWithTransform
+        defaultHakyllReaderOptions
+        writerOptions
+        $ walk prependAnchor
   where
     prependAnchor :: Block -> Block
     prependAnchor (Header lvl attr@(id', _, _) txts) =
