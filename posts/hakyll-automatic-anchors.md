@@ -15,7 +15,7 @@ So, let's do better than Wikipedia!
 
 Of course, as the title suggests, my solution is intended to work for Hakyll (or anything that can be represented as a [Pandoc AST](https://hackage.haskell.org/package/pandoc-types) for that matter!).
 
-# Existing work
+# Existing Work
 Cursory Google search did not lead me to an acceptable solution. I saw a solution where the anchor tags are inserted with JavaScript upon page load. I already have JS randomizing the greeting on the overview page of my blog, I don't want any more JS. Besides, this is a Hakyll blog, so statically generated. Anchor tags are not dynamic elements, they are very much static, so this is a job for Hakyll, not for JS.
 
 # Solution
@@ -55,7 +55,7 @@ The other arguments can be empty lists and empty strings, as they represent addi
 
 You can then use this custom Pandoc Compiler as you would for any Pandoc supported file type.
 
-## <=== Look at that frog anchor
+## <=== Look at That Frog Anchor
 Cool, it works! If I ever change the position of the frog and forget to adjust this heading, I will look like an idiot.
 
 <style>

@@ -359,3 +359,7 @@ ul li, ol li {
 .footnotes hr {
   margin: 20px 0 10px 0;
 }
+
+.footnote-back {
+  margin-left: 10px;
+}

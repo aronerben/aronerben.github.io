@@ -110,7 +110,7 @@ They asked if I knew anything about Theoritcal Physics, I said I had a theoritca
 
 ![Hovering should expand the `div` in all directions](/images/css-growing-box-hover/transition.svg)
 
-# How it's done
+# How It's Done
 After playing around (for many many hours) with pretty much every single CSS rule under the sun related to spacing, I came up with a solution. My solution puts a smaller "frame" or "window" `div` over the content and uses `overflow: hidden` to hide the overflowing content. This frame is then expanded in all directions. To get this to work, some tricks have to be used. Check out the HTML and CSS with explanations directly included.
 
 ```html
@@ -192,7 +192,7 @@ After playing around (for many many hours) with pretty much every single CSS rul
 }
 ```
 
-# Additional notes
+# Additional Notes
 ## Modifications
 You can adjust the shape and size of the element to your liking and play around with the amount and speed of the transition. Maybe this could even be modified to work as a circular shape.
 

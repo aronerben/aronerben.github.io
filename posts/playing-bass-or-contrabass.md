@@ -19,7 +19,7 @@ It is quite easy to see, that if LEM is added to the system, *double negation el
 
 After some thought, you should be able to grok the implication $LEM \rightarrow DNE$. The implication $DNE \rightarrow LEM$, however, I found to be less obvious. It is a true implication, yet I can't use natural language to explain why it holds. Nonetheless, there is an understandable proof that we will explore in Lean.
 
-# The proof
+# The Proof
 There are two steps in this proof. The first step is to prove $\neg \neg (p \lor \neg p)$. Afterwards, you can simply apply DNE to $\neg \neg (p \lor \neg p)$ to prove $p \lor \neg p$.
 
 ## Proving $\neg \neg (p \lor \neg p)$
@@ -69,7 +69,7 @@ theorem dne_implies_em_g' {p : Prop} : (∀ {p : Prop}, ¬¬p → p) → p ∨ �
 ```
 
 # Addendum
-## Some notes on classical logic
+## Some Notes on Classical Logic
 I get the feeling that in many introductory math courses, where simple proofs are tackled, LEM and DNE are assumed and never questioned. My guess is that classical logic is the more natural way to think, which is why people accept the usual proof by contradiction given for the irrationality of $\sqrt{2}$ without questioning it. However, there is a perfectly valid [constructive proof](https://en.wikipedia.org/wiki/Square_root_of_2#Constructive_proof) for this theorem.
 
 Another interesting tidbit is that 3 of the 4 De Morgan implications are constructively true, but $\neg (p \land q) → \neg p \lor \neg q$ is not. The reason being that $p$ and $q$ not being both true does not give enough information to deduce which one is false[^2].
@@ -83,7 +83,7 @@ theorem dne_constructive {p : Prop} : p → ¬¬p :=
 
 Having a proof of $p$ is regarded as "stronger" than having one for $\neg \neg p$, so the implication works in this way constructively. A loose explanation of this fact in natural language might go something like this: If you say "The food is good", you require explicit proof that the food is good. If you say "The food is not bad", you merely have to show that the proof of the food being good is not contradictory with your proposition[^3].
 
-## Proof in tactic mode
+## Proof in Tactic Mode
 Here is the proof in tactic mode:
 ```agda
 theorem dne_implies_em_t {p : Prop} : (∀ {p : Prop}, ¬¬p → p) → p ∨ ¬p :=
