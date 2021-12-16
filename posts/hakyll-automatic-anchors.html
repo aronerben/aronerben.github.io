@@ -14,6 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    
   </head>
   <body>
     <header>
@@ -88,6 +89,11 @@
 <p>You can then use this custom Pandoc Compiler as you would for any Pandoc supported file type.</p>
 <h2 id="look-at-that-frog-anchor"><a href="#look-at-that-frog-anchor" class="anchor fas fa-xs fa-link"></a>&lt;=== Look at that frog anchor</h2>
 <p>Cool, it works! If I ever change the position of the frog and forget to adjust this heading, I will look like an idiot.</p>
+<style>
+#look-at-that-frog-anchor > .anchor::before {
+  content: "🐸"
+}
+</style>
 
     </main>
     <footer>

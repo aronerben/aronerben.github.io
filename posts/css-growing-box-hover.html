@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="aronwith1a's blog" />
+    <title>blog</title>
+    <link rel="stylesheet" type="text/css" href="../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../css/default.css" />
+    <link rel="stylesheet" type="text/css" href="../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../css/agda.css" />
+    <link rel="icon" href="../favicon.ico?v=3" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    
+  </head>
+  <body>
+    <header>
+      <div class="content">
+        <navbar>
+          <div class="home">
+            <a class="nav-item logo-container" href="../">
+              <img class="logo" src="../images/logo.png" alt="My unbelievably sick logo that took forever to make" />
+            </a>
+          </div>
+          <ul>
+            <li>
+              <a class="nav-item  underline " href="../blog.html">
+                blog
+              </a>
+            </li>
+            <li>
+              <a class="nav-item " href="../about.html">
+                about
+              </a>
+            </li>
+          </ul>
+        </navbar>
+      </div>
+    </header>
+    <main class="content">
+      
+      <div>
+  <div class="post-detail-dates">
+    <span>Published: December 16, 2021</span>
+    
+  </div>
+  <h1 class="post-detail-title">Growing Box Hover in CSS</h1>
+</div>
+
+<h1 id="result"><a href="#result" class="anchor fas fa-xs fa-link"></a>Result</h1>
+<p>Hover over the card to see the effect:</p>
+<div class="grow-container">
+<span>This text is not being pushed away!</span>
+<div class="grow-main">
+<div class="grow-expansion">
+<div class="grow-content">
+<div class="grow-img">
+
+</div>
+<div class="grow-content-text">
+They asked if I knew anything about Theoritcal Physics, I said I had a theoritcal degree in Physics. They said welcome aboard.
+</div>
+</div>
+</div>
+</div>
+<p><span>Neither is this text!</span></p>
+</div>
+<style>
+:root {
+  --growth: 15px;
+  --time: 0.2s;
+}
+
+.grow-container {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.grow-main {
+    top: calc(-1 * var(--growth));
+    left: calc(-1 * var(--growth));
+    position: relative;
+}
+
+.grow-expansion {
+    position: relative;
+    top: var(--growth);
+    left: var(--growth);
+    margin-bottom: 0px;
+    box-sizing: content-box;
+    padding: 0px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 
+        rgba(0, 0, 0, 0.13) 0px 2px 5px 1px, 
+        rgba(0, 0, 0, 0.18) 0px 1px 2px 0px;
+    transition: 
+        padding var(--time), 
+        top var(--time), 
+        left var(--time), 
+        margin-bottom var(--time);
+}
+
+.grow-expansion:hover {
+    margin-bottom: -30px;
+    padding: var(--growth);
+    top: 0px;
+    left: 0px;
+    z-index: 1;
+}
+
+.grow-content {
+    display: flex;
+    margin: calc(-1 * var(--growth));
+    background-color: white;
+}
+
+.grow-img {
+    background-image: url("/images/css-growing-box-hover/fallout.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    width: 35%;
+    flex-shrink: 0;
+}
+
+.grow-content-text {
+  padding: 30px;
+  width: 100%;
+  font-size: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+    .grow-content {
+        display: block;
+    }
+
+    .grow-img {
+        width: 100%;
+        min-height: 180px;
+    }
+
+    .grow-content-text {
+        padding: 25px;
+        width: 100%;
+        font-size: 16px;
+    }
+}
+</style>
+<h1 id="introduction"><a href="#introduction" class="anchor fas fa-xs fa-link"></a>Introduction</h1>
+<p>3 years ago I was tasked at work with figuring out a way to “grow” a <code>div</code> in all directions by a few pixels without shifting the content inside the element and without affecting the content outside. There are various solutions already to be found on the web, all seem to cause various graphical problems on certain browsers or make use of CSS rules that limit how the element can be used. We wanted free rein on where and how the element can be used.</p>
+<figure>
+<img src="../images/css-growing-box-hover/transition.svg" alt="Hovering should expand the div in all directions" /><figcaption aria-hidden="true">Hovering should expand the <code>div</code> in all directions</figcaption>
+</figure>
+<h1 id="how-its-done"><a href="#how-its-done" class="anchor fas fa-xs fa-link"></a>How it’s done</h1>
+<p>After playing around (for many many hours) with pretty much every single CSS rule under the sun related to spacing, I came up with a solution. My solution puts a smaller “frame” or “window” <code>div</code> over the content and uses <code>overflow: hidden</code> to hide the overflowing content. This frame is then expanded in all directions. To get this to work, some tricks have to be used. Check out the HTML and CSS with explanations directly included.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- grow-main counteracts grow-expansion --&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;grow-main&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">&lt;!-- grow-expansion represents the &quot;frame&quot; that hides the </span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  content not visible in that frame and does the growing --&gt;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;grow-expansion&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">&lt;!-- grow-content holds all your content --&gt;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;grow-content&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    ...</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;/div&gt;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/div&gt;</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/div&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode css"><code class="sourceCode css"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* Use CSS variables for growth amount and growth speed */</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="in">:root</span> {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">--growth</span>: <span class="dv">15</span><span class="dt">px</span><span class="op">;</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="va">--time</span>: <span class="dv">0.2</span><span class="dt">s</span><span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">.grow-main</span> {</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Counteract the offset in grow-expansion</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co">    This way your elements still go where you expect them to go */</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">top</span>: <span class="fu">calc(</span><span class="dv">-1</span> <span class="op">*</span> <span class="fu">var(</span><span class="va">--growth</span><span class="fu">))</span><span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">left</span>: <span class="fu">calc(</span><span class="dv">-1</span> <span class="op">*</span> <span class="fu">var(</span><span class="va">--growth</span><span class="fu">))</span><span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">position</span>: <span class="dv">relative</span><span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">.grow-expansion</span> {</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">position</span>: <span class="dv">relative</span><span class="op">;</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Offset so we can grow to the left and to the top too */</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">top</span>: <span class="fu">var(</span><span class="va">--growth</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">left</span>: <span class="fu">var(</span><span class="va">--growth</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Required, since we grow using padding */</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    <span class="kw">box-sizing</span>: <span class="dv">content-box</span><span class="op">;</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Hide the content not shown in this &quot;frame&quot; */</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">overflow</span>: <span class="dv">hidden</span><span class="op">;</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Make sure the frame covers all of the content */</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">width</span>: <span class="dv">100</span><span class="dt">%</span><span class="op">;</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Optional box-shadow to make your div &quot;card-like&quot; */</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">box-shadow</span>: </span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rgba(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0.13</span><span class="fu">)</span> <span class="dv">0</span><span class="dt">px</span> <span class="dv">2</span><span class="dt">px</span> <span class="dv">5</span><span class="dt">px</span> <span class="dv">1</span><span class="dt">px</span><span class="op">,</span> </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rgba(</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0.18</span><span class="fu">)</span> <span class="dv">0</span><span class="dt">px</span> <span class="dv">1</span><span class="dt">px</span> <span class="dv">2</span><span class="dt">px</span> <span class="dv">0</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Transition values */</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">margin-bottom</span>: <span class="dv">0</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">padding</span>: <span class="dv">0</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">transition</span>: </span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        padding <span class="fu">var(</span><span class="va">--time</span><span class="fu">)</span><span class="op">,</span> </span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        <span class="dv">top</span> <span class="fu">var(</span><span class="va">--time</span><span class="fu">)</span><span class="op">,</span> </span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        <span class="dv">left</span> <span class="fu">var(</span><span class="va">--time</span><span class="fu">)</span><span class="op">,</span> </span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        margin-bottom <span class="fu">var(</span><span class="va">--time</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="fu">.grow-expansion:hover</span> {</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Grow the frame into all directions with padding */</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">padding</span>: <span class="fu">var(</span><span class="va">--growth</span><span class="fu">)</span><span class="op">;</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Simultaneously, remove the offset </span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="co">    to simulate growing to top and left */</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    <span class="kw">top</span>: <span class="dv">0</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    <span class="kw">left</span>: <span class="dv">0</span><span class="dt">px</span><span class="op">;</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* This ensures that the layout outside the element is not affected</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co">    As the element expands up and down (both by --growth), </span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;suck in&quot; space from the bottom (moving bottom content closer)</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a><span class="co">    at the same rate the element is expanding */</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">margin-bottom</span>: <span class="fu">calc(</span><span class="dv">-2</span> <span class="op">*</span> <span class="fu">var(</span><span class="va">--growth</span><span class="fu">))</span><span class="op">;</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a><span class="fu">.grow-content</span> {</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* This is needed to fit the content into the expanded frame.</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="co">    Negative margins are still a bit magical to me, so I'm not 100% sure</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="co">    how I came up with this, but it works */</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    <span class="kw">margin</span>: <span class="fu">calc(</span><span class="dv">-1</span> <span class="op">*</span> <span class="fu">var(</span><span class="va">--growth</span><span class="fu">))</span><span class="op">;</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* If your element expands over something else, the content might</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="co">    overlap, so setting a base background color fixes that */</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    <span class="kw">background-color</span>: <span class="cn">white</span><span class="op">;</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h1 id="additional-notes"><a href="#additional-notes" class="anchor fas fa-xs fa-link"></a>Additional notes</h1>
+<h2 id="modifications"><a href="#modifications" class="anchor fas fa-xs fa-link"></a>Modifications</h2>
+<p>You can adjust the shape and size of the element to your liking and play around with the amount and speed of the transition. Maybe this could even be modified to work as a circular shape.</p>
+<h2 id="benefits"><a href="#benefits" class="anchor fas fa-xs fa-link"></a>Benefits</h2>
+<p>You do not have to <code>position: absolute</code> this element. It can be part of the document flow without affecting it, making this a purely visual effect.</p>
+<p>The element takes up as much space as the unexpanded version does. This means that there is no “phantom space” being wasted. However, you have to manually add spacing should you not want your box to overlap other content.</p>
+<p>Any content can go inside the box, you are not limited to text and images.</p>
+<p>The element is entirely self-contained and modular. You can make a React component out of it.</p>
+<h2 id="problems"><a href="#problems" class="anchor fas fa-xs fa-link"></a>Problems</h2>
+<p>There might be some graphical issues on certain browsers. I have not tested it too extensively (besides the common browsers).</p>
+<p>Also, keep in mind, the state of my knowledge on this is 3 years old. You can pretend like this blog post was written back then. Maybe by now, there is a cleaner and easier implementation.</p>
+
+    </main>
+    <footer>
+      <div class="content">
+        <div class="generator">
+          Site proudly generated by
+          <a class="footer-link" href="http://jaspervdj.be/hakyll">Hakyll</a> :)
+        </div>
+      </div>
+    </footer>
+
+    
+  </body>
+</html>

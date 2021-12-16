@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="aronwith1a's blog" />
+    <title>blog</title>
+    <link rel="stylesheet" type="text/css" href="../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../css/default.css" />
+    <link rel="stylesheet" type="text/css" href="../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../css/agda.css" />
+    <link rel="icon" href="../favicon.ico?v=3" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+  </head>
+  <body>
+    <header>
+      <div class="content">
+        <navbar>
+          <div class="home">
+            <a class="nav-item logo-container" href="../">
+              <img class="logo" src="../images/logo.png" alt="My unbelievably sick logo that took forever to make" />
+            </a>
+          </div>
+          <ul>
+            <li>
+              <a class="nav-item  underline " href="../blog.html">
+                blog
+              </a>
+            </li>
+            <li>
+              <a class="nav-item " href="../about.html">
+                about
+              </a>
+            </li>
+          </ul>
+        </navbar>
+      </div>
+    </header>
+    <main class="content">
+      
+      <div>
+  <div class="post-detail-dates">
+    <span>Published: December 16, 2021</span>
+    
+  </div>
+  <h1 class="post-detail-title">Playing Bass or Contrabass</h1>
+</div>
+
+<h1 id="introduction"><a href="#introduction" class="anchor fas fa-xs fa-link"></a>Introduction</h1>
+<p>I’ve been playing around with <a href="https://leanprover-community.github.io/">Lean</a> recently in the scope of my job. Much like Agda, it is a dependently-typed proof assistant (and general purpose programming language). So far, I enjoy Lean due to its extensive <a href="https://leanprover-community.github.io/mathlib_docs/">standard library</a>, good and accessible solvers and the tactic mode. Knowing Agda a bit helps me quite a lot in picking up the foundations of Lean, as there are many similarities between the two languages.</p>
+<p>I’ve been working through the (very good) tutorial and completing all the exercises. In one chapter, the authors pose a theorem to the reader that I found harder to proof than the other exercises.</p>
+<h1 id="classical-logic"><a href="#classical-logic" class="anchor fas fa-xs fa-link"></a>Classical Logic</h1>
+<p>Agda and Lean are based on constructive logic. Generally, in these systems, a witness or “evidence” of a proposition has to be provided to prove that proposition. In the world of dependent types, this means finding a term that inhabits the type that represents the proposition (according to the <a href="https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence">Curry-Howard isomorphism</a>).</p>
+<p>This is in contrast to classical logic, where a proposition is assigned a binary truth value (usually “true” and “false”), regardless if direct evidence for either case exists. This allows for proof techniques like proof by contradiction, where assuming that a proposition is false leads to a contradiction, thus showing that the proposition is true, even though no concrete witness of the proposition was provided. The concept of a binary truth value is called the law of the excluded middle, abbreviated as <em>LEM</em> or <em>EM</em>. As the name implies, a proposition or its negation must be true in this system, anything in between is excluded, so <span class="math inline">\(p \lor \neg p\)</span> must always hold. LEM is not present in constructive logic.</p>
+<p>It is quite easy to see, that if LEM is added to the system, <em>double negation elimination</em>, abbreviated as <em>DNE</em>, is implied. DNE states that <span class="math inline">\(\neg \neg p \rightarrow p\)</span>. In natural language: “If it’s false that <span class="math inline">\(p\)</span> is false, then <span class="math inline">\(p\)</span> must be true”. Once we declare that <span class="math inline">\(p\)</span> being false is false, we can apply LEM to conclude that <span class="math inline">\(p\)</span> is true, even though we don’t have proof of <span class="math inline">\(p\)</span>.</p>
+<p>After some thought, you should be able to grok the implication <span class="math inline">\(LEM \rightarrow DNE\)</span>. The implication <span class="math inline">\(DNE \rightarrow LEM\)</span>, however, I found to be less obvious. It is a true implication, yet I can’t use natural language to explain why it holds. Nonetheless, there is an understandable proof that we will explore in Lean.</p>
+<h1 id="the-proof"><a href="#the-proof" class="anchor fas fa-xs fa-link"></a>The proof</h1>
+<p>There are two steps in this proof. The first step is to prove <span class="math inline">\(\neg \neg (p \lor \neg p)\)</span>. Afterwards, you can simply apply DNE to <span class="math inline">\(\neg \neg (p \lor \neg p)\)</span> to prove <span class="math inline">\(p \lor \neg p\)</span>.</p>
+<h2 id="proving-neg-neg-p-lor-neg-p"><a href="#proving-neg-neg-p-lor-neg-p" class="anchor fas fa-xs fa-link"></a>Proving <span class="math inline">\(\neg \neg (p \lor \neg p)\)</span></h2>
+<p>This proposition can, maybe surprisingly, be proved constructively<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. The reason for this is, is that we are making a contradictory hypothesis, which due to the <a href="https://en.wikipedia.org/wiki/Principle_of_explosion">principle of explosion</a> can be used to prove anything. This principle is included in the constructive logic Lean is based on.</p>
+<p>An important thing to note at this point is that in type theory, negation is represented as a function to the empty type. The empty type is not inhabited, so it corresponds to the type <code>false</code> in Lean. <code>¬p</code> is therefore the same<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> as <code>p → false</code>. <code>¬¬(p ∨ ¬p)</code> then is the same as <code>((p ∨ (p → false)) → false) → false</code>.</p>
+<p>The contradictory hypothesis we make is <code>¬(p ∨ ¬p)</code>, as, using this hypothesis, we can construct a proof of <code>¬p</code>. Using disjunction introduction, we get <code>p ∨ ¬p</code>. So from the hypothesis we arrive at the positive version of the hypothesis. From that we apply the principle of explosion. Here is the proof in detail with comments:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode agda"><code class="sourceCode agda"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>lemma em<span class="ot">_</span>constructive <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span> <span class="ot">:</span> ¬¬<span class="ot">(</span>p ∨ ¬p<span class="ot">)</span> :=</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>assume h <span class="ot">:</span> ¬<span class="ot">(</span>p ∨ ¬p<span class="ot">)</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- To prove: ¬p (= p → false)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>have hnp <span class="ot">:</span> ¬p, from</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  assume hp <span class="ot">:</span> p,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Use left disjunction intro to construct proof of (p ∨ ¬p) from p</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Now we have ¬(p ∨ ¬p) and (p ∨ ¬p), that's absurd!</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">-- Use principle of explosion to proof false, thus proving p → false</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  absurd <span class="ot">(</span>or<span class="ot">.</span>inl hp<span class="ot">)</span> h,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">-- Use right disjunction intro to construct proof of (p ∨ ¬p) from ¬p</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">-- Now we have ¬(p ∨ ¬p) and (p ∨ ¬p), another absurdity!</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">-- Use principle of explosion to proof false, thus proving ¬(p ∨ ¬p) → false</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>show false, from absurd <span class="ot">(</span>or<span class="ot">.</span>inr hnp<span class="ot">)</span> h</span></code></pre></div>
+<p><code>absurd</code> gives us the principle of explosion, which we use twice to prove <code>false</code>. In this case, we could also simply apply <code>p</code> to <code>¬p</code> and <code>(p ∨ ¬p)</code> to <code>¬(p ∨ ¬p)</code> (remember the definition of <code>¬</code>). However, I like to use <code>absurd</code> to illustrate how having a proof of a proposition and a proof of its negation at the same time is absurd.</p>
+<h2 id="applying-dne-and-playing-golf"><a href="#applying-dne-and-playing-golf" class="anchor fas fa-xs fa-link"></a>Applying DNE and Playing Golf</h2>
+<p>Now we proof the actual implication <span class="math inline">\(DNE \rightarrow LEM\)</span>. One way to do it, as mentioned before, is to simply import DNE from the standard library and apply it to <code>em_constructive</code>. Our way is to parameterize the theorem with DNE as a hypothesis. This simply means if DNE can be provided, LEM can be proved.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode agda"><code class="sourceCode agda"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>theorem dne<span class="ot">_</span>implies<span class="ot">_</span>em <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span> <span class="ot">:</span> <span class="ot">(∀</span> <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span>, ¬¬p <span class="ot">→</span> p<span class="ot">)</span> <span class="ot">→</span> p ∨ ¬p :=</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- DNE as hypothesis</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>assume dne <span class="ot">:</span> <span class="ot">(∀</span> <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span>, ¬¬p <span class="ot">→</span> p<span class="ot">)</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>dne em<span class="ot">_</span>constructive</span></code></pre></div>
+<p>DNE works for all propositions <code>p</code> (in classical logic), which is why we need to quantify it with <code>∀</code>. Lean does not view the <code>p</code> from <code>em_constructive</code> as the same <code>p</code> from <code>dne_implies_em</code>, so quantifying fixes this.</p>
+<p>So that’s it, the proof is done. We can golf it a bit at the cost of clarity:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode agda"><code class="sourceCode agda"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>theorem dne<span class="ot">_</span>implies<span class="ot">_</span>em<span class="ot">_</span>g <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span> <span class="ot">:</span> <span class="ot">(∀</span> <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span>, ¬¬p <span class="ot">→</span> p<span class="ot">)</span> <span class="ot">→</span> p ∨ ¬p :=</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ot">λ</span> dne, dne <span class="ot">(λ</span> k, k <span class="ot">(</span>or<span class="ot">.</span>inr <span class="ot">(λ</span> x, k <span class="ot">(</span>or<span class="ot">.</span>inl x<span class="ot">))))</span></span></code></pre></div>
+<p>We use lambda abstraction and application to replace the proof-specific keywords, so the proof looks fairly Agda-like in this style. Additionally, the parentheses can be replaced with the function application operator <code>$</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode agda"><code class="sourceCode agda"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>theorem dne<span class="ot">_</span>implies<span class="ot">_</span>em<span class="ot">_</span>g' <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span> <span class="ot">:</span> <span class="ot">(∀</span> <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span>, ¬¬p <span class="ot">→</span> p<span class="ot">)</span> <span class="ot">→</span> p ∨ ¬p :=</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ot">λ</span> dne, dne $ <span class="ot">λ</span> k, k $ or<span class="ot">.</span>inr $ <span class="ot">λ</span> x, k $ or<span class="ot">.</span>inl x</span></code></pre></div>
+<h1 id="addendum"><a href="#addendum" class="anchor fas fa-xs fa-link"></a>Addendum</h1>
+<h2 id="some-notes-on-classical-logic"><a href="#some-notes-on-classical-logic" class="anchor fas fa-xs fa-link"></a>Some notes on classical logic</h2>
+<p>I get the feeling that in many introductory math courses, where simple proofs are tackled, LEM and DNE are assumed and never questioned. My guess is that classical logic is the more natural way to think, which is why people accept the usual proof by contradiction given for the irrationality of <span class="math inline">\(\sqrt{2}\)</span> without questioning it. However, there is a perfectly valid <a href="https://en.wikipedia.org/wiki/Square_root_of_2#Constructive_proof">constructive proof</a> for this theorem.</p>
+<p>Another interesting tidbit is that 3 of the 4 De Morgan implications are constructively true, but <span class="math inline">\(\neg (p \land q) → \neg p \lor \neg q\)</span> is not. The reason being that <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> not being both true does not give enough information to deduce which one is false<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>One more fact for you: It might be unintuitive that the introduction rule to DNE <span class="math inline">\(p \rightarrow \neg \neg p\)</span> is constructively also true. The proof is fairly short and makes use of <code>absurd</code> again:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode agda"><code class="sourceCode agda"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>theorem dne<span class="ot">_</span>constructive <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span> <span class="ot">:</span> p <span class="ot">→</span> ¬¬p :=</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ot">λ</span> p, <span class="ot">λ</span> np, absurd p np</span></code></pre></div>
+<p>Having a proof of <span class="math inline">\(p\)</span> is regarded as “stronger” than having one for <span class="math inline">\(\neg \neg p\)</span>, so the implication works in this way constructively. A loose explanation of this fact in natural language might go something like this: If you say “The food is good”, you require explicit proof that the food is good. If you say “The food is not bad”, you merely have to show that the proof of the food being good is not contradictory with your proposition<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<h2 id="proof-in-tactic-mode"><a href="#proof-in-tactic-mode" class="anchor fas fa-xs fa-link"></a>Proof in tactic mode</h2>
+<p>Here is the proof in tactic mode:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode agda"><code class="sourceCode agda"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>theorem dne<span class="ot">_</span>implies<span class="ot">_</span>em<span class="ot">_</span>t <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span> <span class="ot">:</span> <span class="ot">(∀</span> <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span>, ¬¬p <span class="ot">→</span> p<span class="ot">)</span> <span class="ot">→</span> p ∨ ¬p :=</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>begin</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  intros dne,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  apply dne,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  intro h,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  have hnp <span class="ot">:</span> ¬p :=</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    begin</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>      intro hp,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>      apply h,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>      apply or<span class="ot">.</span>inl,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>      exact hp,</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    end,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  apply h,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  apply or<span class="ot">.</span>inr,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  exact hnp,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>end</span></code></pre></div>
+<p>And using the almighty <code>cc</code> solver:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode agda"><code class="sourceCode agda"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>theorem dne<span class="ot">_</span>implies<span class="ot">_</span>em<span class="ot">_</span>t' <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span> <span class="ot">:</span> <span class="ot">(∀</span> <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span>, ¬¬p <span class="ot">→</span> p<span class="ot">)</span> <span class="ot">→</span> p ∨ ¬p :=</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>begin</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  intros dne,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  apply dne,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  intro h,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  cc,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>end</span></code></pre></div>
+<h2 id="syntax-highlighting"><a href="#syntax-highlighting" class="anchor fas fa-xs fa-link"></a>Syntax Highlighting</h2>
+<p>The code snippets are not yet properly syntax highlighted, the tiny bit of highlighting comes from my Agda annotation to each code snippet. I plan on including proper highlighting and a proper formatter at one point.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p><a href="https://www.cs.cmu.edu/~fp/courses/15317-f08/lectures/09-10-classical.pdf">Course on classical logic</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>“same” as in definitionally equivalent<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p><a href="https://leanprover.github.io/theorem_proving_in_lean/propositions_and_proofs.html">Lean tutorial on propositions</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>These sentences are called <a href="https://en.wikipedia.org/wiki/Litotes">litotes</a><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+    </main>
+    <footer>
+      <div class="content">
+        <div class="generator">
+          Site proudly generated by
+          <a class="footer-link" href="http://jaspervdj.be/hakyll">Hakyll</a> :)
+        </div>
+      </div>
+    </footer>
+
+    
+  </body>
+</html>
