@@ -90,6 +90,28 @@ em {
   font-style: italic;
 }
 
+sub, sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sup::before {
+  content: "[";
+}
+sup::after {
+  content: "]";
+}
+
+sub {
+  bottom: -0.25em;
+}
+
 /* Specifics */
 
 header {
@@ -312,7 +334,28 @@ footer {
   }
 }
 
-/* Single instances */
-#look-at-that-frog-anchor > .anchor::before {
-  content: "🐸"
+figure {
+  text-align: center;
+}
+
+figure img {
+  width: 50%;
+  min-width: 250px;
+}
+
+figcaption {
+  margin-top: 25px;
+}
+
+ol {
+  list-style: auto;
+  list-style-position: inside;
+}
+
+ul li, ol li {
+  margin-bottom: 10px;
+}
+
+.footnotes hr {
+  margin: 20px 0 10px 0;
 }

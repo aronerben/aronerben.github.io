@@ -57,3 +57,9 @@ You can then use this custom Pandoc Compiler as you would for any Pandoc support
 
 ## <=== Look at that frog anchor
 Cool, it works! If I ever change the position of the frog and forget to adjust this heading, I will look like an idiot.
+
+<style>
+#look-at-that-frog-anchor > .anchor::before {
+  content: "🐸"
+}
+</style>
