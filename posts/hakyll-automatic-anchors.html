@@ -56,7 +56,7 @@
 <p>My gripe with Wikipedia’s current solution is that they don’t provide a button near a heading to automatically fill in the URL bar with the deep link to that heading. You have to type the heading text (replacing spaces with underscores) by hand into the URL, which is super tedious if the heading is long. I want a clickable element per heading.</p>
 <p>So, let’s do better than Wikipedia!</p>
 <p>Of course, as the title suggests, my solution is intended to work for Hakyll (or anything that can be represented as a <a href="https://hackage.haskell.org/package/pandoc-types">Pandoc AST</a> for that matter!).</p>
-<h1 id="existing-work"><a href="#existing-work" class="anchor fas fa-xs fa-link"></a>Existing work</h1>
+<h1 id="existing-work"><a href="#existing-work" class="anchor fas fa-xs fa-link"></a>Existing Work</h1>
 <p>Cursory Google search did not lead me to an acceptable solution. I saw a solution where the anchor tags are inserted with JavaScript upon page load. I already have JS randomizing the greeting on the overview page of my blog, I don’t want any more JS. Besides, this is a Hakyll blog, so statically generated. Anchor tags are not dynamic elements, they are very much static, so this is a job for Hakyll, not for JS.</p>
 <h1 id="solution"><a href="#solution" class="anchor fas fa-xs fa-link"></a>Solution</h1>
 <p>Hakyll provides an API for an integrated Pandoc Compiler. With <a href="https://hackage.haskell.org/package/hakyll-4.15.0.1/docs/Hakyll-Web-Pandoc.html#v:pandocCompilerWithTransform"><code>pandocCompilerWithTransform</code></a> you can use this Pandoc Compiler with a custom transformation step <code>(Pandoc -&gt; Pandoc)</code>. I use <a href="https://hackage.haskell.org/package/pandoc-types-1.22/docs/Text-Pandoc-Walk.html#v:walk"><code>walk</code></a> to traverse the <code>Pandoc</code> AST and prepend my anchor element to each heading.</p>
@@ -87,7 +87,7 @@
 <p>If you want your anchor to be <em>appended</em> to the heading text, swap the arguments of the outer <code>&lt;&gt;</code>.</p>
 <p>The other arguments can be empty lists and empty strings, as they represent additional data like link text, link attributes, labels and so on. Just <code>mempty</code> them all.</p>
 <p>You can then use this custom Pandoc Compiler as you would for any Pandoc supported file type.</p>
-<h2 id="look-at-that-frog-anchor"><a href="#look-at-that-frog-anchor" class="anchor fas fa-xs fa-link"></a>&lt;=== Look at that frog anchor</h2>
+<h2 id="look-at-that-frog-anchor"><a href="#look-at-that-frog-anchor" class="anchor fas fa-xs fa-link"></a>&lt;=== Look at That Frog Anchor</h2>
 <p>Cool, it works! If I ever change the position of the frog and forget to adjust this heading, I will look like an idiot.</p>
 <style>
 #look-at-that-frog-anchor > .anchor::before {
