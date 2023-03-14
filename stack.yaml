@@ -17,7 +17,7 @@
 #
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver: lts-17.0
+resolver: lts-19.20
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -35,12 +35,6 @@ packages:
 # forks / in-progress versions pinned to a git hash. For example:
 #
 extra-deps:
-  - citeproc-0.3.0.9
-  - commonmark-0.1.1.4
-  - commonmark-extensions-0.2.0.4
-  - commonmark-pandoc-0.2.0.1
-  - pandoc-2.11.4
-  - hakyll-4.14.1.0
 # - acme-missiles-0.3
 # - git: https://github.com/commercialhaskell/stack.git
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a

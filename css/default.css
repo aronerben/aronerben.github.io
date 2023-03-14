@@ -112,6 +112,10 @@ sub {
   bottom: -0.25em;
 }
 
+strong {
+  font-weight: bold;
+}
+
 /* Specifics */
 
 header {

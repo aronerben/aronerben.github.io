@@ -20,7 +20,7 @@ It is quite easy to see, that if LEM is added to the system, *double negation el
 After some thought, you should be able to grok the implication $LEM \rightarrow DNE$. The implication $DNE \rightarrow LEM$, however, I found to be less obvious. It is a true implication, yet I can't use natural language to explain why it holds. Nonetheless, there is an understandable proof that we will explore in Lean.
 
 # The Proof
-There are two steps in this proof. The first step is to prove $\neg \neg (p \lor \neg p)$. Afterwards, you can simply apply DNE to $\neg \neg (p \lor \neg p)$ to prove $p \lor \neg p$.
+There are two steps in this proof. The first step is to prove $\neg \neg (p \lor \neg p)$. Afterwards, you can apply DNE to $\neg \neg (p \lor \neg p)$ to prove $p \lor \neg p$.
 
 ## Proving $\neg \neg (p \lor \neg p)$
 This proposition can, maybe surprisingly, be proved constructively[^1]. The reason for this is, is that we are making a contradictory hypothesis, which due to the [principle of explosion](https://en.wikipedia.org/wiki/Principle_of_explosion) can be used to prove anything. This principle is included in the constructive logic Lean is based on.
@@ -45,10 +45,10 @@ have hnp : ¬p, from
 show false, from absurd (or.inr hnp) h
 ```
 
-`absurd` gives us the principle of explosion, which we use twice to prove `false`. In this case, we could also simply apply `p` to `¬p` and `(p ∨ ¬p)` to `¬(p ∨ ¬p)` (remember the definition of `¬`). However, I like to use `absurd` to illustrate how having a proof of a proposition and a proof of its negation at the same time is absurd.
+`absurd` gives us the principle of explosion, which we use twice to prove `false`. In this case, we could also apply `¬p` to `p` and `¬(p ∨ ¬p)` to `(p ∨ ¬p)` (remember the definition of `¬`). However, I like to use `absurd` to illustrate how having a proof of a proposition and a proof of its negation at the same time is absurd.
 
 ## Applying DNE and Playing Golf
-Now we proof the actual implication $DNE \rightarrow LEM$. One way to do it, as mentioned before, is to simply import DNE from the standard library and apply it to `em_constructive`. Our way is to parameterize the theorem with DNE as a hypothesis. This simply means if DNE can be provided, LEM can be proved.
+Now we proof the actual implication $DNE \rightarrow LEM$. One way to do it, as mentioned before, is to import DNE from the standard library and apply it to `em_constructive`. Our way is to parameterize the theorem with DNE as a hypothesis. This means if DNE can be provided, LEM can be proved.
 ```agda
 theorem dne_implies_em {p : Prop} : (∀ {p : Prop}, ¬¬p → p) → p ∨ ¬p :=
 -- DNE as hypothesis
@@ -72,9 +72,9 @@ theorem dne_implies_em_g' {p : Prop} : (∀ {p : Prop}, ¬¬p → p) → p ∨ �
 ## Some Notes on Classical Logic
 I get the feeling that in many introductory math courses, where simple proofs are tackled, LEM and DNE are assumed and never questioned. My guess is that classical logic is the more natural way to think, which is why people accept the usual proof by contradiction given for the irrationality of $\sqrt{2}$ without questioning it. However, there is a perfectly valid [constructive proof](https://en.wikipedia.org/wiki/Square_root_of_2#Constructive_proof) for this theorem.
 
-Another interesting tidbit is that 3 of the 4 De Morgan implications are constructively true, but $\neg (p \land q) → \neg p \lor \neg q$ is not. The reason being that $p$ and $q$ not being both true does not give enough information to deduce which one is false[^2].
+Another interesting tidbit is that 3 of the 4 De Morgan implications are constructively true, but $\neg (p \land q) → \neg p \lor \neg q$ is not. The reason is that $p$ and $q$ not being both true does not give enough information to deduce which one is false[^2].
 
-One more fact for you: It might be unintuitive that the introduction rule to DNE $p \rightarrow \neg \neg p$ is constructively also true. The proof is fairly short and makes use of `absurd` again:
+One more fact for you: It might be unintuitive, but the introduction rule to DNE $p \rightarrow \neg \neg p$ is constructively also true. The proof is fairly short and makes use of `absurd` again:
 
 ```agda
 theorem dne_constructive {p : Prop} : p → ¬¬p :=

@@ -80,7 +80,8 @@ customPandocCompiler =
               writerExtensions
                 defaultHakyllWriterOptions
                 <> mathExtensions
-          , writerHTMLMathMethod = MathJax ""
+          , -- Needs to be MathJax despite using KaTeX
+            writerHTMLMathMethod = MathJax ""
           }
    in pandocCompilerWithTransform
         defaultHakyllReaderOptions
