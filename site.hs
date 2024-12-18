@@ -1,22 +1,31 @@
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
-import Control.Monad
+import Control.Monad (forM_, join)
 import Data.List (
   isSuffixOf,
  )
-import Data.String
+import Data.String (IsString (..))
 import Data.Time (Day, defaultTimeLocale, formatTime, parseTimeOrError)
 import qualified GHC.IO.Encoding as E
 import Hakyll
-import System.Directory
-import System.Exit
-import System.FilePath
+import System.Directory (listDirectory)
+import System.Exit (ExitCode (ExitFailure, ExitSuccess))
+import System.FilePath (takeFileName, (</>))
 import System.FilePattern ((?==))
-import System.Process
-import Text.Pandoc.Builder
-import Text.Pandoc.Options
-import Text.Pandoc.Walk
+import System.Process (readProcessWithExitCode)
+import Text.Pandoc.Builder (Block (Header), linkWith, toList)
+import Text.Pandoc.Options (
+  Extension (
+    Ext_latex_macros,
+    Ext_tex_math_dollars,
+    Ext_tex_math_double_backslash
+  ),
+  HTMLMathMethod (MathJax),
+  WriterOptions (writerExtensions, writerHTMLMathMethod),
+  extensionsFromList,
+ )
+import Text.Pandoc.Walk (Walkable (walk))
 
 main :: IO ()
 main = do

@@ -69,7 +69,9 @@ h3:first-child {
   margin-top: 0;
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   line-height: 1.2;
   position: relative;
 }
@@ -90,7 +92,8 @@ em {
   font-style: italic;
 }
 
-sub, sup {
+sub,
+sup {
   font-size: 75%;
   line-height: 0;
   position: relative;
@@ -104,6 +107,7 @@ sup {
 sup::before {
   content: "[";
 }
+
 sup::after {
   content: "]";
 }
@@ -138,23 +142,24 @@ navbar {
   margin-left: -15px;
 }
 
-navbar > ul {
+navbar>ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-navbar > ul li {
+navbar>ul li {
   margin-right: 30px;
   font-size: 24px;
   font-weight: 700;
 }
 
-navbar > ul li:last-child {
+navbar>ul li:last-child {
   margin-right: 0;
 }
 
-.nav-item, .nav-item:visited {
+.nav-item,
+.nav-item:visited {
   text-decoration: none;
   color: white;
 }
@@ -209,7 +214,8 @@ footer {
   margin: 0 auto;
 }
 
-.anchor, .anchor:visited {
+.anchor,
+.anchor:visited {
   margin-right: 20px;
   color: lightgray;
   text-decoration: none;
@@ -307,7 +313,8 @@ footer {
     display: flex;
     flex-direction: column;
   }
-  .post-detail-dates > span:first-child {
+
+  .post-detail-dates>span:first-child {
     margin-bottom: 5px;
   }
 
@@ -356,7 +363,8 @@ ol {
   list-style-position: inside;
 }
 
-ul li, ol li {
+ul li,
+ol li {
   margin-bottom: 10px;
 }
 
@@ -366,4 +374,8 @@ ul li, ol li {
 
 .footnote-back {
   margin-left: 10px;
+}
+
+.footnotes p {
+  display: inline;
 }
