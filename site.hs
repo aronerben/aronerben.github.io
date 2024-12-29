@@ -40,6 +40,8 @@ hakyllMain = do
   hakyllWith config $ do
     files ("images/**" .||. "favicon.ico" .||. "CNAME") idRoute copyFileCompiler
     files "css/*" idRoute compressCssCompiler
+    files "katex/*" idRoute copyFileCompiler
+    files "katex/fonts/*" idRoute copyFileCompiler
     files (agdaPattern "*.css") agdaRoute compressCssCompiler
     files (agdaPattern "*.html") agdaRoute copyFileCompiler
     posts "posts/*" $ setExtension "html"
@@ -221,7 +223,7 @@ processAgdaPost agdaFile = do
     (ExitSuccess, out, _) ->
       putStrLn out
 
-agdaPattern :: IsString a => FilePath -> a
+agdaPattern :: (IsString a) => FilePath -> a
 agdaPattern ending = fromString $ agdaOutputDir </> ending
 
 agdaRoute :: Routes
