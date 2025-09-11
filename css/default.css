@@ -379,3 +379,7 @@ ol li {
 .footnotes p {
   display: inline;
 }
+
+.math {
+  white-space: nowrap;
+}

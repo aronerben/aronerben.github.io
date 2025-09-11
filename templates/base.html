@@ -1,97 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="aronwith1a's blog" />
+    <title>$title$</title>
+    <link rel="stylesheet" type="text/css" href="/css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="/css/default.css" />
+    <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="/css/agda.css" />
+    <link rel="icon" href="/favicon.ico?v=3" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+      integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
+      crossorigin="anonymous"
+    />
+    $if(mathjax)$
+    <link rel="stylesheet" type="text/css" href="/katex/katex.min.css" />
+    <script defer src="/katex/katex.min.js"></script>
+    <script
+      defer
+      src="/katex/auto-render.min.js"
+      onload="renderMathInElement(document.body, {
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            '\\eqref': '\\href{###1}{(\\text{#1})}',
+            '\\ref': '\\href{###1}{\\text{#1}}',
+            '\\label': '\\htmlId{#1}{}',
+          }
+        });"
+    ></script>
 
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="aronwith1a's blog" />
-  <title>$title$</title>
-  <link rel="stylesheet" type="text/css" href="/css/reset.css" />
-  <link rel="stylesheet" type="text/css" href="/css/default.css" />
-  <link rel="stylesheet" type="text/css" href="/css/syntax.css" />
-  <link rel="stylesheet" type="text/css" href="/css/agda.css" />
-  <link rel="icon" href="/favicon.ico?v=3" type="image/x-icon" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-    integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w=="
-    crossorigin="anonymous" />
-  $if(mathjax)$
-  <link rel="stylesheet" type="text/css" href="/katex/katex.min.css" />
-  <script defer src="/katex/katex.min.js"></script>
-  <script defer src="/katex/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
-  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css"
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css"
     integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X" crossorigin="anonymous"> -->
 
-  <!-- The loading of KaTeX is deferred to speed up page rendering -->
-  <!-- <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js"
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <!-- <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js"
     integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz"
     crossorigin="anonymous"></script> -->
 
-  <!-- To automatically render math in text elements, include the auto-render extension: -->
-  <!-- <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js"
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <!-- <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js"
     integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
     onload="renderMathInElement(document.body);"></script> -->
-  $else$$endif$
-</head>
+    $else$$endif$
+  </head>
 
-<body>
-  <header>
-    <div class="content">
-      <navbar>
-        <div class="home">
-          <a class="nav-item logo-container" href="/">
-            <img class="logo" src="/images/logo.png" alt="My unbelievably sick logo that took forever to make" />
-          </a>
-        </div>
-        <ul>
-          <li>
-            <a class="nav-item $if(blogClass)$ underline $endif$" href="/blog.html">
-              blog
+  <body>
+    <header>
+      <div class="content">
+        <navbar>
+          <div class="home">
+            <a class="nav-item logo-container" href="/">
+              <img
+                class="logo"
+                src="/images/logo.png"
+                alt="My unbelievably sick logo that took forever to make"
+              />
             </a>
-          </li>
-          <li>
-            <a class="nav-item $if(aboutClass)$ underline $endif$" href="/about.html">
-              about
-            </a>
-          </li>
-        </ul>
-      </navbar>
-    </div>
-  </header>
-  <main class="content">
-    $if(noGreeting)$$else$
-    <h1 class="greeting">Welcome bud!</h1>
-    $endif$
-    $body$
-  </main>
-  <footer>
-    <div class="content">
-      <div class="generator">
-        Site proudly generated by
-        <a class="footer-link" href="http://jaspervdj.be/hakyll">Hakyll</a> :)
+          </div>
+          <ul>
+            <li>
+              <a
+                class="nav-item $if(blogClass)$ underline $endif$"
+                href="/blog.html"
+              >
+                blog
+              </a>
+            </li>
+            <li>
+              <a
+                class="nav-item $if(aboutClass)$ underline $endif$"
+                href="/about.html"
+              >
+                about
+              </a>
+            </li>
+          </ul>
+        </navbar>
       </div>
-    </div>
-  </footer>
+    </header>
+    <main class="content">
+      $if(noGreeting)$$else$
+      <h1 class="greeting">Welcome bud!</h1>
+      $endif$ $body$
+    </main>
+    <footer>
+      <div class="content">
+        <div class="generator">
+          Site proudly generated by
+          <a class="footer-link" href="http://jaspervdj.be/hakyll">Hakyll</a> :)
+        </div>
+      </div>
+    </footer>
 
-  $if(noGreeting)$$else$
-  <script>
-    const greeting = ['Hi', 'Welcome', 'Hello', 'Sup', 'Ello']
-    const amicability = ['friend', 'buddy', 'pal', 'bud']
-    const month = new Date().getMonth() + 1
-    const isWinter = month > 10 && month < 3
-    // Seasonal emoji
-    const emoji = ['🧃', '🥝', '🍪', '🫖', '🍊', isWinter ? '⛄' : '☀️']
-    const [greet, amic, emoR] = [greeting, amicability, emoji].map(
-      l => l[Math.floor(Math.random() * l.length)]
-    )
-    // Super rare chickie
-    const emo = Math.random() < 0.01 ? '🐣' : emoR
-    document.getElementsByClassName('greeting')[0].innerText =
-      greet + ' ' + amic + '! ' + emo
-  </script>
-  $endif$
-</body>
-
+    $if(noGreeting)$$else$
+    <script>
+      const greeting = ["Hi", "Welcome", "Hello", "Sup", "Ello"];
+      const amicability = ["friend", "buddy", "pal", "bud"];
+      const month = new Date().getMonth() + 1;
+      const isWinter = month > 10 && month < 3;
+      // Seasonal emoji
+      const emoji = ["🧃", "🥝", "🍪", "🫖", "🍊", isWinter ? "⛄" : "☀️"];
+      const [greet, amic, emoR] = [greeting, amicability, emoji].map(
+        (l) => l[Math.floor(Math.random() * l.length)]
+      );
+      // Super rare chickie
+      const emo = Math.random() < 0.01 ? "🐣" : emoR;
+      document.getElementsByClassName("greeting")[0].innerText =
+        greet + " " + amic + "! " + emo;
+    </script>
+    $endif$
+  </body>
 </html>
