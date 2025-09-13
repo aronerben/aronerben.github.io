@@ -10,8 +10,8 @@ stack exec aronwith1a clean
 stack exec aronwith1a build
 
 # Get previous files
-git fetch --all
-git checkout -b master --track origin/master
+git fetch origin 
+git checkout -B master origin/master
 
 # Overwrite existing files with new files
 rsync -a --filter='P _site/'      \
