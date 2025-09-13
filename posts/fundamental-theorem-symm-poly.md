@@ -1,7 +1,7 @@
 ---
 title: The Fundamental Theorem of Symmetric Polynomials
 description: We introduce the fundamental theorem of symmetric polynomials and prove it.
-published: 2024-12-19
+published: 2025-09-13
 mathjax: true
 ---
 
@@ -10,7 +10,7 @@ The fundamental theorem of symmetric polynomials is a classical result that find
 
 After giving an introduction into the matter, posing the theorem more formally and covering some required concepts, we will prove the theorem.
 
-The proof is based on an Algebra course at the University of Zurich, given by Prof. A. Kresch. The proof, as illustrated here, goes into quite a bit of detail and can seem a bit convoluted. There are shorter proofs of this theorem out there.
+The proof is based on an Algebra course at the University of Zurich, given by Prof. A. Kresch. The proof, as illustrated here, goes into quite a bit of detail. There are shorter proofs of this theorem out there.
 
 As previously mentioned, a symmetric polynomial is a polynomial that remains unchanged under the permutation of its variables. For example, in the polynomial $X_1^2 + X_2^2 + X_3^2$, we can permute the variables $X_1, X_2, X_3$ in any way and the polynomial remains the same. Another example is the polynomial $X_1^3X_2^3X_3^3$.
 
@@ -224,11 +224,11 @@ There is an easier version of our statement that we can prove, so we can forget 
 \begin{aligned}
     e_1^{a_1} \cdots e_n^{a_n} = \sum_{q = (q_1, \ldots, q_n) \in \N^n} b_{\lambda q} X_1^{q_1} \cdots X_n^{q_n},
 \end{aligned}\htmlId{lin_comb_2}{}\tag{6}
-we have
-\begin{align*}
+that we have
+\begin{aligned}
     b_{\lambda\lambda} & = 1, \\
     q \not\trianglelefteq \lambda \Rightarrow b_{\lambda q} & = 0.
-\end{align*}
+\end{aligned}\htmlId{simpler_cond}{}\tag{7}
 As each such monomial $X_1^{q_1} \cdots X_n^{q_n}$ must appear with all permutations of the exponents (we have a symmetric polynomial), the basis elements $m_{I_{n,d}}$ are "encoded" in the sum in this statement.
 
 We prove by induction on $\lambda_1$. We remember that $\lambda_1$ is the sum of all $a_i$, the exponents.
@@ -249,10 +249,10 @@ where
                 q'_i     & \text{if } i \not\in I \\
                 q'_i + 1 & \text{if } i \in I
           \end{cases}.
-\end{aligned}\htmlId{increment_cond}{}\tag{7}
+\end{aligned}\htmlId{increment_cond}{}\tag{8}
 We elaborate on these manipulations a bit. In the first step, we only keep all $e_i$ with non-zero exponents. The second step pulls out an $e_k$ such that the last exponent is decremented by one, so in the third step, we can again use $\href{#lin_comb_2}{\text{(6)}}$ to rewrite the left factor using $\lambda'$. For the right factor, we apply the definition of the $k$-th elementary symmetric polynomial. In the fourth step, we combine the product of the two sums into one sum. The final step pulls in our product of $X_i$ into the monomial $X^{q'_1}_1\cdots X^{q'_n}_n$, incrementing the exponents by $1$ if $i \in I$ and leaving it as they are otherwise, giving us the definition of $q_i$ above. We note that $k$ exponents are incremented.
 
-We want to sum over arbitrary $q$ and exclude the tuples that don't fulfill $\href{#increment_cond}{\text{(7)}}$. We rewrite a bit to get
+We want to sum over arbitrary $q$ and exclude the tuples of $q_i$ that don't fulfill $\href{#increment_cond}{\text{(8)}}$. We rewrite a bit to get
 \begin{align*}
     e^{a_1}_1 \cdots e^{a_n}_n
      = \sum_{\left(q' \in \N^n, \substack{I \subseteq \{1,\ldots,n\} \\ |I| = k}\right)} b_{\lambda' q'} X^{q_1}_1\cdots X^{q_n}_n 
@@ -265,50 +265,76 @@ where
                 q_i - 1 & \text{if } i \in I
           \end{cases}.
 \end{align*}
-This is an equivalent sum, as the inner sum is empty if $q$ does not have at least $k$ parts greater than $0$, this ensures that the condition for our $q_i$ is maintained. Given the premise in our statement, we see that
-\begin{align*}
-      b_{\lambda q} = \sum_{\substack{I \subseteq \{i \mid q_i > 0\} \\ |I| = k}} b_{\lambda' q'}
-\end{align*}
+This is an equivalent formulation as the inner sum is empty if $q$ does not have at least $k$ parts greater than $0$, this ensures that the condition for our $q_i$ as in $\href{#increment_cond}{\text{(8)}}$ is maintained. Given the premise $\href{#lin_comb_2}{\text{(6)}}$ in our statement, we see that
+\begin{aligned}
+      b_{\lambda q} = \sum_{\substack{I \subseteq \{i \mid q_i > 0\} \\ |I| = k}} b_{\lambda' q'}.
+\end{aligned}\htmlId{b_rel}{}\tag{9}
 
-We show the two cases. 
+We now show the two cases in $\href{#simpler_cond}{\text{(7)}}$.
 
-If $q = \lambda$, then $I = \{1, \ldots, k\}$ is the only set we sum over, as $k$ is the length of $\lambda$ and hence all $q_1, \ldots q_k$ are greater than $0$. Thus, we get 
+If $q = \lambda$, then $I = \{1, \ldots, k\}$ is the only set we sum over in $\href{#b_rel}{\text{(9)}}$, as $k$ is the length of $\lambda$ and hence all $q_1, \ldots q_k$ are greater than $0$. Thus, we get
 \begin{align*}
     b_{\lambda \lambda} = b_{\lambda' \lambda'}.
 \end{align*}
 Now, as $b_{\lambda' \lambda'} = 1$ by the induction hypothesis, we have $b_{\lambda \lambda} = 1$.
 
 If $q \not\trianglelefteq \lambda$, then there exists some $j$ with $1 \leq j \leq k$, such
-\begin{align*}
+\begin{aligned}
       q_1 + \ldots + q_j > \lambda_1 + \ldots + \lambda_j.
-\end{align*}
-We have
+\end{aligned}\htmlId{key_ineq}{}\tag{10}
+We want to now find a relation between our $q_i'$ and $q_i$ as well as $\lambda_i'$ and $\lambda_i$. In total, we have $k$ increments from $q_i'$ to $q_i$, and we want to find how many of these increments are in the first $j$ indices. We find the relevant set of indices by intersecting $I$ with $\{1, \ldots, j\}$. Thus, we have
+\begin{aligned}
+      q_1' + \ldots + q_j' = q_1 + \ldots + q_j - |I \cap \{1, \ldots, j\}|.
+\end{aligned}\htmlId{q_sum}{}\tag{11}
+For $\lambda_i'$, it's a bit easier. By the definition of $\lambda'$, we can simply subtract $1$ from each of the first $j$ parts to get
+\begin{aligned}
+        \lambda_1' + \ldots + \lambda_j' = \lambda_1 + \ldots + \lambda_j - j.
+\end{aligned}\htmlId{lam_sum}{}\tag{12}
+
+In $\href{#q_sum}{\text{(11)}}$, we subtract at most $j$, in $\href{#lam_sum}{\text{(12)}}$ we subtract exactly $j$, so combining these with $\href{#key_ineq}{\text{(10)}}$, we get
 \begin{align*}
-      q_1' + \ldots + q_j'             & = q_1 + \ldots + q_j - |I \cap \{1, \ldots, j\}| \\
-      \lambda_1' + \ldots + \lambda_j' & = \lambda_1 + \ldots + \lambda_j - j.
+    q_1' + \ldots + q_j' > \lambda_1' + \ldots + \lambda_j'.
 \end{align*}
-
-XXXXXXXXX
-
-XXXXXXXXX
-
-For all $q_i$ we have $k$ of them that are bigger than $q_i'$, and we need to find how many are in the index range $1$ to $j$, we do this by intersecting and we subtract at most $j$.
-
-For $\lambda$ it's a bit easier, by definition, we subtract $1$ from $\lambda_i$ to get $\lambda_i'$, so we subtract $j$ in total.
-
-We combine this with the inequality above to get
-\begin{align*}
-      q_1' + \ldots + q_j' > \lambda_1' + \ldots + \lambda_j'
-\end{align*}
-so by the induction hypothesis, we know that $q' \not\trianglelefteq \lambda'$, so $b_{\lambda' q'} = 0$.
-
-Summing these $0$ gives $0$, so $b_{\lambda q} = 0$.
-
-
-
+This tells us that $q' \not\trianglelefteq \lambda'$, so by the induction hypothesis, we have $b_{\lambda' q'} = 0$ for all $I$ we sum over in $\href{#b_rel}{\text{(9)}}$, which gives us $b_{\lambda q} = 0$. This concludes the proof.
 
 # Algorithm
+According to [this Math Stack Exchange post](https://math.stackexchange.com/a/14061), that comes with a reference, the algorithm presented here is due to Gauss. The essence of the algorithm is already encoded in the proof above.
+
+Let $f \in R[X_1, \ldots, X_n]^{S_n}$ be a symmetric polynomial. We now find the $\textbf{lead monomial}$ by viewing the exponents of every monomial $c X_1^{q_1} \cdots X_n^{q_n}$, with $c \in R$, as the $n$-tuple $(q_1, \ldots, q_n)$ and picking the monomial with the largest "exponent tuple" with respect to lexicographic ordering. We want to now subtract an expression in terms of $e_i$ such that the lead monomial is cancelled. Let $cX_1^{q_1} \cdots X_n^{q_n}$ be the lead monomial. We compute
+\begin{align*}
+    f_1 := f - ce_1^{q_1 - q_2} e_2^{q_2 - q_3} \cdots e_{n-1}^{q_{n-1} - q_n} e_n^{q_n}.
+\end{align*}
+We get to this expression by applying the idea behind $\href{#recover_monomial}{\text{(4)}}$ and seeing that, due to the proof, $f$ gets exactly $c$ contributions from the subtrahend, so the lead monomial is cancelled. The new lead monomial in $f_1$ will be strictly smaller in the lexicographic order. We can now recurse until $f_n$ is $0$. We can then back substitute to get an expression of $f$ in terms of $e_i$. As the proof demonstrates, this algorithm must terminate as we repeatedly decrease the lead monomial in the lexicographic order.
+
+As an example, let $f := X_1^3 + X_2^3 + X_3^3 \in \Z[X_1, X_2, X_3]^{S_3}$. The lead monomial is $X_1^3$ with partition $(3, 0, 0)$. We compute
+\begin{align*}
+    f_1 := f - e_1^3e_2^0e_3^0 = f - e_1^3
+     & = X_1^3 + X_2^3 + X_3^3 - (X_1 + X_2 + X_3)^3                                                                        \\
+     & = X_1^3 + X_2^3 + X_3^3                                                                                              \\
+     & \quad - (X_1^3 + X_2^3 + X_3^3 + 3X_1^2X_2 + 3X_1^2X_3 + 3X_2^2X_1 + 3X_2^2X_3 + 3X_3^2X_1 + 3X_3^2X_2 + 6X_1X_2X_3) \\
+     & = -3X_1^2X_2 - 3X_1^2X_3 - 3X_2^2X_1 - 3X_2^2X_3 - 3X_3^2X_1 - 3X_3^2X_2 - 6X_1X_2X_3.
+\end{align*}
+The lead monomial of $f_1$ is $-3X_1^2X_2$ with the partition $(2, 1, 0)$. The corresponding product of elementary symmetric polynomials is then $e_1^{2-1}e_2^{1-0}e_3^{0} = e_1e_2$. We subtract this, multiplied by the coefficient $-3$ from $f_1$ to get
+\begin{align*}
+    f_2 := f_1 + 3e_1e_2
+     & = -3X_1^2X_2 - 3X_1^2X_3 - 3X_2^2X_1 - 3X_2^2X_3 - 3X_3^2X_1 - 3X_3^2X_2 - 6X_1X_2X_3 \\
+     & \quad + 3(X_1 + X_2 + X_3)(X_1X_2 + X_1X_3 + X_2X_3)                                  \\
+     & = 3X_1X_2X_3.
+\end{align*}
+
+We only have one monomial and we see the corresponding product of elementary symmetric polynomials is $e_1^{1-1}e_2^{1-1}e_3^{1} = e_3$ with coefficient $3$. Thus, we have
+\begin{align*}
+    f_3 := f_2 - 3e_3 = 0.
+\end{align*}
+Then, we resubstitute and get
+\begin{align*}
+    f - e_1^3 + 3e_1e_2 - 3e_3 & = 0                       \\
+    \Rightarrow f              & = e_1^3 - 3e_1e_2 + 3e_3.
+\end{align*}
+This completes the example.
+
+
 
 [^1]: It's used in the proof of the [Lindemann-Weierstrass theorem](https://en.wikipedia.org/wiki/Lindemann%E2%80%93Weierstrass_theorem), from which the transcendence of $\pi$ follows as a corollary.
 
-[^2]: By convention, we usually index matrices with integers, so "the $\lambda$-th column" is not entirely correct. However, as we have a bijection between $I_{n,d}$ and $\{1, \ldots, m\}$, this is justified.
+[^2]: By convention, we usually index matrices with positive integers, so "the $\lambda$-th column" is not entirely valid. However, as we have a bijection between $I_{n,d}$ and $\{1, \ldots, m\}$, this is justified.
