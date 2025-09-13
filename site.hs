@@ -42,6 +42,7 @@ hakyllMain = do
     files "css/*" idRoute compressCssCompiler
     files "katex/*" idRoute copyFileCompiler
     files "katex/fonts/*" idRoute copyFileCompiler
+    files "katex/contrib/*" idRoute copyFileCompiler
     files (agdaPattern "*.css") agdaRoute compressCssCompiler
     files (agdaPattern "*.html") agdaRoute copyFileCompiler
     posts "posts/*" $ setExtension "html"
