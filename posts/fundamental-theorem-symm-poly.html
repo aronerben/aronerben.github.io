@@ -17,7 +17,7 @@
     
     <link rel="stylesheet" type="text/css" href="../katex/katex.min.css" />
     <script defer src="../katex/katex.min.js"></script>
-    <script defer src="../katex/auto-render.min.js" onload="renderMathInElement(document.body, {
+    <script defer src="../katex/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {
           trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
           macros: {
             '\\eqref': '\\href{###1}{(\\text{#1})}',
