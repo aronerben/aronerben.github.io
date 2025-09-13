@@ -22,7 +22,6 @@ _site/
 _agda/
 stack.yaml.lock
 dist-newstyle/
-katex/
 
 ### Agda ###
 *.agdai
