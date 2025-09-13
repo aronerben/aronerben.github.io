@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
     
   </head>
+
   <body>
     <header>
       <div class="content">
@@ -41,8 +42,7 @@
       </div>
     </header>
     <main class="content">
-      
-      <div>
+       <div>
   <div class="post-detail-dates">
     <span>Published: December 16, 2021</span>
     
@@ -153,17 +153,18 @@ They asked if I knew anything about Theoritcal Physics, I said I had a theoritca
 <h1 id="introduction"><a href="#introduction" class="anchor fas fa-xs fa-link"></a>Introduction</h1>
 <p>3 years ago I was tasked at work with figuring out a way to “grow” a <code>div</code> in all directions by a few pixels without shifting the content inside the element and without affecting the content outside. There are various solutions already to be found on the web, all seem to cause various graphical problems on certain browsers or make use of CSS rules that limit how the element can be used. We wanted free rein on where and how the element can be used.</p>
 <figure>
-<img src="../images/css-growing-box-hover/transition.svg" alt="Hovering should expand the div in all directions" /><figcaption aria-hidden="true">Hovering should expand the <code>div</code> in all directions</figcaption>
+<img src="../images/css-growing-box-hover/transition.svg" alt="Hovering should expand the div in all directions" />
+<figcaption aria-hidden="true">Hovering should expand the <code>div</code> in all directions</figcaption>
 </figure>
 <h1 id="how-its-done"><a href="#how-its-done" class="anchor fas fa-xs fa-link"></a>How It’s Done</h1>
 <p>After playing around (for many many hours) with pretty much every single CSS rule under the sun related to spacing, I came up with a solution. My solution puts a smaller “frame” or “window” <code>div</code> over the content and uses <code>overflow: hidden</code> to hide the overflowing content. This frame is then expanded in all directions. To get this to work, some tricks have to be used. Check out the HTML and CSS with explanations directly included.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- grow-main counteracts grow-expansion --&gt;</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;grow-main&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;grow-main&quot;</span><span class="kw">&gt;</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">&lt;!-- grow-expansion represents the &quot;frame&quot; that hides the </span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  content not visible in that frame and does the growing --&gt;</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;grow-expansion&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;grow-expansion&quot;</span><span class="kw">&gt;</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">&lt;!-- grow-content holds all your content --&gt;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;div</span><span class="ot"> class=</span><span class="st">&quot;grow-content&quot;</span><span class="kw">&gt;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;div</span> <span class="er">class</span><span class="ot">=</span><span class="st">&quot;grow-content&quot;</span><span class="kw">&gt;</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    ...</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">&lt;/div&gt;</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">&lt;/div&gt;</span></span>
@@ -207,7 +208,7 @@ They asked if I knew anything about Theoritcal Physics, I said I had a theoritca
 <span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        margin-bottom <span class="fu">var(</span><span class="va">--time</span><span class="fu">)</span><span class="op">;</span></span>
 <span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="fu">.grow-expansion:hover</span> {</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="fu">.grow-expansion</span><span class="in">:hover</span> {</span>
 <span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Grow the frame into all directions with padding */</span></span>
 <span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="kw">padding</span>: <span class="fu">var(</span><span class="va">--growth</span><span class="fu">)</span><span class="op">;</span></span>
 <span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* Simultaneously, remove the offset </span></span>

@@ -15,10 +15,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
     
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" type="text/css" href="../katex/katex.min.css" />
+    <script defer src="../katex/katex.min.js"></script>
+    <script defer src="../katex/auto-render.min.js" onload="renderMathInElement(document.body, {
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            '\\eqref': '\\href{###1}{(\\text{#1})}',
+            '\\ref': '\\href{###1}{\\text{#1}}',
+            '\\label': '\\htmlId{#1}{}',
+          }
+        });"></script>
+
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css"
+    integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X" crossorigin="anonymous"> -->
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <!-- <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js"
+    integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz"
+    crossorigin="anonymous"></script> -->
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <!-- <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js"
+    integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script> -->
     
   </head>
+
   <body>
     <header>
       <div class="content">
@@ -44,8 +66,7 @@
       </div>
     </header>
     <main class="content">
-      
-      <div>
+       <div>
   <div class="post-detail-dates">
     <span>Published: December 16, 2021</span>
     
@@ -62,7 +83,7 @@
 <p>It is quite easy to see, that if LEM is added to the system, <em>double negation elimination</em>, abbreviated as <em>DNE</em>, is implied. DNE states that <span class="math inline">\(\neg \neg p \rightarrow p\)</span>. In natural language: “If it’s false that <span class="math inline">\(p\)</span> is false, then <span class="math inline">\(p\)</span> must be true”. Once we declare that <span class="math inline">\(p\)</span> being false is false, we can apply LEM to conclude that <span class="math inline">\(p\)</span> is true, even though we don’t have proof of <span class="math inline">\(p\)</span>.</p>
 <p>After some thought, you should be able to grok the implication <span class="math inline">\(LEM \rightarrow DNE\)</span>. The implication <span class="math inline">\(DNE \rightarrow LEM\)</span>, however, I found to be less obvious. It is a true implication, yet I can’t use natural language to explain why it holds. Nonetheless, there is an understandable proof that we will explore in Lean.</p>
 <h1 id="the-proof"><a href="#the-proof" class="anchor fas fa-xs fa-link"></a>The Proof</h1>
-<p>There are two steps in this proof. The first step is to prove <span class="math inline">\(\neg \neg (p \lor \neg p)\)</span>. Afterwards, you can simply apply DNE to <span class="math inline">\(\neg \neg (p \lor \neg p)\)</span> to prove <span class="math inline">\(p \lor \neg p\)</span>.</p>
+<p>There are two steps in this proof. The first step is to prove <span class="math inline">\(\neg \neg (p \lor \neg p)\)</span>. Afterwards, you can apply DNE to <span class="math inline">\(\neg \neg (p \lor \neg p)\)</span> to prove <span class="math inline">\(p \lor \neg p\)</span>.</p>
 <h2 id="proving-neg-neg-p-lor-neg-p"><a href="#proving-neg-neg-p-lor-neg-p" class="anchor fas fa-xs fa-link"></a>Proving <span class="math inline">\(\neg \neg (p \lor \neg p)\)</span></h2>
 <p>This proposition can, maybe surprisingly, be proved constructively<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. The reason for this is, is that we are making a contradictory hypothesis, which due to the <a href="https://en.wikipedia.org/wiki/Principle_of_explosion">principle of explosion</a> can be used to prove anything. This principle is included in the constructive logic Lean is based on.</p>
 <p>An important thing to note at this point is that in type theory, negation is represented as a function to the empty type. The empty type is not inhabited, so it corresponds to the type <code>false</code> in Lean. <code>¬p</code> is therefore the same<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> as <code>p → false</code>. <code>¬¬(p ∨ ¬p)</code> then is the same as <code>((p ∨ (p → false)) → false) → false</code>.</p>
@@ -80,9 +101,9 @@
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">-- Now we have ¬(p ∨ ¬p) and (p ∨ ¬p), another absurdity!</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">-- Use principle of explosion to proof false, thus proving ¬(p ∨ ¬p) → false</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>show false, from absurd <span class="ot">(</span>or<span class="ot">.</span>inr hnp<span class="ot">)</span> h</span></code></pre></div>
-<p><code>absurd</code> gives us the principle of explosion, which we use twice to prove <code>false</code>. In this case, we could also simply apply <code>p</code> to <code>¬p</code> and <code>(p ∨ ¬p)</code> to <code>¬(p ∨ ¬p)</code> (remember the definition of <code>¬</code>). However, I like to use <code>absurd</code> to illustrate how having a proof of a proposition and a proof of its negation at the same time is absurd.</p>
+<p><code>absurd</code> gives us the principle of explosion, which we use twice to prove <code>false</code>. In this case, we could also apply <code>¬p</code> to <code>p</code> and <code>¬(p ∨ ¬p)</code> to <code>(p ∨ ¬p)</code> (remember the definition of <code>¬</code>). However, I like to use <code>absurd</code> to illustrate how having a proof of a proposition and a proof of its negation at the same time is absurd.</p>
 <h2 id="applying-dne-and-playing-golf"><a href="#applying-dne-and-playing-golf" class="anchor fas fa-xs fa-link"></a>Applying DNE and Playing Golf</h2>
-<p>Now we proof the actual implication <span class="math inline">\(DNE \rightarrow LEM\)</span>. One way to do it, as mentioned before, is to simply import DNE from the standard library and apply it to <code>em_constructive</code>. Our way is to parameterize the theorem with DNE as a hypothesis. This simply means if DNE can be provided, LEM can be proved.</p>
+<p>Now we proof the actual implication <span class="math inline">\(DNE \rightarrow LEM\)</span>. One way to do it, as mentioned before, is to import DNE from the standard library and apply it to <code>em_constructive</code>. Our way is to parameterize the theorem with DNE as a hypothesis. This means if DNE can be provided, LEM can be proved.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode agda"><code class="sourceCode agda"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>theorem dne<span class="ot">_</span>implies<span class="ot">_</span>em <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span> <span class="ot">:</span> <span class="ot">(∀</span> <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span>, ¬¬p <span class="ot">→</span> p<span class="ot">)</span> <span class="ot">→</span> p ∨ ¬p :=</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">-- DNE as hypothesis</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>assume dne <span class="ot">:</span> <span class="ot">(∀</span> <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span>, ¬¬p <span class="ot">→</span> p<span class="ot">)</span>,</span>
@@ -97,8 +118,8 @@
 <h1 id="addendum"><a href="#addendum" class="anchor fas fa-xs fa-link"></a>Addendum</h1>
 <h2 id="some-notes-on-classical-logic"><a href="#some-notes-on-classical-logic" class="anchor fas fa-xs fa-link"></a>Some Notes on Classical Logic</h2>
 <p>I get the feeling that in many introductory math courses, where simple proofs are tackled, LEM and DNE are assumed and never questioned. My guess is that classical logic is the more natural way to think, which is why people accept the usual proof by contradiction given for the irrationality of <span class="math inline">\(\sqrt{2}\)</span> without questioning it. However, there is a perfectly valid <a href="https://en.wikipedia.org/wiki/Square_root_of_2#Constructive_proof">constructive proof</a> for this theorem.</p>
-<p>Another interesting tidbit is that 3 of the 4 De Morgan implications are constructively true, but <span class="math inline">\(\neg (p \land q) → \neg p \lor \neg q\)</span> is not. The reason being that <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> not being both true does not give enough information to deduce which one is false<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
-<p>One more fact for you: It might be unintuitive that the introduction rule to DNE <span class="math inline">\(p \rightarrow \neg \neg p\)</span> is constructively also true. The proof is fairly short and makes use of <code>absurd</code> again:</p>
+<p>Another interesting tidbit is that 3 of the 4 De Morgan implications are constructively true, but <span class="math inline">\(\neg (p \land q) → \neg p \lor \neg q\)</span> is not. The reason is that <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span> not being both true does not give enough information to deduce which one is false<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
+<p>One more fact for you: It might be unintuitive, but the introduction rule to DNE <span class="math inline">\(p \rightarrow \neg \neg p\)</span> is constructively also true. The proof is fairly short and makes use of <code>absurd</code> again:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode agda"><code class="sourceCode agda"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>theorem dne<span class="ot">_</span>constructive <span class="ot">{</span>p <span class="ot">:</span> <span class="dt">Prop</span><span class="ot">}</span> <span class="ot">:</span> p <span class="ot">→</span> ¬¬p :=</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ot">λ</span> p, <span class="ot">λ</span> np, absurd p np</span></code></pre></div>
 <p>Having a proof of <span class="math inline">\(p\)</span> is regarded as “stronger” than having one for <span class="math inline">\(\neg \neg p\)</span>, so the implication works in this way constructively. A loose explanation of this fact in natural language might go something like this: If you say “The food is good”, you require explicit proof that the food is good. If you say “The food is not bad”, you merely have to show that the proof of the food being good is not contradictory with your proposition<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
@@ -130,7 +151,7 @@
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>end</span></code></pre></div>
 <h2 id="syntax-highlighting"><a href="#syntax-highlighting" class="anchor fas fa-xs fa-link"></a>Syntax Highlighting</h2>
 <p>The code snippets are not yet properly syntax highlighted, the tiny bit of highlighting comes from my Agda annotation to each code snippet. I plan on including proper highlighting and a proper formatter at one point.</p>
-<section class="footnotes" role="doc-endnotes">
+<section class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr />
 <ol>
 <li id="fn1" role="doc-endnote"><p><a href="https://www.cs.cmu.edu/~fp/courses/15317-f08/lectures/09-10-classical.pdf">Course on classical logic</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>

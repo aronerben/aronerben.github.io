@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
     
   </head>
+
   <body>
     <header>
       <div class="content">
@@ -42,9 +43,8 @@
     </header>
     <main class="content">
       
-        <h1 class="greeting">Welcome bud!</h1>
-      
-      <div class="text">
+      <h1 class="greeting">Welcome bud!</h1>
+       <div class="text">
   <p>
     I'm Aron, I enjoy functional programming, math and riddles. I reside in Zürich, Switzerland. 🧃
   </p>
@@ -80,19 +80,19 @@
 
     
     <script>
-      const greeting = ['Hi', 'Welcome', 'Hello', 'Sup', 'Ello']
-      const amicability = ['friend', 'buddy', 'pal', 'bud']
-      const month = new Date().getMonth() + 1
-      const isWinter = month > 10 && month < 3
+      const greeting = ["Hi", "Welcome", "Hello", "Sup", "Ello"];
+      const amicability = ["friend", "buddy", "pal", "bud"];
+      const month = new Date().getMonth() + 1;
+      const isWinter = month > 10 && month < 3;
       // Seasonal emoji
-      const emoji = ['🧃', '🥝', '🍪', '🫖', '🍊', isWinter ? '⛄' : '☀️']
+      const emoji = ["🧃", "🥝", "🍪", "🫖", "🍊", isWinter ? "⛄" : "☀️"];
       const [greet, amic, emoR] = [greeting, amicability, emoji].map(
-        l => l[Math.floor(Math.random() * l.length)]
-      )
+        (l) => l[Math.floor(Math.random() * l.length)]
+      );
       // Super rare chickie
-      const emo = Math.random() < 0.01 ? '🐣' : emoR
-      document.getElementsByClassName('greeting')[0].innerText =
-        greet + ' ' + amic + '! ' + emo
+      const emo = Math.random() < 0.01 ? "🐣" : emoR;
+      document.getElementsByClassName("greeting")[0].innerText =
+        greet + " " + amic + "! " + emo;
     </script>
     
   </body>

@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
     
   </head>
+
   <body>
     <header>
       <div class="content">
@@ -41,8 +42,7 @@
       </div>
     </header>
     <main class="content">
-      
-      <div>
+       <div>
   <div class="post-detail-dates">
     <span>Published: October  6, 2021</span>
     
@@ -83,9 +83,9 @@ Assembling all pieces gives this result, editable in watch-mode:
 <pre class="Agda"><a id="4985" class="Keyword">open</a> <a id="4990" class="Keyword">import</a> <a id="4997" href="Agda.Builtin.Nat.html" class="Module">Agda.Builtin.Nat</a>
 <a id="5014" class="Keyword">open</a> <a id="5019" class="Keyword">import</a> <a id="5026" href="Agda.Builtin.Equality.html" class="Module">Agda.Builtin.Equality</a>
 
-<a id="plus1"></a><a id="5049" href="set-up-agda-hakyll.html#5049" class="Function">plus1</a> <a id="5055" class="Symbol">:</a> <a id="5057" class="Symbol">(</a><a id="5058" href="set-up-agda-hakyll.html#5058" class="Bound">x</a> <a id="5060" class="Symbol">:</a> <a id="5062" href="Agda.Builtin.Nat.html#192" class="Datatype">Nat</a><a id="5065" class="Symbol">)</a> <a id="5067" class="Symbol">→</a> <a id="5069" href="set-up-agda-hakyll.html#5058" class="Bound">x</a> <a id="5071" href="Agda.Builtin.Nat.html#325" class="Primitive Operator">+</a> <a id="5073" class="Number">1</a> <a id="5075" href="Agda.Builtin.Equality.html#151" class="Datatype Operator">≡</a> <a id="5077" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="5081" href="set-up-agda-hakyll.html#5058" class="Bound">x</a>
-<a id="5083" href="set-up-agda-hakyll.html#5049" class="Function">plus1</a> <a id="5089" href="Agda.Builtin.Nat.html#210" class="InductiveConstructor">zero</a> <a id="5094" class="Symbol">=</a> <a id="5096" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
-<a id="5101" href="set-up-agda-hakyll.html#5049" class="Function">plus1</a> <a id="5107" class="Symbol">(</a><a id="5108" href="Agda.Builtin.Nat.html#223" class="InductiveConstructor">suc</a> <a id="5112" href="set-up-agda-hakyll.html#5112" class="Bound">x</a><a id="5113" class="Symbol">)</a> <a id="5115" class="Keyword">rewrite</a> <a id="5123" href="set-up-agda-hakyll.html#5049" class="Function">plus1</a> <a id="5129" href="set-up-agda-hakyll.html#5112" class="Bound">x</a> <a id="5131" class="Symbol">=</a> <a id="5133" href="Agda.Builtin.Equality.html#208" class="InductiveConstructor">refl</a>
+<a id="plus1"></a><a id="5049" href="set-up-agda-hakyll.html#5049" class="Function">plus1</a> <a id="5055" class="Symbol">:</a> <a id="5057" class="Symbol">(</a><a id="5058" href="set-up-agda-hakyll.html#5058" class="Bound">x</a> <a id="5060" class="Symbol">:</a> <a id="5062" href="Agda.Builtin.Nat.html#186" class="Datatype">Nat</a><a id="5065" class="Symbol">)</a> <a id="5067" class="Symbol">→</a> <a id="5069" href="set-up-agda-hakyll.html#5058" class="Bound">x</a> <a id="5071" href="Agda.Builtin.Nat.html#319" class="Primitive Operator">+</a> <a id="5073" class="Number">1</a> <a id="5075" href="Agda.Builtin.Equality.html#133" class="Datatype Operator">≡</a> <a id="5077" href="Agda.Builtin.Nat.html#217" class="InductiveConstructor">suc</a> <a id="5081" href="set-up-agda-hakyll.html#5058" class="Bound">x</a>
+<a id="5083" href="set-up-agda-hakyll.html#5049" class="Function">plus1</a> <a id="5089" href="Agda.Builtin.Nat.html#204" class="InductiveConstructor">zero</a> <a id="5094" class="Symbol">=</a> <a id="5096" href="Agda.Builtin.Equality.html#190" class="InductiveConstructor">refl</a>
+<a id="5101" href="set-up-agda-hakyll.html#5049" class="Function">plus1</a> <a id="5107" class="Symbol">(</a><a id="5108" href="Agda.Builtin.Nat.html#217" class="InductiveConstructor">suc</a> <a id="5112" href="set-up-agda-hakyll.html#5112" class="Bound">x</a><a id="5113" class="Symbol">)</a> <a id="5115" class="Keyword">rewrite</a> <a id="5123" href="set-up-agda-hakyll.html#5049" class="Function">plus1</a> <a id="5129" href="set-up-agda-hakyll.html#5112" class="Bound">x</a> <a id="5131" class="Symbol">=</a> <a id="5133" href="Agda.Builtin.Equality.html#190" class="InductiveConstructor">refl</a>
 </pre>
 <p>You can click on pretty much any non-keyword symbol and you will be taken to the definition. Try clicking on <code>Nat</code>!</p>
 <h2 id="caveat-in-the-chosen-approach"><a href="#caveat-in-the-chosen-approach" class="anchor fas fa-xs fa-link"></a>Caveat in the Chosen Approach</h2>

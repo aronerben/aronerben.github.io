@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="aronwith1a's blog" />
+    <title>blog</title>
+    <link rel="stylesheet" type="text/css" href="../css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="../css/default.css" />
+    <link rel="stylesheet" type="text/css" href="../css/syntax.css" />
+    <link rel="stylesheet" type="text/css" href="../css/agda.css" />
+    <link rel="icon" href="../favicon.ico?v=3" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    
+    <link rel="stylesheet" type="text/css" href="../katex/katex.min.css" />
+    <script defer src="../katex/katex.min.js"></script>
+    <script defer src="../katex/auto-render.min.js" onload="renderMathInElement(document.body, {
+          trust: (context) => ['\\htmlId', '\\href'].includes(context.command),
+          macros: {
+            '\\eqref': '\\href{###1}{(\\text{#1})}',
+            '\\ref': '\\href{###1}{\\text{#1}}',
+            '\\label': '\\htmlId{#1}{}',
+          }
+        });"></script>
+
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.css"
+    integrity="sha384-bYdxxUwYipFNohQlHt0bjN/LCpueqWz13HufFEV1SUatKs1cm4L6fFgCi1jT643X" crossorigin="anonymous"> -->
+
+    <!-- The loading of KaTeX is deferred to speed up page rendering -->
+    <!-- <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/katex.min.js"
+    integrity="sha384-Qsn9KnoKISj6dI8g7p1HBlNpVx0I8p1SvlwOldgi3IorMle61nQy4zEahWYtljaz"
+    crossorigin="anonymous"></script> -->
+
+    <!-- To automatically render math in text elements, include the auto-render extension: -->
+    <!-- <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.2/dist/contrib/auto-render.min.js"
+    integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script> -->
+    
+  </head>
+
+  <body>
+    <header>
+      <div class="content">
+        <navbar>
+          <div class="home">
+            <a class="nav-item logo-container" href="../">
+              <img class="logo" src="../images/logo.png" alt="My unbelievably sick logo that took forever to make" />
+            </a>
+          </div>
+          <ul>
+            <li>
+              <a class="nav-item  underline " href="../blog.html">
+                blog
+              </a>
+            </li>
+            <li>
+              <a class="nav-item " href="../about.html">
+                about
+              </a>
+            </li>
+          </ul>
+        </navbar>
+      </div>
+    </header>
+    <main class="content">
+       <div>
+  <div class="post-detail-dates">
+    <span>Published: September 13, 2025</span>
+    
+  </div>
+  <h1 class="post-detail-title">The Fundamental Theorem of Symmetric Polynomials</h1>
+</div>
+
+<h1 id="introduction"><a href="#introduction" class="anchor fas fa-xs fa-link"></a>Introduction</h1>
+<p>The fundamental theorem of symmetric polynomials is a classical result that finds applications in field theory and Galois theory among others. It states that every polynomial invariant under the permutation of its variables (called the symmetric polynomials) can be uniquely expressed as a polynomial in the elementary symmetric polynomials. We will look at what this means in more detail in a moment.</p>
+<p>After giving an introduction into the matter, posing the theorem more formally and covering some required concepts, we will prove the theorem.</p>
+<p>The proof is based on an Algebra course at the University of Zurich, given by Prof. A. Kresch. The proof, as illustrated here, goes into quite a bit of detail. There are shorter proofs of this theorem out there.</p>
+<p>As previously mentioned, a symmetric polynomial is a polynomial that remains unchanged under the permutation of its variables. For example, in the polynomial <span class="math inline">\(X_1^2 + X_2^2 + X_3^2\)</span>, we can permute the variables <span class="math inline">\(X_1, X_2, X_3\)</span> in any way and the polynomial remains the same. Another example is the polynomial <span class="math inline">\(X_1^3X_2^3X_3^3\)</span>.</p>
+<p>The elementary symmetric polynomials are a special kind of symmetric polynomials. Over <span class="math inline">\(\Z\)</span>, for <span class="math inline">\(n\)</span> variables, they are defined as
+<span class="math display">\[\begin{align*}
+e_1(X_1, X_2, \ldots, X_n) &amp; := X_1 + X_2 + \ldots + X_n
+\\ e_2(X_1, X_2, \ldots, X_n) &amp; := X_1X_2 + X_1X_3 + \ldots + X_{n-1}X_n
+\\ \vdots
+\\ e_n(X_1, X_2, \ldots, X_n) &amp; := X_1X_2 \ldots X_n.
+\end{align*}\]</span>
+The general form of the <span class="math inline">\(k\)</span>-th elementary symmetric polynomial is thus
+<span class="math display">\[\begin{align*}
+e_k(X_1, X_2, \ldots, X_n) := \sum_{\substack{I \subset \{1, \ldots, n\} \\ |I| = k}} \prod_{i \in I} X_i.
+\end{align*}\]</span>
+Clearly, all these polynomials are symmetric by construction. For the <span class="math inline">\(k\)</span>-th elementary symmetric polynomial, we choose <span class="math inline">\(k\)</span> variables out of <span class="math inline">\(n\)</span> and multiply them together. We then sum over all possible choices of <span class="math inline">\(k\)</span> variables. This implies that every product with <span class="math inline">\(k\)</span> variables appears, hence we have symmetry.</p>
+<p>We will write <span class="math inline">\(e_k\)</span> for the <span class="math inline">\(k\)</span>-th elementary symmetric polynomials for brevity (when the variables are clear). We define <span class="math inline">\(e_0 := 1\)</span> and <span class="math inline">\(e_k := 0\)</span> for <span class="math inline">\(k &gt; n\)</span>. Furthermore, the concept of (elementary) symmetric polynomials exists over an arbitrary commutative ring <span class="math inline">\(R\)</span>, not just <span class="math inline">\(\Z\)</span>, so we will work with this generalization. The ring of symmetric polynomials over <span class="math inline">\(R\)</span> is denoted by <span class="math inline">\(R[X_1, \ldots, X_n]^{S_n}\)</span>.</p>
+<h1 id="example"><a href="#example" class="anchor fas fa-xs fa-link"></a>Example</h1>
+<p>To illustrate, we apply the theorem on <span class="math inline">\(X_1^3 + X_2^3 + X_3^3 \in \Z[X_1, X_2, X_3]\)</span> and get
+<span class="math display">\[\begin{align*}
+X_1^3 + X_2^3 + X_3^3 = e_1^3 - 3e_1e_2 + 3e_3.
+\end{align*}\]</span>
+As the proof is constructive, we can extract an algorithm that gives us a way to find such expressions. At the end, we will cover this algorithm.</p>
+<h1 id="motivation"><a href="#motivation" class="anchor fas fa-xs fa-link"></a>Motivation</h1>
+<p>We want to briefly motivate the theorem with an application. Let <span class="math inline">\(p \in R[X]\)</span> be the monic univariate polynomial
+<span class="math display">\[\begin{align*}
+p := X^n + a_{n-1}X^{n-1} + \ldots + a_1X + a_0.
+\end{align*}\]</span>
+Let <span class="math inline">\(\alpha_1, \ldots, \alpha_n\)</span> be the roots of <span class="math inline">\(p\)</span>. Then by Vieta’s formulas, we know that <span class="math inline">\(a_{n-1} = -e_1(\alpha_1, \ldots, \alpha_n)\)</span>, <span class="math inline">\(a_{n-2} = e_2(\alpha_1, \ldots, \alpha_n)\)</span>, and so on. Hence, we get
+<span class="math display">\[\begin{align*}
+p = X^n - e_1(\alpha_1, \ldots, \alpha_n)X^{n-1} + e_2(\alpha_1, \ldots, \alpha_n)X^{n-2} - \ldots + (-1)^ne_n(\alpha_1, \ldots, \alpha_n).
+\end{align*}\]</span></p>
+<p>Now, for some <span class="math inline">\(f \in R[U]\)</span>, we are interested in finding a polynomial <span class="math inline">\(q \in R[X]\)</span> such that the roots of <span class="math inline">\(q\)</span> are <span class="math inline">\(f(\alpha_1), \ldots, f(\alpha_n)\)</span>. For example, if we set <span class="math inline">\(f := U^2\)</span>, we want to construct a polynomial <span class="math inline">\(q\)</span> that has the same roots as <span class="math inline">\(p\)</span> but squared. This means we then have
+<span class="math display">\[\begin{align*}
+q = X^n - e_1(\alpha_1^2, \ldots, \alpha_n^2)X^{n-1} + e_2(\alpha_1^2, \ldots, \alpha_n^2)X^{n-2} - \ldots + (-1)^ne_n(\alpha_1^2, \ldots, \alpha_n^2).
+\end{align*}\]</span>
+Clearly, the coefficients are elementary symmetric polynomials in terms of <span class="math inline">\(\alpha_i^2\)</span>. In terms of <span class="math inline">\(\alpha_i\)</span>, they are still symmetric, but not elementary anymore. This is where the theorem comes into play. It tells us that we can express these symmetric polynomials <span class="math inline">\(e_k(\alpha_1^2, \ldots, \alpha_n^2)\)</span> as polynomials in the elementary symmetric polynomials <span class="math inline">\(e_k(\alpha_1, \ldots, \alpha_n)\)</span>. So, without knowing the roots, we can manipulate the coefficients to construct <span class="math inline">\(q\)</span>.</p>
+<p>For example, let <span class="math inline">\(t := X^2 + aX + b \in \Z[X]\)</span> with roots <span class="math inline">\(\alpha_1, \alpha_2 \in \Z\)</span>. Again, by Vieta’s formulas, we can write
+<span class="math display">\[\begin{align*}
+t = X^2 - e_1(\alpha_1, \alpha_2)X + e_2(\alpha_1, \alpha_2) = X^2 - (\alpha_1 + \alpha_2)X + \alpha_1\alpha_2.
+\end{align*}\]</span>
+We want to square the roots, so we write <span class="math inline">\(e_i(\alpha_1^2, \alpha_2^2)\)</span> as a polynomial in <span class="math inline">\(e_i(\alpha_1, \alpha_2)\)</span> for <span class="math inline">\(i \in \{1, 2\}\)</span>. We get
+<span class="math display">\[\begin{align*}
+e_1(\alpha_1^2, \alpha_2^2) &amp; = \alpha_1^2 + \alpha_2^2 = \alpha_1^2 + 2\alpha_1\alpha_2 + \alpha_2^2 - 2\alpha_1\alpha_2 = e_1(\alpha_1, \alpha_2)^2 - 2e_2(\alpha_1, \alpha_2) = a^2 - 2b
+\\ e_2(\alpha_1^2, \alpha_2^2) &amp; = e_2(\alpha_1, \alpha_2)^2 = b^2
+\end{align*}\]</span>
+Then, our polynomial <span class="math inline">\(s \in \Z[X]\)</span> with squared roots can be written as
+<span class="math display">\[\begin{align*}
+s = X^2 + (a^2 - 2b)X + b^2.
+\end{align*}\]</span>
+We were thus able to construct <span class="math inline">\(s\)</span> using just the coefficients of <span class="math inline">\(t\)</span> without computing the roots explicitly. The calculation for <span class="math inline">\(e_1(\alpha_1^2, \alpha_2^2)\)</span> already gives us a hint on how the algorithm might work.</p>
+<p>In fact, this game of changing the roots of a given polynomial is used in the proof of the transcendence of <span class="math inline">\(\pi\)</span><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. In that case, given a polynomial <span class="math inline">\(p\)</span> with some roots, we find another polynomial where the roots are sums of some of the roots of <span class="math inline">\(p\)</span>. This is a slightly different idea than applying a (polynomial) function to the roots, but the idea is analogous and the fundamental theorem of symmetric polynomials is used in the same way.</p>
+<h1 id="theorem"><a href="#theorem" class="anchor fas fa-xs fa-link"></a>Theorem</h1>
+<p>We now pose the theorem formally.</p>
+<p><span class="math inline">\(\textbf{Fundamental Theorem of Symmetric Polynomials}\)</span>:
+Let <span class="math inline">\(R\)</span> be a commutative ring. Then the <span class="math inline">\(R\)</span>-algebra homomorphism
+<span class="math display">\[\begin{align*}
+\iota : R[E_1, \ldots, E_n] \to R[X_1, \ldots, X_n]^{S_n}
+\end{align*}\]</span>
+defined by
+<span class="math display">\[\begin{align*}
+\iota(E_k) := e_k
+\end{align*}\]</span>
+is an isomorphism.</p>
+<p>Intuitively, this is exactly what we described. Surjectivity ensures that every symmetric polynomial can be expressed as a polynomial in terms of <span class="math inline">\(e_k\)</span> and injectivity tells us that this can be done so uniquely.</p>
+<p>We view the domain and codomain as <span class="math inline">\(R\)</span>-algebras given by the inclusion maps
+<span class="math display">\[\begin{align*}
+R \xhookrightarrow{} R[E_1, \ldots, E_n], \quad R \xhookrightarrow{} R[X_1, \ldots, X_n]
+\end{align*}\]</span>
+which then tells us that <span class="math inline">\(\iota\)</span> is a ring homomorphism that also respects scalar multiplication by elements of <span class="math inline">\(R\)</span>. Concretely, for all <span class="math inline">\(r \in R\)</span> and <span class="math inline">\(a \in R[E_1, \ldots, E_n]\)</span>, we have
+<span class="math display">\[\begin{align*}
+\iota(ra) = r\iota(a)
+\end{align*}\]</span>
+and in particular, when applied to the identity of <span class="math inline">\(R[E_1, \ldots, E_n]\)</span>, we get
+<span class="math display">\[\begin{align*}
+\iota(r) = r.
+\end{align*}\]</span>
+So, essentially, this ensures that all constant polynomials are mapped to themselves.</p>
+<p>To prove the theorem we need to establish a strategy using (weighted) homogeneous (symmetric) polynomials.</p>
+<h1 id="additionally-required-concepts"><a href="#additionally-required-concepts" class="anchor fas fa-xs fa-link"></a>Additionally Required Concepts</h1>
+<p>We will use the idea of homogeneous polynomials, denoted by <span class="math inline">\(R[X_1, \ldots, X_n]_d\)</span>, where <span class="math inline">\(d \in \N\)</span> is the degree of all monomials in such a polynomial. For example <span class="math inline">\(X_1^3 + X_2^2X_1 + X_1X_2X_3 \in R[X_1, X_2, X_3]_3\)</span> as every monomial has degree <span class="math inline">\(3\)</span>. The homogeneous polynomials form an <span class="math inline">\(R\)</span>-submodule of <span class="math inline">\(R[X_1, \ldots, X_n]\)</span> and we have the decomposition
+<span class="math display">\[
+\begin{aligned}
+R[X_1, \ldots, X_n] = \bigoplus_{d \in \N} R[X_1, \ldots, X_n]_d
+\end{aligned}\htmlId{decomp_hom}{}\tag{1}
+\]</span>
+which holds as every arbitrary polynomials in <span class="math inline">\(R[X_1, \ldots, X_n]\)</span> is simply the sum of its monomials, and such a monomial is trivially homogeneous of some degree. Note here that these polynomials are not necessarily symmetric.</p>
+<p>Furthermore, it is not hard to convince ourselves that an element of <span class="math inline">\(R[X_1, \ldots, X_n]\)</span> is symmetric if and only if every homogeneous component is symmetric, or in other words when all monomials of the element grouped by their degrees are symmetric among their group. We introduce the notation <span class="math inline">\(R[X_1, \ldots, X_n]_d^{S_n}\)</span> to mean the homogeneous symmetric polynomials of degree <span class="math inline">\(d \in \N\)</span>. Given by <span class="math inline">\(\href{#decomp_hom}{\text{(1)}}\)</span>, we have the decomposition
+<span class="math display">\[\begin{align*}
+R[X_1, \ldots, X_n]^{S_n} = \bigoplus_{d \in \N} R[X_1, \ldots, X_n]_d^{S_n}.
+\end{align*}\]</span></p>
+We get the weighted variant of homogeneous polynomials by assigning the weight <span class="math inline">\(j \in \N\)</span> to the variable <span class="math inline">\(E_j\)</span>. We denote the weighted homogeneous polynomials of “weighted” degree <span class="math inline">\(d\)</span> by <span class="math inline">\(R[E_1, \ldots, E_n]_d\)</span>. This is again an <span class="math inline">\(R\)</span>-submodule of <span class="math inline">\(R[E_1, \ldots, E_n]\)</span> spanned by the monomials <span class="math inline">\(E_1^{a_1} \cdots E_n^{a_n}\)</span> that fulfill
+<span class="math display">\[\begin{aligned}
+\sum_{j}ja_j = d.
+\end{aligned}\htmlId{weighted_cond}{}\tag{2}\]</span>
+<p>Intuitively, every weighted homogeneous polynomial is a sum of monomials where the “further” you go along the variables, the higher the weight, so they contribute more to the total weighted degree <span class="math inline">\(d\)</span> the monomial has to have. For example, in <span class="math inline">\(R[E_1, E_2, E_3]\)</span>, the elements <span class="math inline">\(E_1^3\)</span>, <span class="math inline">\(E_1E_2\)</span> and <span class="math inline">\(E_3\)</span> all have the same weighted degree <span class="math inline">\(3\)</span>, so they would all be elements of <span class="math inline">\(R[E_1, E_2, E_3]_3\)</span>. We have a very similar decomposition as before, given by
+<span class="math display">\[\begin{align*}
+R[E_1, \ldots, E_n] = \bigoplus_{d \in \N} R[E_1, \ldots, E_n]_d
+\end{align*}\]</span>
+which holds for the same reason as before.</p>
+<p>These weighted homogeneous polynomials might seem a bit arbitrary at first. However, it makes sense when we look at what <span class="math inline">\(\iota\)</span> does to such a polynomial. A variable <span class="math inline">\(E_k\)</span> is mapped to <span class="math inline">\(e_k\)</span> and, going back to our definition of the elementary symmetric polynomials, we can see that <span class="math inline">\(e_k\)</span> has degree <span class="math inline">\(k\)</span>. This then means that <span class="math inline">\(\iota\)</span> ensures that a weighted homogeneous polynomial of weighted degree <span class="math inline">\(d\)</span> is mapped to a homogeneous polynomial of degree <span class="math inline">\(d\)</span>. For example, in <span class="math inline">\(\iota(E_1E_2) = e_1e_2 = (X_1 + X_2)(X_1X_2) \in R[X_1, X_2]\)</span>, we see that <span class="math inline">\(E_1E_2\)</span> has weighted degree <span class="math inline">\(3\)</span>, according to our definition, and the output multiplies monomials of degrees <span class="math inline">\(1\)</span> and <span class="math inline">\(2\)</span>, which sums to <span class="math inline">\(3\)</span> as well.</p>
+<p>Before we tackle the proof, we introduce two orders. Let <span class="math inline">\(\lambda, \mu\)</span> be <span class="math inline">\(n\)</span>-tuples. We will need the lexicographic order <span class="math inline">\(\lambda \leq_{\text{Lex}} \mu\)</span>, defined in the <a href="https://en.wikipedia.org/wiki/Lexicographic_order#Cartesian_products">usual way</a>. Furthermore, we require the concept of a dominance order, defined as
+<span class="math display">\[\begin{align*}
+    \lambda \trianglelefteq \mu : \Leftrightarrow \forall k, \lambda_1 + \ldots + \lambda_k \leq \mu_1 + \ldots + \mu_k.
+\end{align*}\]</span>
+We note that <span class="math inline">\(\trianglelefteq\)</span> is a partial order (<span class="math inline">\((1,1) \not\trianglelefteq (3,0)\)</span> and <span class="math inline">\((3,0) \not\trianglelefteq (1,1)\)</span>), while <span class="math inline">\(\leq_{\text{Lex}}\)</span> is a total order.</p>
+<p>We are now ready to tackle the proof.</p>
+<h1 id="proof"><a href="#proof" class="anchor fas fa-xs fa-link"></a>Proof</h1>
+<p>We have seen that <span class="math inline">\(R[X_1, \ldots, X_n]^{S_n}\)</span> and <span class="math inline">\(R[E_1, \ldots, E_n]\)</span> can be decomposed into a direct sum of <span class="math inline">\(R[X_1, \ldots, X_n]_d^{S_n}\)</span> and <span class="math inline">\(R[E_1, \ldots, E_n]_d\)</span> over all degrees. As <span class="math inline">\(\iota\)</span> preserves the degree, as we established, it suffices to prove that <span class="math inline">\(\iota\)</span> is an isomorphism for every degree <span class="math inline">\(d\)</span>.</p>
+<p>The monomials in the elements of <span class="math inline">\(R[X_1, \ldots, X_n]_d^{S_n}\)</span> and <span class="math inline">\(R[E_1, \ldots, E_n]_d\)</span> can only be picked from a finite amount of elements (ignoring the coefficients). Then, clearly, both spaces are finitely generated as <span class="math inline">\(R\)</span>-modules. Furthermore, they are both free, as a monomial term cannot be expressed as a linear combination of other monomial terms with differing degrees, in either space.</p>
+<p>This reduction now allows us to employ linear algebra. So, our strategy for the proof is to find bases for <span class="math inline">\(R[X_1, \ldots, X_n]_d^{S_n}\)</span> and <span class="math inline">\(R[E_1, \ldots, E_n]_d\)</span> such that <span class="math inline">\(\iota\)</span> can be expressed as a matrix of the form
+<span class="math display">\[\begin{align*}
+\begin{pmatrix}
+    1 &amp;        &amp; * \\
+        &amp; \ddots &amp;   \\
+    0 &amp;        &amp; 1
+\end{pmatrix}.
+\end{align*}\]</span>
+The determinant is <span class="math inline">\(1\)</span>, so we have an invertible matrix, which tells us <span class="math inline">\(\iota\)</span> is bijective. <span class="math inline">\(\iota\)</span> is also an <span class="math inline">\(R\)</span>-linear module homomorphism, so it is then an isomorphism.</p>
+Let <span class="math inline">\(d \in \N\)</span>. For <span class="math inline">\(R[E_1, \ldots, E_n]\)</span>, we will use the aforementioned monomials <span class="math inline">\(E_1^{a_1} \cdots E_n^{a_n}\)</span> as our basis. We remember that such a monomial fulfills condition <span class="math inline">\(\href{#weighted_cond}{\text{(2)}}\)</span>. We can transform this condition a bit by defining
+<span class="math display">\[\begin{align*}
+(\lambda_1, \ldots, \lambda_n) := (a_1 + \ldots + a_n, a_2 + \ldots + a_n, \ldots, a_n)
+\end{align*}\]</span>
+which then tells us that
+<span class="math display">\[\begin{aligned}
+\sum_{j} \lambda_j = d.
+\end{aligned}\htmlId{lam_cond}{}\tag{3}\]</span>
+<p>We note that this definition imposes the ordering <span class="math inline">\(\lambda_1 \ge \lambda_2 \ge \ldots \ge \lambda_n\)</span>. For a given <span class="math inline">\(n\)</span> and <span class="math inline">\(d\)</span>, we call the set of all such <span class="math inline">\((\lambda_1, \ldots, \lambda_n)\)</span> fulfilling <span class="math inline">\(\href{#lam_cond}{\text{(3)}}\)</span> <span class="math inline">\(I_{n, d}\)</span>. We notice that <span class="math inline">\(I_{n, d}\)</span> is precisely the ways to partition the integer <span class="math inline">\(d\)</span> with at most <span class="math inline">\(n\)</span> parts, up to reordering. For example
+<span class="math display">\[\begin{align*}
+I_{3, 6} = \{(6), (5, 1), (4, 2), (4, 1, 1), (3, 3), (3, 2, 1), (2, 2, 2)\}.
+\end{align*}\]</span>
+Technically, all elements should be <span class="math inline">\(3\)</span>-tuples, but we omit all <span class="math inline">\(0\)</span> terms in our partitions for brevity.</p>
+We now index our monomial basis of <span class="math inline">\(R[E_1, \ldots, E_n]_d\)</span> by <span class="math inline">\(I_{n, d}\)</span>. For a given partition <span class="math inline">\((\lambda_1, \ldots, \lambda_n) \in I_{n, d}\)</span>, we can recover the corresponding monomial as we have
+<span class="math display">\[\begin{aligned}
+a_i = \lambda_i - \lambda_{i+1} \quad \text{for } i = 1, \ldots, n-1, \quad \text{ and } a_n = \lambda_n.
+\end{aligned}\htmlId{recover_monomial}{}\tag{4}\]</span>
+<p>We note that the elements are indeed a basis as they span trivially and linear independence is clear.</p>
+<p>For our pervious example <span class="math inline">\(I_{3, 6}\)</span>, we have (in the order of the indices) the monomial basis
+<span class="math display">\[\begin{align*}
+    E_1^6, \quad E_1^4E_2, \quad E_1^2E_2^2, \quad E_1^3E_3, \quad E_2^3, \quad E_1E_2E_3, \quad E_3^2.
+\end{align*}\]</span></p>
+<p>We now need a basis for <span class="math inline">\(R[X_1, \ldots, X_n]_d^{S_n}\)</span>. We can start with a monomial, but we need to ensure symmetry. We do this by summing over all permutations of the exponents in the monomial (including <span class="math inline">\(0\)</span> exponents). So, for the partition <span class="math inline">\(\lambda := (\lambda_1, \ldots, \lambda_n) \in I_{n, d}\)</span>, we define
+<span class="math display">\[\begin{align*}
+m_\lambda := \sum_{\substack{q_1, \ldots, q_n \in \N \\ \text{s.t. } \exists \sigma \in S_n \text{ with }q_{\sigma(j)} = \lambda_j \forall j}} X_1^{q_1} \cdots X_n^{q_n},
+\end{align*}\]</span>
+which constitutes our basis, also indexed by <span class="math inline">\(I_{n, d}\)</span>. The basis elements here also span trivially and are clearly linearly independent.</p>
+<p>For our example <span class="math inline">\(I_{3, 6}\)</span>, we get (again in the order of the indices)
+<span class="math display">\[\begin{align*}
+    X_1^6 + X_2^6 + X_3^6, 
+    \quad X_1^5X_2 + X_1^5X_3 + X_2^5X_1 + X_2^5X_3 + X_3^5X_1 + X_3^5X_2, 
+    \quad X_1^4X_2^2 + \ldots,
+    \quad \ldots,
+    \quad X_1^2X_2^2X_3^2.
+\end{align*}\]</span></p>
+We order <span class="math inline">\(I_{n, d}\)</span> lexicographically, which gives us a bijection to <span class="math inline">\(\{1, \ldots m\}\)</span> where <span class="math inline">\(m\)</span>, as we know, is the number of ways to partition <span class="math inline">\(d\)</span> with at most <span class="math inline">\(n\)</span> parts. For <span class="math inline">\(I_{3,6}\)</span>, the order would be
+<span class="math display">\[\begin{align*}
+I_{3, 6} = \{(2, 2, 2), (3, 2, 1), (3, 3), (4, 1, 1), (4, 2), (5, 1), (6)\}.
+\end{align*}\]</span>
+Let <span class="math inline">\(\lambda \in I_{n,d}\)</span> arbitrary. We can now recover the monomial <span class="math inline">\(E_1^{a_1} \cdots E_n^{a_n}\)</span> by <span class="math inline">\(\href{#recover_monomial}{\text{(4)}}\)</span>, which <span class="math inline">\(\iota\)</span> maps to <span class="math inline">\(e_1^{a_1} \cdots e_n^{a_n}\)</span>. Clearly, <span class="math inline">\(e_1^{a_1} \cdots e_n^{a_n}\)</span> is a symmetric polynomial and can therefore be expressed in terms of our monomial basis <span class="math inline">\(m_{I_{n,d}}\)</span>. We now claim that it suffices to show, for
+<span class="math display">\[\begin{aligned}
+    e_1^{a_1} \cdots e_n^{a_n} = \sum_{\mu \in I_{n,d}} c_{\lambda\mu} m_{\mu}
+\end{aligned}\htmlId{lin_comb}{}\tag{5}\]</span>
+<p>that we have
+<span class="math display">\[\begin{align*}
+    c_{\lambda\lambda} &amp; = 1, \\
+    \mu \not\trianglelefteq \lambda \Rightarrow c_{\lambda\mu} &amp; = 0
+\end{align*}\]</span>
+where <span class="math inline">\(c_{\lambda\mu} \in R\)</span> are the coefficients in the linear combination.</p>
+<p>It might not be obvious why this suffices, so we elaborate. We assume the above is true. Then, as <span class="math inline">\(R[E_1, \ldots E_n]_d\)</span> and <span class="math inline">\(R[X_1, \ldots X_n]^{S_n}_d\)</span> are finitely generated and free (as previously established), the two spaces are isomorphic to <span class="math inline">\(R^m\)</span> for some <span class="math inline">\(m \in \N\)</span>. Ordering our indexed bases via the lexicographic order of the index set <span class="math inline">\(I_{n,d}\)</span>, we can express <span class="math inline">\(\iota\)</span> as a matrix <span class="math inline">\(N \in M_n(R)\)</span>. We also note that the standard basis of <span class="math inline">\(R^m\)</span> can be indexed by the lexicographically ordered index set analogously. Let <span class="math inline">\(v_{\lambda}\)</span> be the <span class="math inline">\(\lambda\)</span>-th basis element of <span class="math inline">\(R[E_1, \ldots E_n]_d\)</span>. Then, <span class="math inline">\(\iota(v_{\lambda})\)</span> is as in the left-hand side of <span class="math inline">\(\href{#lin_comb}{\text{(5)}}\)</span>.</p>
+<p>The statement now says that if the indices match, the coefficient is <span class="math inline">\(1\)</span>, so <span class="math inline">\(\iota(v_{\lambda})\)</span> gets exactly one contribution from <span class="math inline">\(m_{\lambda}\)</span> and no contributions from <span class="math inline">\(m_{\mu}\)</span> where <span class="math inline">\(\mu \not\trianglelefteq \lambda\)</span>, so elements “after” <span class="math inline">\(\lambda\)</span> in the dominance order. This includes all elements “after” <span class="math inline">\(\lambda\)</span> in the lexicographic order, as <span class="math inline">\(\mu \not\leq_{\text{Lex}} \lambda \Rightarrow \mu \not\trianglelefteq \lambda\)</span>. We now use the <span class="math inline">\(\lambda\)</span>-th standard basis element (which has a <span class="math inline">\(1\)</span> at the <span class="math inline">\(\lambda\)</span>-th position and <span class="math inline">\(0\)</span> elsewhere) to express this idea via matrices:
+<span class="math display">\[\begin{align*}
+    N \begin{pmatrix} 0 \\ \vdots \\ 0 \\ 1 \\ 0 \\ \vdots \\ 0 \end{pmatrix} = \begin{pmatrix} * \\ \vdots \\ * \\ 1 \\ 0 \\ \vdots \\ 0 \end{pmatrix}.
+\end{align*}\]</span>
+Essentially, we are projecting out the <span class="math inline">\(\lambda\)</span>-th column of <span class="math inline">\(N\)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, which tells us that <span class="math inline">\(N\)</span> has the desired form
+<span class="math display">\[\begin{align*}
+N = \begin{pmatrix}
+    1 &amp;        &amp; * \\
+        &amp; \ddots &amp;   \\
+    0 &amp;        &amp; 1
+\end{pmatrix}.
+\end{align*}\]</span></p>
+There is an easier version of our statement that we can prove, so we can forget about basis <span class="math inline">\(m_{I_{n,d}}\)</span>. We claim that it suffices to show, for
+<span class="math display">\[\begin{aligned}
+    e_1^{a_1} \cdots e_n^{a_n} = \sum_{q = (q_1, \ldots, q_n) \in \N^n} b_{\lambda q} X_1^{q_1} \cdots X_n^{q_n},
+\end{aligned}\htmlId{lin_comb_2}{}\tag{6}\]</span>
+that we have
+<span class="math display">\[\begin{aligned}
+    b_{\lambda\lambda} &amp; = 1, \\
+    q \not\trianglelefteq \lambda \Rightarrow b_{\lambda q} &amp; = 0.
+\end{aligned}\htmlId{simpler_cond}{}\tag{7}\]</span>
+<p>As each such monomial <span class="math inline">\(X_1^{q_1} \cdots X_n^{q_n}\)</span> must appear with all permutations of the exponents (we have a symmetric polynomial), the basis elements <span class="math inline">\(m_{I_{n,d}}\)</span> are “encoded” in the sum in this statement.</p>
+<p>We prove by induction on <span class="math inline">\(\lambda_1\)</span>. We remember that <span class="math inline">\(\lambda_1\)</span> is the sum of all <span class="math inline">\(a_i\)</span>, the exponents.
+The base case <span class="math inline">\(\lambda_1 = 0\)</span> implies <span class="math inline">\(\lambda = (0, \ldots, 0)\)</span> and <span class="math inline">\(e_1^{a_1} \cdots e_n^{a_n} = 1\)</span>, which tells us that <span class="math inline">\(q_i = 0\)</span> for all <span class="math inline">\(i\)</span>, so <span class="math inline">\(q = \lambda\)</span> and then <span class="math inline">\(b_{\lambda\lambda} = 1\)</span>. The second condition is vacuously true.</p>
+For the induction step, let <span class="math inline">\(\lambda_1 &gt; 0\)</span>. Now, we subtract <span class="math inline">\(1\)</span> from the last non-zero <span class="math inline">\(a_i\)</span>, which we call <span class="math inline">\(a_k\)</span>. We call <span class="math inline">\(k\)</span> the <span class="math inline">\(\textbf{length}\)</span> of <span class="math inline">\(\lambda\)</span>. By the definition of <span class="math inline">\(\lambda\)</span>, the subtraction gives us a new partition <span class="math inline">\(\lambda'\)</span> where every (non-zero) part is one less than the corresponding part in <span class="math inline">\(\lambda\)</span>. In particular <span class="math inline">\(\lambda_1' = \lambda_1 - 1\)</span>, so our statement holds for <span class="math inline">\(\lambda'\)</span>. We now do some algebraic manipulations to <span class="math inline">\(\href{#lin_comb_2}{\text{(6)}}\)</span>.
+<span class="math display">\[\begin{align*}
+    e^{a_1}_1 \cdots e^{a_n}_n
+     &amp; = e^{a_1}_1 \cdots e^{a_k}_k \\
+     &amp; = (e^{a_1}_1 \cdots e^{a_k-1}_k)e_k \\
+     &amp; = \left(\sum_{q' = (q'_1, \ldots, q'_n) \in \N^n} b_{\lambda' q'} X^{q'_1}_1 \cdots X^{q'_n}_n\right) \left(\sum_{\substack{I \subseteq \{1,\ldots,n\} \\ |I| = k}} \prod_{i \in I} X_i\right) \\
+     &amp; = \sum_{\left(q' \in \N^n, \substack{I \subseteq \{1,\ldots,n\} \\ |I| = k}\right)} b_{\lambda' q'} X^{q'_1}_1\cdots X^{q'_n}_n  \prod_{i \in I} X_i \\
+     &amp; = \sum_{\left(q' \in \N^n, \substack{I \subseteq \{1,\ldots,n\} \\ |I| = k}\right)} b_{\lambda' q'} X^{q_1}_1\cdots X^{q_n}_n
+\end{align*}\]</span>
+where
+<span class="math display">\[\begin{aligned}
+    q_i = \begin{cases}
+                q'_i     &amp; \text{if } i \not\in I \\
+                q'_i + 1 &amp; \text{if } i \in I
+          \end{cases}.
+\end{aligned}\htmlId{increment_cond}{}\tag{8}\]</span>
+<p>We elaborate on these manipulations a bit. In the first step, we only keep all <span class="math inline">\(e_i\)</span> with non-zero exponents. The second step pulls out an <span class="math inline">\(e_k\)</span> such that the last exponent is decremented by one, so in the third step, we can again use <span class="math inline">\(\href{#lin_comb_2}{\text{(6)}}\)</span> to rewrite the left factor using <span class="math inline">\(\lambda'\)</span>. For the right factor, we apply the definition of the <span class="math inline">\(k\)</span>-th elementary symmetric polynomial. In the fourth step, we combine the product of the two sums into one sum. The final step pulls in our product of <span class="math inline">\(X_i\)</span> into the monomial <span class="math inline">\(X^{q'_1}_1\cdots X^{q'_n}_n\)</span>, incrementing the exponents by <span class="math inline">\(1\)</span> if <span class="math inline">\(i \in I\)</span> and leaving it as they are otherwise, giving us the definition of <span class="math inline">\(q_i\)</span> above. We note that <span class="math inline">\(k\)</span> exponents are incremented.</p>
+We want to sum over arbitrary <span class="math inline">\(q\)</span> and exclude the tuples of <span class="math inline">\(q_i\)</span> that don’t fulfill <span class="math inline">\(\href{#increment_cond}{\text{(8)}}\)</span>. We rewrite a bit to get
+<span class="math display">\[\begin{align*}
+    e^{a_1}_1 \cdots e^{a_n}_n
+     = \sum_{\left(q' \in \N^n, \substack{I \subseteq \{1,\ldots,n\} \\ |I| = k}\right)} b_{\lambda' q'} X^{q_1}_1\cdots X^{q_n}_n 
+     = \sum_{q \in \N^n} \left(\sum_{\substack{I \subseteq \{i \mid q_i &gt; 0\} \\ |I| = k}} b_{\lambda' q'}\right) X^{q_1}_1\cdots X^{q_n}_n.
+\end{align*}\]</span>
+where
+<span class="math display">\[\begin{align*}
+    q_i' = \begin{cases}
+                q_i     &amp; \text{if } i \not\in I \\
+                q_i - 1 &amp; \text{if } i \in I
+          \end{cases}.
+\end{align*}\]</span>
+This is an equivalent formulation as the inner sum is empty if <span class="math inline">\(q\)</span> does not have at least <span class="math inline">\(k\)</span> parts greater than <span class="math inline">\(0\)</span>, this ensures that the condition for our <span class="math inline">\(q_i\)</span> as in <span class="math inline">\(\href{#increment_cond}{\text{(8)}}\)</span> is maintained. Given the premise <span class="math inline">\(\href{#lin_comb_2}{\text{(6)}}\)</span> in our statement, we see that
+<span class="math display">\[\begin{aligned}
+      b_{\lambda q} = \sum_{\substack{I \subseteq \{i \mid q_i &gt; 0\} \\ |I| = k}} b_{\lambda' q'}.
+\end{aligned}\htmlId{b_rel}{}\tag{9}\]</span>
+<p>We now show the two cases in <span class="math inline">\(\href{#simpler_cond}{\text{(7)}}\)</span>.</p>
+<p>If <span class="math inline">\(q = \lambda\)</span>, then <span class="math inline">\(I = \{1, \ldots, k\}\)</span> is the only set we sum over in <span class="math inline">\(\href{#b_rel}{\text{(9)}}\)</span>, as <span class="math inline">\(k\)</span> is the length of <span class="math inline">\(\lambda\)</span> and hence all <span class="math inline">\(q_1, \ldots q_k\)</span> are greater than <span class="math inline">\(0\)</span>. Thus, we get
+<span class="math display">\[\begin{align*}
+    b_{\lambda \lambda} = b_{\lambda' \lambda'}.
+\end{align*}\]</span>
+Now, as <span class="math inline">\(b_{\lambda' \lambda'} = 1\)</span> by the induction hypothesis, we have <span class="math inline">\(b_{\lambda \lambda} = 1\)</span>.</p>
+If <span class="math inline">\(q \not\trianglelefteq \lambda\)</span>, then there exists some <span class="math inline">\(j\)</span> with <span class="math inline">\(1 \leq j \leq k\)</span>, such
+<span class="math display">\[\begin{aligned}
+      q_1 + \ldots + q_j &gt; \lambda_1 + \ldots + \lambda_j.
+\end{aligned}\htmlId{key_ineq}{}\tag{10}\]</span>
+We want to now find a relation between our <span class="math inline">\(q_i'\)</span> and <span class="math inline">\(q_i\)</span> as well as <span class="math inline">\(\lambda_i'\)</span> and <span class="math inline">\(\lambda_i\)</span>. In total, we have <span class="math inline">\(k\)</span> increments from <span class="math inline">\(q_i'\)</span> to <span class="math inline">\(q_i\)</span>, and we want to find how many of these increments are in the first <span class="math inline">\(j\)</span> indices. We find the relevant set of indices by intersecting <span class="math inline">\(I\)</span> with <span class="math inline">\(\{1, \ldots, j\}\)</span>. Thus, we have
+<span class="math display">\[\begin{aligned}
+      q_1' + \ldots + q_j' = q_1 + \ldots + q_j - |I \cap \{1, \ldots, j\}|.
+\end{aligned}\htmlId{q_sum}{}\tag{11}\]</span>
+For <span class="math inline">\(\lambda_i'\)</span>, it’s a bit easier. By the definition of <span class="math inline">\(\lambda'\)</span>, we can simply subtract <span class="math inline">\(1\)</span> from each of the first <span class="math inline">\(j\)</span> parts to get
+<span class="math display">\[\begin{aligned}
+        \lambda_1' + \ldots + \lambda_j' = \lambda_1 + \ldots + \lambda_j - j.
+\end{aligned}\htmlId{lam_sum}{}\tag{12}\]</span>
+<p>In <span class="math inline">\(\href{#q_sum}{\text{(11)}}\)</span>, we subtract at most <span class="math inline">\(j\)</span>, in <span class="math inline">\(\href{#lam_sum}{\text{(12)}}\)</span> we subtract exactly <span class="math inline">\(j\)</span>, so combining these with <span class="math inline">\(\href{#key_ineq}{\text{(10)}}\)</span>, we get
+<span class="math display">\[\begin{align*}
+    q_1' + \ldots + q_j' &gt; \lambda_1' + \ldots + \lambda_j'.
+\end{align*}\]</span>
+This tells us that <span class="math inline">\(q' \not\trianglelefteq \lambda'\)</span>, so by the induction hypothesis, we have <span class="math inline">\(b_{\lambda' q'} = 0\)</span> for all <span class="math inline">\(I\)</span> we sum over in <span class="math inline">\(\href{#b_rel}{\text{(9)}}\)</span>, which gives us <span class="math inline">\(b_{\lambda q} = 0\)</span>. This concludes the proof.</p>
+<h1 id="algorithm"><a href="#algorithm" class="anchor fas fa-xs fa-link"></a>Algorithm</h1>
+<p>According to <a href="https://math.stackexchange.com/a/14061">this Math Stack Exchange post</a>, that comes with a reference, the algorithm presented here is due to Gauss. The essence of the algorithm is already encoded in the proof above.</p>
+<p>Let <span class="math inline">\(f \in R[X_1, \ldots, X_n]^{S_n}\)</span> be a symmetric polynomial. We now find the <span class="math inline">\(\textbf{lead monomial}\)</span> by viewing the exponents of every monomial <span class="math inline">\(c X_1^{q_1} \cdots X_n^{q_n}\)</span>, with <span class="math inline">\(c \in R\)</span>, as the <span class="math inline">\(n\)</span>-tuple <span class="math inline">\((q_1, \ldots, q_n)\)</span> and picking the monomial with the largest “exponent tuple” with respect to lexicographic ordering. We want to now subtract an expression in terms of <span class="math inline">\(e_i\)</span> such that the lead monomial is cancelled. Let <span class="math inline">\(cX_1^{q_1} \cdots X_n^{q_n}\)</span> be the lead monomial. We compute
+<span class="math display">\[\begin{align*}
+    f_1 := f - ce_1^{q_1 - q_2} e_2^{q_2 - q_3} \cdots e_{n-1}^{q_{n-1} - q_n} e_n^{q_n}.
+\end{align*}\]</span>
+We get to this expression by applying the idea behind <span class="math inline">\(\href{#recover_monomial}{\text{(4)}}\)</span> and seeing that, due to the proof, <span class="math inline">\(f\)</span> gets exactly <span class="math inline">\(c\)</span> contributions from the subtrahend, so the lead monomial is cancelled. The new lead monomial in <span class="math inline">\(f_1\)</span> will be strictly smaller in the lexicographic order. We can now recurse until <span class="math inline">\(f_n\)</span> is <span class="math inline">\(0\)</span>. We can then back substitute to get an expression of <span class="math inline">\(f\)</span> in terms of <span class="math inline">\(e_i\)</span>. As the proof demonstrates, this algorithm must terminate as we repeatedly decrease the lead monomial in the lexicographic order.</p>
+<p>As an example, let <span class="math inline">\(f := X_1^3 + X_2^3 + X_3^3 \in \Z[X_1, X_2, X_3]^{S_3}\)</span>. The lead monomial is <span class="math inline">\(X_1^3\)</span> with partition <span class="math inline">\((3, 0, 0)\)</span>. We compute
+<span class="math display">\[\begin{align*}
+    f_1 := f - e_1^3e_2^0e_3^0 = f - e_1^3
+     &amp; = X_1^3 + X_2^3 + X_3^3 - (X_1 + X_2 + X_3)^3                                                                        \\
+     &amp; = X_1^3 + X_2^3 + X_3^3                                                                                              \\
+     &amp; \quad - (X_1^3 + X_2^3 + X_3^3 + 3X_1^2X_2 + 3X_1^2X_3 + 3X_2^2X_1 + 3X_2^2X_3 + 3X_3^2X_1 + 3X_3^2X_2 + 6X_1X_2X_3) \\
+     &amp; = -3X_1^2X_2 - 3X_1^2X_3 - 3X_2^2X_1 - 3X_2^2X_3 - 3X_3^2X_1 - 3X_3^2X_2 - 6X_1X_2X_3.
+\end{align*}\]</span>
+The lead monomial of <span class="math inline">\(f_1\)</span> is <span class="math inline">\(-3X_1^2X_2\)</span> with the partition <span class="math inline">\((2, 1, 0)\)</span>. The corresponding product of elementary symmetric polynomials is then <span class="math inline">\(e_1^{2-1}e_2^{1-0}e_3^{0} = e_1e_2\)</span>. We subtract this, multiplied by the coefficient <span class="math inline">\(-3\)</span> from <span class="math inline">\(f_1\)</span> to get
+<span class="math display">\[\begin{align*}
+    f_2 := f_1 + 3e_1e_2
+     &amp; = -3X_1^2X_2 - 3X_1^2X_3 - 3X_2^2X_1 - 3X_2^2X_3 - 3X_3^2X_1 - 3X_3^2X_2 - 6X_1X_2X_3 \\
+     &amp; \quad + 3(X_1 + X_2 + X_3)(X_1X_2 + X_1X_3 + X_2X_3)                                  \\
+     &amp; = 3X_1X_2X_3.
+\end{align*}\]</span></p>
+<p>We only have one monomial and we see the corresponding product of elementary symmetric polynomials is <span class="math inline">\(e_1^{1-1}e_2^{1-1}e_3^{1} = e_3\)</span> with coefficient <span class="math inline">\(3\)</span>. Thus, we have
+<span class="math display">\[\begin{align*}
+    f_3 := f_2 - 3e_3 = 0.
+\end{align*}\]</span>
+Then, we resubstitute and get
+<span class="math display">\[\begin{align*}
+    f - e_1^3 + 3e_1e_2 - 3e_3 &amp; = 0                       \\
+    \Rightarrow f              &amp; = e_1^3 - 3e_1e_2 + 3e_3.
+\end{align*}\]</span>
+This completes the example.</p>
+<section class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>It’s used in the proof of the <a href="https://en.wikipedia.org/wiki/Lindemann%E2%80%93Weierstrass_theorem">Lindemann-Weierstrass theorem</a>, from which the transcendence of <span class="math inline">\(\pi\)</span> follows as a corollary.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>By convention, we usually index matrices with positive integers, so “the <span class="math inline">\(\lambda\)</span>-th column” is not entirely valid. However, as we have a bijection between <span class="math inline">\(I_{n,d}\)</span> and <span class="math inline">\(\{1, \ldots, m\}\)</span>, this is justified.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+    </main>
+    <footer>
+      <div class="content">
+        <div class="generator">
+          Site proudly generated by
+          <a class="footer-link" href="http://jaspervdj.be/hakyll">Hakyll</a> :)
+        </div>
+      </div>
+    </footer>
+
+    
+  </body>
+</html>
